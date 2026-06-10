@@ -1,0 +1,17 @@
+import { Router } from "express";
+import * as physics from "../controllers/physics.controller.js";
+import { requireAuth } from "../middleware/requireAuth.js";
+import { requireSubscription } from "../middleware/requireSubscription.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+
+export const physicsRouter = Router();
+
+// All physics content is premium: trial or active subscription required.
+physicsRouter.use(requireAuth, asyncHandler(requireSubscription));
+
+physicsRouter.get("/worlds", asyncHandler(physics.getWorlds));
+physicsRouter.get("/worlds/:slug", asyncHandler(physics.getWorld));
+physicsRouter.get("/lessons/:slug", asyncHandler(physics.getLesson));
+physicsRouter.post("/lessons/:slug/quiz", asyncHandler(physics.submitQuiz));
+physicsRouter.post("/lessons/:slug/complete", asyncHandler(physics.completeLesson));
+physicsRouter.post("/lessons/:slug/time", asyncHandler(physics.logTime));

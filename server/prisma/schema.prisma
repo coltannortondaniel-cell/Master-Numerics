@@ -1,0 +1,248 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum GradeLevel {
+  KINDERGARTEN
+  GRADE_1
+  GRADE_2
+  GRADE_3
+  GRADE_4
+  GRADE_5
+  GRADE_6
+  GRADE_7
+  GRADE_8
+  GRADE_9
+  GRADE_10
+  GRADE_11
+  GRADE_12
+  UNDERGRAD
+  GRADUATE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  TRIALING
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+enum SubscriptionPlan {
+  MONTHLY
+  YEARLY
+}
+
+model User {
+  id               String     @id @default(cuid())
+  email            String     @unique
+  username         String     @unique
+  passwordHash     String
+  dateOfBirth      DateTime
+  gradeLevel       GradeLevel
+  role             Role       @default(USER)
+  // Every new account gets a 1-day full-access trial (no card required)
+  trialEndsAt      DateTime
+  stripeCustomerId String?    @unique
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+
+  xp                  Int                  @default(0)
+
+  subscription        Subscription?
+  refreshTokens       RefreshToken[]
+  passwordResetTokens PasswordResetToken[]
+  progress            UserProgress[]
+  quizAttempts        QuizAttempt[]
+  xpEvents            XpEvent[]
+
+  @@index([email])
+  @@index([username])
+}
+
+model Subscription {
+  id                   String             @id @default(cuid())
+  userId               String             @unique
+  user                 User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  stripeSubscriptionId String             @unique
+  status               SubscriptionStatus
+  plan                 SubscriptionPlan
+  currentPeriodEnd     DateTime
+  cancelAtPeriodEnd    Boolean            @default(false)
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+}
+
+model RefreshToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+// ─────────────────────────── Phase 2: Physics Journey ───────────────────────────
+
+enum SectionKind {
+  HERO
+  CONTEXT
+  CONCEPT
+  SIMULATION
+  WORKED_EXAMPLES
+  VIDEOS
+  CONCEPT_CHECK
+  PRACTICE
+  DEEPER_DIVE
+  SUMMARY
+}
+
+enum QuestionScope {
+  CONCEPT_CHECK
+  PRACTICE
+}
+
+enum QuestionKind {
+  MCQ
+  TRUE_FALSE
+  NUMERIC
+}
+
+enum ProgressStatus {
+  STARTED
+  COMPLETED
+  MASTERED
+}
+
+model World {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  subtitle    String
+  description String
+  orderIndex  Int      @unique
+  gradeRange  String // e.g. "K–2"
+  scaleLabel  String // e.g. "3×10⁶ m"
+  palette     Json // { accent, glow }
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id         String          @id @default(cuid())
+  worldId    String
+  world      World           @relation(fields: [worldId], references: [id], onDelete: Cascade)
+  slug       String          @unique
+  title      String
+  tagline    String
+  orderIndex Int
+  xpReward   Int             @default(100)
+  estMinutes Int             @default(12)
+  published  Boolean         @default(true)
+  sections   LessonSection[]
+  questions  QuizQuestion[]
+  progress   UserProgress[]
+  attempts   QuizAttempt[]
+  xpEvents   XpEvent[]
+
+  @@unique([worldId, orderIndex])
+}
+
+model LessonSection {
+  id         String      @id @default(cuid())
+  lessonId   String
+  lesson     Lesson      @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  kind       SectionKind
+  orderIndex Int
+  title      String?
+  content    Json // shape varies by kind — see seed data
+
+  @@unique([lessonId, orderIndex])
+}
+
+model QuizQuestion {
+  id          String        @id @default(cuid())
+  lessonId    String
+  lesson      Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  scope       QuestionScope
+  orderIndex  Int
+  kind        QuestionKind
+  prompt      String // markdown, KaTeX allowed
+  options     Json? // MCQ: string[]
+  answer      Json // MCQ: index · TRUE_FALSE: boolean · NUMERIC: { value, tolerance }
+  hint        String?
+  explanation String
+
+  @@index([lessonId, scope])
+}
+
+model QuizAttempt {
+  id        String        @id @default(cuid())
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId  String
+  lesson    Lesson        @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  scope     QuestionScope
+  score     Int
+  total     Int
+  answers   Json
+  createdAt DateTime      @default(now())
+
+  @@index([userId, lessonId, scope])
+}
+
+model UserProgress {
+  id           String         @id @default(cuid())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lessonId     String
+  lesson       Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  status       ProgressStatus @default(STARTED)
+  bestScore    Int? // best practice score, percent
+  timeSpentSec Int            @default(0)
+  attempts     Int            @default(0)
+  // Distinct dates ("YYYY-MM-DD") with a ≥90% practice score; 2 dates ⇒ MASTERED
+  masteryDays  Json           @default("[]")
+  completedAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([userId, lessonId])
+}
+
+model XpEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount    Int
+  reason    String // LESSON_COMPLETE, QUIZ_PERFECT, ...
+  lessonId  String?
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, reason, lessonId])
+}
