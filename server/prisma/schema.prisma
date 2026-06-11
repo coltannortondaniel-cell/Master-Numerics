@@ -75,9 +75,37 @@ model User {
   notes               Note[]
   flashcards          Flashcard[]
   formulaStars        FormulaStar[]
+  notifications       Notification[]
+  challengeClaims     ChallengeClaim[]
 
   @@index([email])
   @@index([username])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // friend_request, achievement, battle, store, system
+  title     String
+  body      String?
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId, read])
+  @@index([userId, createdAt])
+}
+
+model ChallengeClaim {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  day          String // "YYYY-MM-DD" (UTC) for daily, "YYYY-Www" for weekly
+  challengeKey String
+  createdAt    DateTime @default(now())
+
+  @@unique([userId, day, challengeKey])
 }
 
 model Note {

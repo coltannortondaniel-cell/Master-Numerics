@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import { z } from "zod";
 import { prisma } from "../lib/prisma.js";
 import { badRequest, notFound, unauthorized } from "../utils/httpError.js";
+import { notify } from "../services/notification.service.js";
 
 const liteSelect = { id: true, username: true, xp: true } as const;
 
@@ -172,6 +173,11 @@ export async function requestFriend(req: Request, res: Response): Promise<void> 
   }
 
   await prisma.friendship.create({ data: { requesterId: userId, addresseeId: target.id } });
+  await notify(target.id, {
+    type: "friend_request",
+    title: `@${req.auth.username} sent you a friend request`,
+    link: "/friends",
+  });
   res.status(201).json({ ok: true, status: "PENDING" });
 }
 

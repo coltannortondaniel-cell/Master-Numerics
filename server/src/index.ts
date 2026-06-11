@@ -18,6 +18,7 @@ import { storeRouter } from "./routes/store.routes.js";
 import { achievementsRouter } from "./routes/achievements.routes.js";
 import { profileRouter } from "./routes/profile.routes.js";
 import { studyRouter } from "./routes/study.routes.js";
+import { dashboardRouter, notificationsRouter } from "./routes/dashboard.routes.js";
 import { webhook } from "./controllers/billing.controller.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
 import { attachBattleSocket } from "./socket/index.js";
@@ -55,6 +56,8 @@ app.use("/api/store", storeRouter);
 app.use("/api/achievements", achievementsRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/study", studyRouter);
+app.use("/api/dashboard", dashboardRouter);
+app.use("/api/notifications", notificationsRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

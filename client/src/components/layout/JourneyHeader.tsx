@@ -4,6 +4,7 @@ import { useXp } from "../../store/xp";
 import { rankForXp } from "../../lib/rank";
 import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
+import { NotificationBell } from "./NotificationBell";
 
 interface Props {
   back?: { to: string; label: string } | { onClick: () => void; label: string };
@@ -59,6 +60,7 @@ export function JourneyHeader({ back }: Props) {
           </span>
           <span className="hidden sm:inline text-xs text-neutron/50">XP</span>
         </div>
+        <NotificationBell />
         {user && (
           <Link
             to={`/profile/${user.username}`}

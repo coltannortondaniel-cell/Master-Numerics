@@ -1,6 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 import { awardXp } from "./xp.service.js";
 import { addCoins } from "./economy.service.js";
+import { notify } from "./notification.service.js";
 
 export type Stats = Record<string, number>;
 
@@ -65,6 +66,7 @@ export async function checkAchievements(userId: string): Promise<GrantedAchievem
     }
     if (a.xpReward > 0) await awardXp(userId, a.xpReward, `ACHIEVEMENT:${a.key}`);
     if (a.coinReward > 0) await addCoins(userId, a.coinReward);
+    await notify(userId, { type: "achievement", title: `Achievement unlocked: ${a.name}`, link: "/achievements" });
     granted.push({ key: a.key, name: a.name, xpReward: a.xpReward, coinReward: a.coinReward });
   }
   return granted;
