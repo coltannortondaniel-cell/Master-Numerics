@@ -20,9 +20,13 @@ const variants: Record<Variant, string> = {
   danger: "bg-alert/90 text-neutron hover:bg-alert",
 };
 
-export function Button({ variant = "primary", loading, children, ...rest }: Props) {
+export function Button({ variant = "primary", loading, children, className, ...rest }: Props) {
   return (
-    <button className={`${base} ${variants[variant]}`} disabled={loading || rest.disabled} {...rest}>
+    <button
+      className={`${base} ${variants[variant]} ${className ?? ""}`}
+      disabled={loading || rest.disabled}
+      {...rest}
+    >
       {loading && (
         <span
           aria-hidden

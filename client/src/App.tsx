@@ -25,6 +25,7 @@ const Lesson = lazy(() => import("./pages/Lesson"));
 const Calculator = lazy(() => import("./pages/Calculator"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Friends = lazy(() => import("./pages/Friends"));
+const Battle = lazy(() => import("./pages/Battle"));
 
 function RouteFallback() {
   return (
@@ -163,6 +164,14 @@ export default function App() {
             element={
               <RequireAuth>
                 <Friends />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/battle"
+            element={
+              <RequireAuth>
+                <Battle />
               </RequireAuth>
             }
           />

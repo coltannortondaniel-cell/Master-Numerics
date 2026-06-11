@@ -92,6 +92,21 @@ model Friendship {
   @@index([requesterId, status])
 }
 
+model BattleMatch {
+  id        String   @id @default(cuid())
+  playerAId String
+  playerBId String
+  winnerId  String? // null = draw
+  scoreA    Int
+  scoreB    Int
+  subject   String   @default("MIXED")
+  ranked    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([playerAId])
+  @@index([playerBId])
+}
+
 model Subscription {
   id                   String             @id @default(cuid())
   userId               String             @unique

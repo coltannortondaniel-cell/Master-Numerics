@@ -1,4 +1,5 @@
 import express from "express";
+import http from "node:http";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -15,6 +16,7 @@ import { mathRouter } from "./routes/math.routes.js";
 import { socialRouter } from "./routes/social.routes.js";
 import { webhook } from "./controllers/billing.controller.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
+import { attachBattleSocket } from "./socket/index.js";
 
 const app = express();
 app.set("trust proxy", 1);
@@ -56,8 +58,10 @@ async function main() {
   } catch {
     console.warn("⚠ Redis unavailable — continuing without cache (dev only)");
   }
-  app.listen(env.PORT, () => {
-    console.log(`🚀 Master Numerics API listening on http://localhost:${env.PORT}`);
+  const server = http.createServer(app);
+  attachBattleSocket(server);
+  server.listen(env.PORT, () => {
+    console.log(`🚀 Master Numerics API + battle socket on http://localhost:${env.PORT}`);
   });
 }
 

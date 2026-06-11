@@ -179,6 +179,13 @@ export default function Dashboard() {
               <span className="text-sm font-semibold">Calculator</span>
             </Link>
             <Link
+              to="/battle"
+              className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-alert/40 hover:shadow-glow"
+            >
+              <span className="text-2xl">⚔️</span>
+              <span className="text-sm font-semibold">Battle</span>
+            </Link>
+            <Link
               to="/leaderboard"
               className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-solar/40 hover:shadow-glow-gold"
             >
