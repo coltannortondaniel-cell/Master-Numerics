@@ -1,0 +1,165 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --space-black: #0a0b14;
+  --cosmic-purple: #6b21d6;
+  --nebula-blue: #1e90ff;
+  --solar-gold: #ffb800;
+  --neutron-white: #f0f4ff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-space text-neutron font-body antialiased;
+}
+
+/* ---- Glass-morphism card (design system §13) ---- */
+.glass {
+  background: rgba(16, 18, 32, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(240, 244, 255, 0.08);
+  border-radius: 1rem;
+}
+
+/* ---- Custom themed scrollbar ---- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0b14;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2d45;
+  border-radius: 8px;
+  border: 2px solid #0a0b14;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #6b21d6;
+}
+
+/* ---- Visible focus rings (WCAG) ---- */
+:focus-visible {
+  outline: 2px solid var(--solar-gold);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---- Three-layer parallax starfield ----
+   Pure CSS: each layer is a repeated radial-gradient star tile drifting at a
+   different speed, giving depth without WebGL on the auth screens. */
+.starfield,
+.starfield::before,
+.starfield::after {
+  position: fixed;
+  inset: 0;
+  content: "";
+  pointer-events: none;
+  background-repeat: repeat;
+  z-index: 0;
+}
+.starfield {
+  background-image: radial-gradient(1px 1px at 25px 35px, #f0f4ff 99%, transparent),
+    radial-gradient(1px 1px at 120px 90px, #aab6ff 99%, transparent),
+    radial-gradient(1.5px 1.5px at 200px 160px, #f0f4ff 99%, transparent);
+  background-size: 260px 260px;
+  opacity: 0.5;
+  animation: drift-slow 180s linear infinite;
+}
+.starfield::before {
+  background-image: radial-gradient(1px 1px at 60px 140px, #8ec1ff 99%, transparent),
+    radial-gradient(1px 1px at 180px 40px, #f0f4ff 99%, transparent);
+  background-size: 340px 340px;
+  opacity: 0.4;
+  animation: drift-mid 120s linear infinite;
+}
+.starfield::after {
+  background-image: radial-gradient(2px 2px at 90px 220px, #ffd76e 99%, transparent),
+    radial-gradient(1.5px 1.5px at 240px 110px, #c4b0ff 99%, transparent);
+  background-size: 420px 420px;
+  opacity: 0.35;
+  animation: drift-fast 80s linear infinite;
+}
+@keyframes drift-slow {
+  to {
+    background-position: -260px 260px;
+  }
+}
+@keyframes drift-mid {
+  to {
+    background-position: 340px -340px;
+  }
+}
+@keyframes drift-fast {
+  to {
+    background-position: -420px -420px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .starfield,
+  .starfield::before,
+  .starfield::after {
+    animation: none;
+  }
+}
+
+/* ---- Nebula glow behind auth cards ---- */
+.nebula-glow {
+  position: fixed;
+  pointer-events: none;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.22;
+  z-index: 0;
+}
+
+/* ---- Loading skeleton shimmer (Quality §17: no blank flashes) ---- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(240, 244, 255, 0.05);
+  border-radius: 0.75rem;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 244, 255, 0.08),
+    transparent
+  );
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
+
+/* ---- KaTeX sizing inside lesson body ---- */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
