@@ -16,6 +16,7 @@ import { mathRouter } from "./routes/math.routes.js";
 import { socialRouter } from "./routes/social.routes.js";
 import { storeRouter } from "./routes/store.routes.js";
 import { achievementsRouter } from "./routes/achievements.routes.js";
+import { profileRouter } from "./routes/profile.routes.js";
 import { webhook } from "./controllers/billing.controller.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
 import { attachBattleSocket } from "./socket/index.js";
@@ -51,6 +52,7 @@ app.use("/api/math", mathRouter);
 app.use("/api/social", socialRouter);
 app.use("/api/store", storeRouter);
 app.use("/api/achievements", achievementsRouter);
+app.use("/api/profile", profileRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

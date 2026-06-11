@@ -60,7 +60,12 @@ export function JourneyHeader({ back }: Props) {
           <span className="hidden sm:inline text-xs text-neutron/50">XP</span>
         </div>
         {user && (
-          <span className="hidden md:inline text-sm text-neutron/60">@{user.username}</span>
+          <Link
+            to={`/profile/${user.username}`}
+            className="hidden md:inline text-sm text-neutron/60 hover:text-neutron transition-colors"
+          >
+            @{user.username}
+          </Link>
         )}
         <Button variant="ghost" onClick={() => void logout()}>
           Sign out

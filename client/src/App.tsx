@@ -28,6 +28,8 @@ const Friends = lazy(() => import("./pages/Friends"));
 const Battle = lazy(() => import("./pages/Battle"));
 const Store = lazy(() => import("./pages/Store"));
 const Achievements = lazy(() => import("./pages/Achievements"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Customize = lazy(() => import("./pages/Customize"));
 
 function RouteFallback() {
   return (
@@ -190,6 +192,22 @@ export default function App() {
             element={
               <RequireAuth>
                 <Achievements />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile/customize"
+            element={
+              <RequireAuth>
+                <Customize />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile/:username"
+            element={
+              <RequireAuth>
+                <Profile />
               </RequireAuth>
             }
           />
