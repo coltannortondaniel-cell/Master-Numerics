@@ -19,6 +19,7 @@ import { achievementsRouter } from "./routes/achievements.routes.js";
 import { profileRouter } from "./routes/profile.routes.js";
 import { studyRouter } from "./routes/study.routes.js";
 import { dashboardRouter, notificationsRouter } from "./routes/dashboard.routes.js";
+import { adminRouter } from "./routes/admin.routes.js";
 import { webhook } from "./controllers/billing.controller.js";
 import { asyncHandler } from "./utils/asyncHandler.js";
 import { attachBattleSocket } from "./socket/index.js";
@@ -58,6 +59,7 @@ app.use("/api/profile", profileRouter);
 app.use("/api/study", studyRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/notifications", notificationsRouter);
+app.use("/api/admin", adminRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

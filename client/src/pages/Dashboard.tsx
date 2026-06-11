@@ -158,6 +158,9 @@ export default function Dashboard() {
             </span>
           )}
           <NotificationBell />
+          {user.role === "ADMIN" && (
+            <Link to="/admin" className="text-sm font-semibold text-alert hover:brightness-110">Admin</Link>
+          )}
           <Link to={`/profile/${user.username}`} className="text-sm text-neutron/60 hover:text-neutron hidden sm:inline">
             @{user.username}
           </Link>

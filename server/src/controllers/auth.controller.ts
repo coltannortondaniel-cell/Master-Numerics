@@ -89,6 +89,9 @@ export async function login(req: Request, res: Response): Promise<void> {
   if (!user || !(await argon2.verify(user.passwordHash, password))) {
     throw unauthorized("Email or password is incorrect", "BAD_CREDENTIALS");
   }
+  if (user.banned) {
+    throw unauthorized("This account has been suspended", "ACCOUNT_BANNED");
+  }
 
   const accessToken = signAccessToken({
     sub: user.id,
