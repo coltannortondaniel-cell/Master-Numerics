@@ -30,6 +30,8 @@ interface Over {
   result: "win" | "loss" | "draw";
   scores: { you: number; opp: number };
   xp: number;
+  coins: number;
+  achievements: { key: string; name: string; xpReward: number; coinReward: number }[];
 }
 
 export default function Battle() {
@@ -84,7 +86,11 @@ export default function Battle() {
           kind: o.result === "win" ? "bonus" : "xp",
           amount: o.xp,
           title: o.result === "win" ? "Victory!" : o.result === "draw" ? "Hard-fought draw" : "Good fight",
+          detail: o.coins > 0 ? `+🪙 ${o.coins}` : undefined,
         });
+      }
+      for (const a of o.achievements ?? []) {
+        pushToast({ kind: "mastery", title: `Achievement: ${a.name}`, amount: a.xpReward });
       }
     };
     const onOppTyping = () => {

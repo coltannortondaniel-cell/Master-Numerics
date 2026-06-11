@@ -5,6 +5,8 @@ import { prisma } from "../lib/prisma.js";
 import { verifyAccessToken } from "../services/token.service.js";
 import { gradeAnswer, revealAnswer } from "../utils/grading.js";
 import { awardXp } from "../services/xp.service.js";
+import { addCoins } from "../services/economy.service.js";
+import { checkAchievements, type GrantedAchievement } from "../services/achievements.service.js";
 
 /**
  * Real-time PvP Battle Arena.
@@ -199,6 +201,19 @@ class BattleRoom {
       for (const p of [this.a, this.b]) xpByUser[p.userId] = await awardXp(p.userId, Math.round(reward / 3), `BATTLE_DRAW:${this.id}`);
     }
 
+    // Coins: winner takes the pot, draw splits it, loser gets nothing.
+    const coinReward = this.ranked ? 40 : 20;
+    const coinByUser: Record<string, number> = { [this.a.userId]: 0, [this.b.userId]: 0 };
+    if (winnerId) {
+      coinByUser[winnerId] = coinReward;
+      await addCoins(winnerId, coinReward);
+    } else {
+      for (const p of [this.a, this.b]) {
+        coinByUser[p.userId] = Math.round(coinReward / 2);
+        await addCoins(p.userId, coinByUser[p.userId]);
+      }
+    }
+
     await prisma.battleMatch.create({
       data: {
         playerAId: this.a.userId,
@@ -211,12 +226,18 @@ class BattleRoom {
       },
     });
 
+    // Achievements (e.g. First Blood, Arena Veteran) can unlock after a win.
+    const achByUser: Record<string, GrantedAchievement[]> = {};
+    for (const p of [this.a, this.b]) achByUser[p.userId] = await checkAchievements(p.userId);
+
     for (const p of [this.a, this.b]) {
       const result = winnerId === null ? "draw" : winnerId === p.userId ? "win" : "loss";
       p.socket.emit("battle:over", {
         result,
         scores: { you: this.scores[p.userId], opp: this.scores[this.other(p.userId).userId] },
         xp: xpByUser[p.userId] ?? 0,
+        coins: coinByUser[p.userId] ?? 0,
+        achievements: achByUser[p.userId] ?? [],
       });
       p.socket.leave(this.id);
       (p.socket.data as { roomId?: string }).roomId = undefined;

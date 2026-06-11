@@ -46,6 +46,7 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
   const contentApi = useContentApi();
   const pushToast = useXp((s) => s.push);
   const setTotalXp = useXp((s) => s.setTotalXp);
+  const setCoins = useXp((s) => s.setCoins);
 
   const conceptQs = useMemo(
     () => lesson.questions.filter((q) => q.scope === "CONCEPT_CHECK"),
@@ -100,13 +101,20 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
     try {
       const res = await contentApi.complete(lesson.slug);
       setTotalXp(res.totalXp);
+      setCoins(res.coins);
       setCompleted(true);
       pushToast({ kind: "xp", amount: res.xpAwarded, title: "Lesson complete!", detail: lesson.title });
+      if (res.coinsAwarded > 0) {
+        pushToast({ kind: "bonus", amount: res.coinsAwarded, title: "Coins earned", detail: "🪙 NumCoins" });
+      }
       if (res.bonusAwarded > 0) {
         pushToast({ kind: "bonus", amount: res.bonusAwarded, title: "Perfect practice bonus" });
       }
       if (res.status === "MASTERED") {
         pushToast({ kind: "mastery", title: "Lesson mastered", detail: "90%+ on two separate days" });
+      }
+      for (const a of res.achievements) {
+        pushToast({ kind: "mastery", title: `Achievement: ${a.name}`, amount: a.xpReward });
       }
     } catch (e) {
       const parsed = parseApiError(e);

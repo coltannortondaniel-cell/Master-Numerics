@@ -165,11 +165,21 @@ export interface QuizResponse {
   status?: ProgressStatus;
 }
 
+export interface GrantedAchievement {
+  key: string;
+  name: string;
+  xpReward: number;
+  coinReward: number;
+}
+
 export interface CompleteResponse {
   xpAwarded: number;
   bonusAwarded: number;
+  coinsAwarded: number;
   totalXp: number;
+  coins: number;
   status: ProgressStatus;
+  achievements: GrantedAchievement[];
 }
 
 /** MCQ → option index · TRUE_FALSE → boolean · NUMERIC → number */

@@ -2,6 +2,8 @@ import { PrismaClient, type Subject } from "@prisma/client";
 import type { WorldSeed } from "./seed-data/types.js";
 import { worlds } from "./seed-data/worlds.js";
 import { districts } from "./seed-data/math/districts.js";
+import { cosmetics } from "./seed-data/cosmetics.js";
+import { achievements } from "./seed-data/achievements.js";
 
 const prisma = new PrismaClient();
 
@@ -75,6 +77,22 @@ async function main() {
   await seedSubject("PHYSICS", worlds);
   console.log("— Math City —");
   await seedSubject("MATH", districts);
+
+  console.log("— Cosmetics & Achievements —");
+  await prisma.cosmetic.deleteMany({});
+  await prisma.cosmetic.createMany({
+    data: cosmetics.map((c) => ({
+      key: c.key,
+      name: c.name,
+      type: c.type,
+      rarity: c.rarity,
+      description: c.description,
+      coinPrice: c.coinPrice ?? 0,
+    })),
+  });
+  await prisma.achievement.deleteMany({});
+  await prisma.achievement.createMany({ data: achievements });
+  console.log(`  ✓ ${cosmetics.length} cosmetics, ${achievements.length} achievements`);
 
   console.log("✨ Seed complete.");
 }

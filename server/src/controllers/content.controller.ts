@@ -5,8 +5,11 @@ import { prisma } from "../lib/prisma.js";
 import { notFound, badRequest, unauthorized } from "../utils/httpError.js";
 import { gradeAnswer, revealAnswer } from "../utils/grading.js";
 import { awardXp } from "../services/xp.service.js";
+import { addCoins } from "../services/economy.service.js";
+import { checkAchievements } from "../services/achievements.service.js";
 
 const PERFECT_BONUS_XP = 25;
+const COINS_PER_LESSON = 25;
 
 const quizSubmitSchema = z.object({
   scope: z.enum(["CONCEPT_CHECK", "PRACTICE"]),
@@ -336,12 +339,25 @@ export function makeContentController(subject: Subject) {
       bonusAwarded = await awardXp(userId, PERFECT_BONUS_XP, "QUIZ_PERFECT", lesson.id);
     }
 
+    // Coins are granted once per lesson (idempotent via a marker XpEvent-style
+    // check would be ideal, but completeLesson is naturally idempotent on status).
+    const coinsAwarded = xpAwarded > 0 ? await addCoins(userId, COINS_PER_LESSON).then(() => COINS_PER_LESSON) : 0;
+    const achievements = await checkAchievements(userId);
+
     const user = await prisma.user.findUniqueOrThrow({
       where: { id: userId },
-      select: { xp: true },
+      select: { xp: true, coins: true },
     });
 
-    res.json({ xpAwarded, bonusAwarded, totalXp: user.xp, status: nextStatus });
+    res.json({
+      xpAwarded,
+      bonusAwarded,
+      coinsAwarded,
+      totalXp: user.xp,
+      coins: user.coins,
+      status: nextStatus,
+      achievements,
+    });
   }
 
   /** POST /lessons/:slug/time — accumulate study time. */

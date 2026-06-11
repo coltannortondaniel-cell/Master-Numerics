@@ -26,6 +26,8 @@ const Calculator = lazy(() => import("./pages/Calculator"));
 const Leaderboard = lazy(() => import("./pages/Leaderboard"));
 const Friends = lazy(() => import("./pages/Friends"));
 const Battle = lazy(() => import("./pages/Battle"));
+const Store = lazy(() => import("./pages/Store"));
+const Achievements = lazy(() => import("./pages/Achievements"));
 
 function RouteFallback() {
   return (
@@ -172,6 +174,22 @@ export default function App() {
             element={
               <RequireAuth>
                 <Battle />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/store"
+            element={
+              <RequireAuth>
+                <Store />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/achievements"
+            element={
+              <RequireAuth>
+                <Achievements />
               </RequireAuth>
             }
           />

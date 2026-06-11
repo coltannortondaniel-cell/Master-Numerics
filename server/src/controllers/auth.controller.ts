@@ -31,6 +31,7 @@ const publicUser = (u: {
   gradeLevel: string;
   role: string;
   xp: number;
+  coins: number;
   trialEndsAt: Date;
   createdAt: Date;
 }) => ({
@@ -40,6 +41,7 @@ const publicUser = (u: {
   gradeLevel: u.gradeLevel,
   role: u.role,
   xp: u.xp,
+  coins: u.coins,
   trialEndsAt: u.trialEndsAt,
   createdAt: u.createdAt,
 });

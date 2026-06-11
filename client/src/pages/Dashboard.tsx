@@ -199,11 +199,20 @@ export default function Dashboard() {
               <span className="text-2xl">🤝</span>
               <span className="text-sm font-semibold">Friends</span>
             </Link>
-            <div className="glass flex flex-col items-center gap-1 py-4 opacity-40">
+            <Link
+              to="/store"
+              className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-cosmic/40 hover:shadow-glow"
+            >
               <span className="text-2xl">🎁</span>
               <span className="text-sm font-semibold">Store</span>
-              <span className="font-mono text-[0.6rem] text-neutron/40">soon</span>
-            </div>
+            </Link>
+            <Link
+              to="/achievements"
+              className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-success/40 hover:shadow-glow"
+            >
+              <span className="text-2xl">🏅</span>
+              <span className="text-sm font-semibold">Achievements</span>
+            </Link>
           </div>
         </section>
 

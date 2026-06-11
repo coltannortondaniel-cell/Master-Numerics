@@ -10,6 +10,7 @@ export interface User {
   trialEndsAt: string;
   createdAt: string;
   xp: number;
+  coins: number;
 }
 
 export interface Subscription {

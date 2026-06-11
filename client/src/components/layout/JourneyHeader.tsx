@@ -13,7 +13,9 @@ interface Props {
 export function JourneyHeader({ back }: Props) {
   const { user, logout } = useAuth();
   const liveXp = useXp((s) => s.totalXp);
+  const liveCoins = useXp((s) => s.coins);
   const xp = liveXp ?? user?.xp ?? 0;
+  const coins = liveCoins ?? user?.coins ?? 0;
   const rank = rankForXp(xp);
 
   return (
@@ -41,6 +43,12 @@ export function JourneyHeader({ back }: Props) {
       </div>
 
       <div className="flex items-center gap-3 sm:gap-5">
+        <div className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5" title="NumCoins">
+          <span aria-hidden>🪙</span>
+          <span className="font-mono text-sm font-semibold tabular-nums text-solar">
+            {coins.toLocaleString()}
+          </span>
+        </div>
         <div
           className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5"
           title={`${rank.name} rank`}

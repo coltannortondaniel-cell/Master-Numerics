@@ -58,6 +58,7 @@ model User {
   updatedAt        DateTime   @updatedAt
 
   xp                  Int                  @default(0)
+  coins               Int                  @default(0)
 
   subscription        Subscription?
   refreshTokens       RefreshToken[]
@@ -67,9 +68,105 @@ model User {
   xpEvents            XpEvent[]
   friendsRequested    Friendship[]         @relation("requester")
   friendsReceived     Friendship[]         @relation("addressee")
+  cosmetics           UserCosmetic[]
+  achievements        UserAchievement[]
+  crateOpens          CrateOpen[]
 
   @@index([email])
   @@index([username])
+}
+
+enum Rarity {
+  COMMON
+  UNCOMMON
+  RARE
+  EPIC
+  LEGENDARY
+  MYTHIC
+}
+
+enum CosmeticType {
+  TITLE
+  BADGE
+  OUTFIT
+  HAT
+  AURA
+  PET
+  BACKGROUND
+}
+
+model Cosmetic {
+  id          String         @id @default(cuid())
+  key         String         @unique
+  name        String
+  type        CosmeticType
+  rarity      Rarity
+  description String
+  // Crate pool tags, e.g. ["explorer","scholar"]; empty = direct-purchase only
+  crates      String[]       @default([])
+  coinPrice   Int            @default(0) // direct purchase price (0 = not directly sold)
+  owners      UserCosmetic[]
+}
+
+model UserCosmetic {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cosmeticId String
+  cosmetic   Cosmetic @relation(fields: [cosmeticId], references: [id], onDelete: Cascade)
+  equipped   Boolean  @default(false)
+  acquiredAt DateTime @default(now())
+
+  @@unique([userId, cosmeticId])
+  @@index([userId])
+}
+
+model CrateOpen {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  crateKey  String
+  rarity    Rarity
+  createdAt DateTime @default(now())
+
+  @@index([userId, crateKey])
+}
+
+enum AchievementCategory {
+  EXPLORER
+  SCHOLAR
+  STREAK
+  PERFECT
+  SOCIAL
+  CALCULATOR
+  COLLECTOR
+  LEGENDARY
+}
+
+model Achievement {
+  id          String              @id @default(cuid())
+  key         String              @unique
+  name        String
+  description String
+  category    AchievementCategory
+  xpReward    Int                 @default(0)
+  coinReward  Int                 @default(0)
+  threshold   Int                 @default(1) // count needed (e.g. 7 lessons)
+  metric      String // which stat to compare: lessonsCompleted, battlesWon, ...
+  secret      Boolean             @default(false)
+  users       UserAchievement[]
+}
+
+model UserAchievement {
+  id            String      @id @default(cuid())
+  userId        String
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievementId String
+  achievement   Achievement @relation(fields: [achievementId], references: [id], onDelete: Cascade)
+  earnedAt      DateTime    @default(now())
+
+  @@unique([userId, achievementId])
+  @@index([userId])
 }
 
 enum FriendStatus {
