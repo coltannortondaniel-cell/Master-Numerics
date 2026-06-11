@@ -23,6 +23,8 @@ const City = lazy(() => import("./pages/City"));
 const World = lazy(() => import("./pages/World"));
 const Lesson = lazy(() => import("./pages/Lesson"));
 const Calculator = lazy(() => import("./pages/Calculator"));
+const Leaderboard = lazy(() => import("./pages/Leaderboard"));
+const Friends = lazy(() => import("./pages/Friends"));
 
 function RouteFallback() {
   return (
@@ -143,6 +145,24 @@ export default function App() {
             element={
               <RequireAuth>
                 <Calculator />
+              </RequireAuth>
+            }
+          />
+
+          {/* Social */}
+          <Route
+            path="/leaderboard"
+            element={
+              <RequireAuth>
+                <Leaderboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/friends"
+            element={
+              <RequireAuth>
+                <Friends />
               </RequireAuth>
             }
           />

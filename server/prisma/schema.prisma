@@ -65,9 +65,31 @@ model User {
   progress            UserProgress[]
   quizAttempts        QuizAttempt[]
   xpEvents            XpEvent[]
+  friendsRequested    Friendship[]         @relation("requester")
+  friendsReceived     Friendship[]         @relation("addressee")
 
   @@index([email])
   @@index([username])
+}
+
+enum FriendStatus {
+  PENDING
+  ACCEPTED
+}
+
+model Friendship {
+  id          String       @id @default(cuid())
+  requesterId String
+  requester   User         @relation("requester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addresseeId String
+  addressee   User         @relation("addressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+  status      FriendStatus @default(PENDING)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+  @@index([requesterId, status])
 }
 
 model Subscription {
