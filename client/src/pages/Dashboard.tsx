@@ -216,6 +216,26 @@ export default function Dashboard() {
           </div>
         </section>
 
+        <section>
+          <p className="mb-2 font-mono text-xs uppercase tracking-widest text-neutron/40">
+            Study tools
+          </p>
+          <div className="grid grid-cols-3 gap-3">
+            <Link to="/notebook" className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-nebula/40 hover:shadow-glow">
+              <span className="text-2xl">📓</span>
+              <span className="text-sm font-semibold">Notebook</span>
+            </Link>
+            <Link to="/flashcards" className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-cosmic/40 hover:shadow-glow">
+              <span className="text-2xl">🃏</span>
+              <span className="text-sm font-semibold">Flashcards</span>
+            </Link>
+            <Link to="/formulas" className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-solar/40 hover:shadow-glow-gold">
+              <span className="text-2xl">📐</span>
+              <span className="text-sm font-semibold">Formulas</span>
+            </Link>
+          </div>
+        </section>
+
         {error && (
           <p role="alert" className="text-sm text-alert text-center">
             {error}

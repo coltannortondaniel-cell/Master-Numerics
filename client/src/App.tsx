@@ -30,6 +30,9 @@ const Store = lazy(() => import("./pages/Store"));
 const Achievements = lazy(() => import("./pages/Achievements"));
 const Profile = lazy(() => import("./pages/Profile"));
 const Customize = lazy(() => import("./pages/Customize"));
+const Notebook = lazy(() => import("./pages/Notebook"));
+const Flashcards = lazy(() => import("./pages/Flashcards"));
+const Formulas = lazy(() => import("./pages/Formulas"));
 
 function RouteFallback() {
   return (
@@ -208,6 +211,30 @@ export default function App() {
             element={
               <RequireAuth>
                 <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/notebook"
+            element={
+              <RequireAuth>
+                <Notebook />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/flashcards"
+            element={
+              <RequireAuth>
+                <Flashcards />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/formulas"
+            element={
+              <RequireAuth>
+                <Formulas />
               </RequireAuth>
             }
           />

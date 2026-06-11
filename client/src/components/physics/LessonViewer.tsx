@@ -25,6 +25,7 @@ import { DeeperDive } from "./sections/DeeperDive";
 import { SummaryCard } from "./sections/SummaryCard";
 import { ConceptCheck } from "./quiz/ConceptCheck";
 import { PracticeSet } from "./quiz/PracticeSet";
+import { LessonStudyTools } from "../study/LessonStudyTools";
 
 function Reveal({ children, index }: { children: React.ReactNode; index: number }) {
   const reduce = useReducedMotion();
@@ -227,6 +228,9 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
             </Reveal>
           );
         })}
+
+        {/* Per-lesson notebook + flashcards */}
+        <LessonStudyTools slug={lesson.slug} />
 
         {/* Completion + Next */}
         <div
