@@ -22,6 +22,7 @@ const Journey = lazy(() => import("./pages/Journey"));
 const City = lazy(() => import("./pages/City"));
 const World = lazy(() => import("./pages/World"));
 const Lesson = lazy(() => import("./pages/Lesson"));
+const Calculator = lazy(() => import("./pages/Calculator"));
 
 function RouteFallback() {
   return (
@@ -132,6 +133,16 @@ export default function App() {
             element={
               <RequireAuth>
                 <Lesson api={mathApi} basePath="/city" />
+              </RequireAuth>
+            }
+          />
+
+          {/* NumPad Pro graphing calculator */}
+          <Route
+            path="/calculator"
+            element={
+              <RequireAuth>
+                <Calculator />
               </RequireAuth>
             }
           />

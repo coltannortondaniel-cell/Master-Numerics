@@ -166,6 +166,36 @@ export default function Dashboard() {
           </Link>
         </section>
 
+        <section>
+          <p className="mb-2 font-mono text-xs uppercase tracking-widest text-neutron/40">
+            Quick launch
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <Link
+              to="/calculator"
+              className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-cosmic/40 hover:shadow-glow"
+            >
+              <span className="text-2xl">📈</span>
+              <span className="text-sm font-semibold">Calculator</span>
+            </Link>
+            <div className="glass flex flex-col items-center gap-1 py-4 opacity-40">
+              <span className="text-2xl">⚔️</span>
+              <span className="text-sm font-semibold">Battle</span>
+              <span className="font-mono text-[0.6rem] text-neutron/40">soon</span>
+            </div>
+            <div className="glass flex flex-col items-center gap-1 py-4 opacity-40">
+              <span className="text-2xl">🏆</span>
+              <span className="text-sm font-semibold">Leaderboard</span>
+              <span className="font-mono text-[0.6rem] text-neutron/40">soon</span>
+            </div>
+            <div className="glass flex flex-col items-center gap-1 py-4 opacity-40">
+              <span className="text-2xl">🎁</span>
+              <span className="text-sm font-semibold">Store</span>
+              <span className="font-mono text-[0.6rem] text-neutron/40">soon</span>
+            </div>
+          </div>
+        </section>
+
         {error && (
           <p role="alert" className="text-sm text-alert text-center">
             {error}
