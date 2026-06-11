@@ -1,5 +1,7 @@
 import express from "express";
 import http from "node:http";
+import path from "node:path";
+import fs from "node:fs";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -27,7 +29,9 @@ import { attachBattleSocket } from "./socket/index.js";
 const app = express();
 app.set("trust proxy", 1);
 
-app.use(helmet());
+// CSP/COEP relaxed so the SPA, KaTeX fonts, ytimg thumbnails, and YouTube
+// embeds load when Express serves the client. Other Helmet protections stay on.
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(
   cors({
     origin: env.CLIENT_ORIGIN,
@@ -60,6 +64,18 @@ app.use("/api/study", studyRouter);
 app.use("/api/dashboard", dashboardRouter);
 app.use("/api/notifications", notificationsRouter);
 app.use("/api/admin", adminRouter);
+
+// Serve the built client in a single-service production deploy. The SPA
+// fallback returns index.html for any non-API/non-socket route.
+const clientDist = env.CLIENT_DIST || path.resolve(process.cwd(), "..", "client", "dist");
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist));
+  app.get("*", (req, res, next) => {
+    if (req.path.startsWith("/api") || req.path.startsWith("/socket.io")) return next();
+    res.sendFile(path.join(clientDist, "index.html"));
+  });
+  console.log(`✓ Serving client from ${clientDist}`);
+}
 
 app.use(notFoundHandler);
 app.use(errorHandler);

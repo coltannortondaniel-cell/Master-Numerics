@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma.js";
+import { env } from "../lib/env.js";
 import { forbidden, unauthorized } from "../utils/httpError.js";
 
 /**
@@ -14,6 +15,9 @@ export async function requireSubscription(
   next: NextFunction
 ): Promise<void> {
   if (!req.auth) return next(unauthorized());
+
+  // Free-demo mode: the paywall is disabled, so all content is open.
+  if (!env.PAYWALL_ENABLED) return next();
 
   const user = await prisma.user.findUnique({
     where: { id: req.auth.sub },

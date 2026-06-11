@@ -70,7 +70,16 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
 
 async function main() {
   console.log("🌌 Seeding Master Numerics…");
-  // Dev seed: rebuild content tables from scratch (cascades to lessons etc.)
+
+  // Skip on redeploys so we never wipe user progress (deleting worlds cascades
+  // to lessons → user progress). Set FORCE_RESEED=1 to rebuild content.
+  const existing = await prisma.world.count();
+  if (existing > 0 && !process.env.FORCE_RESEED) {
+    console.log(`↩ Content already seeded (${existing} worlds). Skipping. Set FORCE_RESEED=1 to rebuild.`);
+    return;
+  }
+
+  // Rebuild content tables from scratch (cascades to lessons etc.)
   await prisma.world.deleteMany({});
 
   console.log("— Physics Journey —");
