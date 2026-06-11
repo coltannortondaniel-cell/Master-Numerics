@@ -3,10 +3,17 @@ import type { HeroContent, Palette } from "../../../lib/physics";
 
 /** Per-scene gradient + motif for the cinematic lesson opener. */
 const SCENES: Record<string, { from: string; to: string; motif: string }> = {
+  // Physics — Scale of the Cosmos
   moon: { from: "#1a1c28", to: "#3a3d4a", motif: "🌙" },
   earth: { from: "#0b2a4a", to: "#0e8c6b", motif: "🌍" },
   atmosphere: { from: "#0b1e3a", to: "#1e6fb8", motif: "☁️" },
   sun: { from: "#3a1e00", to: "#FFB800", motif: "☀️" },
+  // Math — The City of Numbers
+  park: { from: "#0e2a1c", to: "#22D3A0", motif: "🌳" },
+  school: { from: "#2a1e00", to: "#FFB800", motif: "🏫" },
+  bakery: { from: "#2a0f1e", to: "#FF9E5C", motif: "🥐" },
+  market: { from: "#0b2a2a", to: "#22D3A0", motif: "🍎" },
+  city: { from: "#10121f", to: "#7FB3FF", motif: "🏙️" },
 };
 
 export function HeroSection({ content, palette }: { content: HeroContent; palette: Palette }) {

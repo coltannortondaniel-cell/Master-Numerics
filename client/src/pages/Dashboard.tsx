@@ -148,17 +148,22 @@ export default function Dashboard() {
               Launch the journey →
             </span>
           </Link>
-          <div className="glass p-6 opacity-80">
-            <p className="font-mono text-xs text-solar uppercase tracking-widest">
-              Math · Phase 3
-            </p>
-            <h2 className="mt-2 font-display text-xl font-bold">
+          <Link
+            to="/city"
+            className="glass group p-6 transition-all duration-300 hover:border-solar/40 hover:shadow-glow-gold"
+          >
+            <p className="font-mono text-xs text-solar uppercase tracking-widest">Math City</p>
+            <h2 className="mt-2 font-display text-xl font-bold group-hover:text-white">
               The City of Numbers
             </h2>
             <p className="mt-2 text-sm text-neutron/60">
-              14 districts of living mathematics. Launching in the next build phase.
+              Walk 14 districts of living mathematics, from Kindergarten Park to the Graduate School.
+              The Park is open now.
             </p>
-          </div>
+            <span className="mt-3 inline-block font-display font-semibold text-solar">
+              Enter the city →
+            </span>
+          </Link>
         </section>
 
         {error && (

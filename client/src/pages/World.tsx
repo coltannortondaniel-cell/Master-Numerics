@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import axios from "axios";
-import { physicsApi, type WorldResponse, type LessonSummary } from "../lib/physics";
+import { physicsApi, type ContentApi, type WorldResponse, type LessonSummary } from "../lib/physics";
 import { parseApiError } from "../lib/api";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
@@ -12,11 +12,13 @@ import { Button } from "../components/ui/Button";
 function LessonRow({
   lesson,
   worldSlug,
+  basePath,
   accent,
   index,
 }: {
   lesson: LessonSummary;
   worldSlug: string;
+  basePath: string;
   accent: string;
   index: number;
 }) {
@@ -28,7 +30,7 @@ function LessonRow({
       transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.05 }}
     >
       <Link
-        to={`/journey/${worldSlug}/${lesson.slug}`}
+        to={`${basePath}/${worldSlug}/${lesson.slug}`}
         className="glass group flex items-center gap-4 px-4 sm:px-5 py-4 transition-all duration-300 hover:border-cosmic/40 hover:shadow-glow"
       >
         <div
@@ -70,7 +72,19 @@ function WorldSkeleton() {
   );
 }
 
-export default function World() {
+interface WorldPageProps {
+  api?: ContentApi;
+  basePath?: string;
+  mapPath?: string;
+  mapLabel?: string;
+}
+
+export default function World({
+  api = physicsApi,
+  basePath = "/journey",
+  mapPath = "/journey",
+  mapLabel = "Cosmic Map",
+}: WorldPageProps) {
   const { worldSlug = "" } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState<WorldResponse | null>(null);
@@ -79,7 +93,7 @@ export default function World() {
   useEffect(() => {
     let alive = true;
     setData(null);
-    physicsApi
+    api
       .world(worldSlug)
       .then((d) => alive && setData(d))
       .catch((err) => {
@@ -93,21 +107,21 @@ export default function World() {
     return () => {
       alive = false;
     };
-  }, [worldSlug, navigate]);
+  }, [worldSlug, navigate, api]);
 
   const palette = data?.world.palette ?? { accent: "#6B21D6", glow: "#1E90FF" };
 
   return (
     <div className="relative min-h-screen">
       <CosmicBackground palette={palette} />
-      <JourneyHeader back={{ to: "/journey", label: "Cosmic Map" }} />
+      <JourneyHeader back={{ to: mapPath, label: mapLabel }} />
       <main className="relative z-10 px-4 sm:px-6 py-10">
         {error ? (
           <div className="glass mx-auto max-w-md px-6 py-8 text-center">
             <p className="font-display text-lg font-semibold">Couldn't reach this world</p>
             <p className="mt-1 text-sm text-neutron/60">{error}</p>
             <div className="mt-4">
-              <Link to="/journey">
+              <Link to={mapPath}>
                 <Button variant="ghost">Back to the map</Button>
               </Link>
             </div>
@@ -148,6 +162,7 @@ export default function World() {
                     key={l.slug}
                     lesson={l}
                     worldSlug={worldSlug}
+                    basePath={basePath}
                     accent={palette.accent}
                     index={i}
                   />

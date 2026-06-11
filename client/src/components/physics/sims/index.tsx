@@ -8,9 +8,14 @@ import { AirPressure } from "./AirPressure";
 import { SeaBreeze } from "./SeaBreeze";
 import { SkyScatter } from "./SkyScatter";
 import { WingLift } from "./WingLift";
+import { CountAlong } from "./CountAlong";
+import { ShapeSorter } from "./ShapeSorter";
+import { PatternMaker } from "./PatternMaker";
+import { CompareBalance } from "./CompareBalance";
 
 /** simId → interactive component. Keys match the `simId` fields in the seed data. */
 const REGISTRY: Record<string, ComponentType> = {
+  // Physics
   "gravity-drop": GravityDrop,
   "moon-phases": MoonPhases,
   "earth-spin": EarthSpin,
@@ -20,6 +25,11 @@ const REGISTRY: Record<string, ComponentType> = {
   "sea-breeze": SeaBreeze,
   "sky-scatter": SkyScatter,
   "wing-lift": WingLift,
+  // Math
+  "count-along": CountAlong,
+  "shape-sorter": ShapeSorter,
+  "pattern-maker": PatternMaker,
+  "compare-balance": CompareBalance,
 };
 
 /** Renders the simulation for a simId, or a tasteful placeholder if not yet built. */

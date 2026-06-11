@@ -139,17 +139,25 @@ enum ProgressStatus {
   MASTERED
 }
 
+enum Subject {
+  PHYSICS
+  MATH
+}
+
 model World {
   id          String   @id @default(cuid())
   slug        String   @unique
+  subject     Subject  @default(PHYSICS)
   name        String
   subtitle    String
   description String
-  orderIndex  Int      @unique
+  orderIndex  Int
   gradeRange  String // e.g. "K–2"
   scaleLabel  String // e.g. "3×10⁶ m"
   palette     Json // { accent, glow }
   lessons     Lesson[]
+
+  @@unique([subject, orderIndex])
 }
 
 model Lesson {

@@ -179,36 +179,48 @@ export interface SubmittedAnswer {
   answer: AnswerValue;
 }
 
-export const physicsApi = {
-  async worlds(): Promise<WorldsResponse> {
-    const { data } = await api.get<WorldsResponse>("/physics/worlds");
-    return data;
-  },
-  async world(slug: string): Promise<WorldResponse> {
-    const { data } = await api.get<WorldResponse>(`/physics/worlds/${slug}`);
-    return data;
-  },
-  async lesson(slug: string): Promise<LessonResponse> {
-    const { data } = await api.get<LessonResponse>(`/physics/lessons/${slug}`);
-    return data;
-  },
-  async submitQuiz(
-    slug: string,
-    scope: QuestionScope,
-    answers: SubmittedAnswer[]
-  ): Promise<QuizResponse> {
-    const { data } = await api.post<QuizResponse>(`/physics/lessons/${slug}/quiz`, {
-      scope,
-      answers,
-    });
-    return data;
-  },
-  async complete(slug: string): Promise<CompleteResponse> {
-    const { data } = await api.post<CompleteResponse>(`/physics/lessons/${slug}/complete`);
-    return data;
-  },
-  /** Fire-and-forget study-time accumulation. */
-  logTime(slug: string, seconds: number): void {
-    void api.post(`/physics/lessons/${slug}/time`, { seconds }).catch(() => {});
-  },
-};
+/**
+ * The lesson engine is subject-agnostic — only the base path differs
+ * (`/physics` vs `/math`), so one factory serves both the Cosmos and the City.
+ */
+export function makeContentApi(base: string) {
+  return {
+    base,
+    async worlds(): Promise<WorldsResponse> {
+      const { data } = await api.get<WorldsResponse>(`${base}/worlds`);
+      return data;
+    },
+    async world(slug: string): Promise<WorldResponse> {
+      const { data } = await api.get<WorldResponse>(`${base}/worlds/${slug}`);
+      return data;
+    },
+    async lesson(slug: string): Promise<LessonResponse> {
+      const { data } = await api.get<LessonResponse>(`${base}/lessons/${slug}`);
+      return data;
+    },
+    async submitQuiz(
+      slug: string,
+      scope: QuestionScope,
+      answers: SubmittedAnswer[]
+    ): Promise<QuizResponse> {
+      const { data } = await api.post<QuizResponse>(`${base}/lessons/${slug}/quiz`, {
+        scope,
+        answers,
+      });
+      return data;
+    },
+    async complete(slug: string): Promise<CompleteResponse> {
+      const { data } = await api.post<CompleteResponse>(`${base}/lessons/${slug}/complete`);
+      return data;
+    },
+    /** Fire-and-forget study-time accumulation. */
+    logTime(slug: string, seconds: number): void {
+      void api.post(`${base}/lessons/${slug}/time`, { seconds }).catch(() => {});
+    },
+  };
+}
+
+export type ContentApi = ReturnType<typeof makeContentApi>;
+
+export const physicsApi = makeContentApi("/physics");
+export const mathApi = makeContentApi("/math");

@@ -40,6 +40,7 @@ export type WorldSeed = {
   subtitle: string;
   description: string;
   gradeRange: string;
+  /** Physics: a length scale ("3×10⁶ m"). Math: a city address ("1 Counting Lane"). */
   scaleLabel: string;
   palette: { accent: string; glow: string };
   lessons: LessonSeed[];

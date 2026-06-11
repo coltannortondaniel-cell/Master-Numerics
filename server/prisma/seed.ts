@@ -1,17 +1,16 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, type Subject } from "@prisma/client";
+import type { WorldSeed } from "./seed-data/types.js";
 import { worlds } from "./seed-data/worlds.js";
+import { districts } from "./seed-data/math/districts.js";
 
 const prisma = new PrismaClient();
 
-async function main() {
-  console.log("🌌 Seeding the cosmos…");
-  // Dev seed: rebuild content tables from scratch (cascades to lessons etc.)
-  await prisma.world.deleteMany({});
-
-  for (const [wi, w] of worlds.entries()) {
+async function seedSubject(subject: Subject, list: WorldSeed[]) {
+  for (const [wi, w] of list.entries()) {
     const world = await prisma.world.create({
       data: {
         slug: w.slug,
+        subject,
         name: w.name,
         subtitle: w.subtitle,
         description: w.description,
@@ -65,6 +64,18 @@ async function main() {
     }
     if (w.lessons.length === 0) console.log(`  · ${world.name} (charted, content coming)`);
   }
+}
+
+async function main() {
+  console.log("🌌 Seeding Master Numerics…");
+  // Dev seed: rebuild content tables from scratch (cascades to lessons etc.)
+  await prisma.world.deleteMany({});
+
+  console.log("— Physics Journey —");
+  await seedSubject("PHYSICS", worlds);
+  console.log("— Math City —");
+  await seedSubject("MATH", districts);
+
   console.log("✨ Seed complete.");
 }
 

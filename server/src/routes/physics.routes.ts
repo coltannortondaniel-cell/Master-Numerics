@@ -1,12 +1,14 @@
 import { Router } from "express";
-import * as physics from "../controllers/physics.controller.js";
+import { makeContentController } from "../controllers/content.controller.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { requireSubscription } from "../middleware/requireSubscription.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
+const physics = makeContentController("PHYSICS");
+
 export const physicsRouter = Router();
 
-// All physics content is premium: trial or active subscription required.
+// All journey content is premium: trial or active subscription required.
 physicsRouter.use(requireAuth, asyncHandler(requireSubscription));
 
 physicsRouter.get("/worlds", asyncHandler(physics.getWorlds));

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
-  physicsApi,
   type Question,
   type QuizResult,
   type QuizResponse,
   type AnswerValue,
 } from "../../../lib/physics";
+import { useContentApi } from "../../../lib/contentApi";
 import { parseApiError } from "../../../lib/api";
 import { Button } from "../../ui/Button";
 import { QuestionCard } from "./QuestionCard";
@@ -34,6 +34,7 @@ export function PracticeSet({
   const [summary, setSummary] = useState<QuizResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const contentApi = useContentApi();
 
   const allAnswered = questions.every((q) => answered(answers[q.id]));
 
@@ -41,7 +42,7 @@ export function PracticeSet({
     setLoading(true);
     setError("");
     try {
-      const res = await physicsApi.submitQuiz(
+      const res = await contentApi.submitQuiz(
         slug,
         "PRACTICE",
         questions.map((q) => ({ questionId: q.id, answer: answers[q.id] }))

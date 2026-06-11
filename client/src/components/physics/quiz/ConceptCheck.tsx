@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { physicsApi, type Question, type QuizResult, type AnswerValue } from "../../../lib/physics";
+import { type Question, type QuizResult, type AnswerValue } from "../../../lib/physics";
+import { useContentApi } from "../../../lib/contentApi";
 import { parseApiError } from "../../../lib/api";
 import { Button } from "../../ui/Button";
 import { QuestionCard } from "./QuestionCard";
@@ -21,6 +22,7 @@ export function ConceptCheck({
   const [results, setResults] = useState<Map<string, QuizResult> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const contentApi = useContentApi();
 
   const allAnswered = questions.every((q) => answered(answers[q.id]));
   const score = useMemo(
@@ -32,7 +34,7 @@ export function ConceptCheck({
     setLoading(true);
     setError("");
     try {
-      const res = await physicsApi.submitQuiz(
+      const res = await contentApi.submitQuiz(
         slug,
         "CONCEPT_CHECK",
         questions.map((q) => ({ questionId: q.id, answer: answers[q.id] }))

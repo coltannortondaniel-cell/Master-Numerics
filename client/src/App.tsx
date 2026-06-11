@@ -14,10 +14,12 @@ import Subscribe from "./pages/Subscribe";
 import NotFound from "./pages/NotFound";
 import { WarpProvider } from "./components/physics/WarpTransition";
 import { XpToaster } from "./components/ui/XpToaster";
+import { mathApi } from "./lib/physics";
 
-// Code-split the Physics Journey: KaTeX, the lesson viewer, and the nine
-// simulations only load once a student actually enters the journey.
+// Code-split the journeys: KaTeX, the lesson viewer, and the simulations only
+// load once a student actually enters a journey.
 const Journey = lazy(() => import("./pages/Journey"));
+const City = lazy(() => import("./pages/City"));
 const World = lazy(() => import("./pages/World"));
 const Lesson = lazy(() => import("./pages/Lesson"));
 
@@ -104,6 +106,32 @@ export default function App() {
             element={
               <RequireAuth>
                 <Lesson />
+              </RequireAuth>
+            }
+          />
+
+          {/* Math City */}
+          <Route
+            path="/city"
+            element={
+              <RequireAuth>
+                <City />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/city/:worldSlug"
+            element={
+              <RequireAuth>
+                <World api={mathApi} basePath="/city" mapPath="/city" mapLabel="City Map" />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/city/:worldSlug/:lessonSlug"
+            element={
+              <RequireAuth>
+                <Lesson api={mathApi} basePath="/city" />
               </RequireAuth>
             }
           />

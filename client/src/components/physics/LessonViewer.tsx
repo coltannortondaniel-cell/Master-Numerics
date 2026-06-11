@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  physicsApi,
   type LessonResponse,
   type HeroContent,
   type MarkdownContent,
@@ -12,6 +11,7 @@ import {
   type IntroContent,
   type SummaryContent,
 } from "../../lib/physics";
+import { useContentApi } from "../../lib/contentApi";
 import { parseApiError } from "../../lib/api";
 import { useXp } from "../../store/xp";
 import { Button } from "../ui/Button";
@@ -40,9 +40,10 @@ function Reveal({ children, index }: { children: React.ReactNode; index: number 
   );
 }
 
-export function LessonViewer({ data }: { data: LessonResponse }) {
+export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResponse; basePath?: string }) {
   const { lesson, progress, nextLesson } = data;
   const palette = lesson.world.palette;
+  const contentApi = useContentApi();
   const pushToast = useXp((s) => s.push);
   const setTotalXp = useXp((s) => s.setTotalXp);
 
@@ -82,13 +83,13 @@ export function LessonViewer({ data }: { data: LessonResponse }) {
       if (document.visibilityState === "visible") {
         acc += 15;
         if (acc >= 30) {
-          physicsApi.logTime(lesson.slug, acc);
+          contentApi.logTime(lesson.slug, acc);
           acc = 0;
         }
       }
     }, 15000);
     return () => {
-      if (acc > 0) physicsApi.logTime(lesson.slug, acc);
+      if (acc > 0) contentApi.logTime(lesson.slug, acc);
       window.clearInterval(id);
     };
   }, [lesson.slug]);
@@ -97,7 +98,7 @@ export function LessonViewer({ data }: { data: LessonResponse }) {
     setCompleting(true);
     setCompleteError("");
     try {
-      const res = await physicsApi.complete(lesson.slug);
+      const res = await contentApi.complete(lesson.slug);
       setTotalXp(res.totalXp);
       setCompleted(true);
       pushToast({ kind: "xp", amount: res.xpAwarded, title: "Lesson complete!", detail: lesson.title });
@@ -133,7 +134,7 @@ export function LessonViewer({ data }: { data: LessonResponse }) {
         {/* Lesson header */}
         <header>
           <Link
-            to={`/journey/${lesson.world.slug}`}
+            to={`${basePath}/${lesson.world.slug}`}
             className="font-mono text-xs uppercase tracking-[0.25em] text-neutron/45 hover:text-neutron"
           >
             {lesson.world.name}
@@ -234,17 +235,17 @@ export function LessonViewer({ data }: { data: LessonResponse }) {
               {nextLesson ? (
                 <>
                   <p className="mt-1 text-sm text-neutron/60">Next up: {nextLesson.title}</p>
-                  <Link to={`/journey/${nextLesson.worldSlug}/${nextLesson.slug}`} className="mt-4 inline-block">
+                  <Link to={`${basePath}/${nextLesson.worldSlug}/${nextLesson.slug}`} className="mt-4 inline-block">
                     <Button variant="gold">Continue the journey →</Button>
                   </Link>
                 </>
               ) : (
                 <>
                   <p className="mt-1 text-sm text-neutron/60">
-                    You've reached the edge of the charted cosmos.
+                    You've reached the edge of the charted map.
                   </p>
-                  <Link to="/journey" className="mt-4 inline-block">
-                    <Button>Back to the Cosmic Map</Button>
+                  <Link to={basePath} className="mt-4 inline-block">
+                    <Button>Back to the map</Button>
                   </Link>
                 </>
               )}
