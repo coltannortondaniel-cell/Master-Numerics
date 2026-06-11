@@ -1,0 +1,13 @@
+{
+  "name": "master-numerics",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Master Numerics — immersive math & physics education platform (monorepo: client + server).",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "build": "cd server && npm install && npx prisma generate && npm run build && cd ../client && npm install && npm run build",
+    "start": "cd server && npm run start:prod"
+  }
+}

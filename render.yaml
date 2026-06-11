@@ -26,11 +26,9 @@ services:
     region: oregon
     branch: claude/zealous-mayer-6qrsqn
     healthCheckPath: /api/health
-    buildCommand: >-
-      cd server && npm install && npx prisma generate && npm run build &&
-      cd ../client && npm install && npm run build
-    # db push + idempotent seed run on boot, then the server starts.
-    startCommand: cd server && npm run start:prod
+    buildCommand: npm run build
+    # db push + idempotent seed run on boot (start:prod), then the server starts.
+    startCommand: npm start
     envVars:
       - key: NODE_ENV
         value: production
