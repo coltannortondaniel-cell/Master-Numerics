@@ -121,3 +121,45 @@ body {
   opacity: 0.22;
   z-index: 0;
 }
+
+/* ---- Loading skeleton shimmer (Quality §17: no blank flashes) ---- */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: rgba(240, 244, 255, 0.05);
+  border-radius: 0.75rem;
+}
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(240, 244, 255, 0.08),
+    transparent
+  );
+  animation: skeleton-sweep 1.4s ease-in-out infinite;
+}
+@keyframes skeleton-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton::after {
+    animation: none;
+  }
+}
+
+/* ---- KaTeX sizing inside lesson body ---- */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}

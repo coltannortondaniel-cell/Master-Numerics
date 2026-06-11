@@ -9,6 +9,7 @@ export interface User {
   role: "USER" | "ADMIN";
   trialEndsAt: string;
   createdAt: string;
+  xp: number;
 }
 
 export interface Subscription {

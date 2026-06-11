@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useAuth } from "./store/auth";
 import {
@@ -12,6 +12,26 @@ import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import Subscribe from "./pages/Subscribe";
 import NotFound from "./pages/NotFound";
+import { WarpProvider } from "./components/physics/WarpTransition";
+import { XpToaster } from "./components/ui/XpToaster";
+
+// Code-split the Physics Journey: KaTeX, the lesson viewer, and the nine
+// simulations only load once a student actually enters the journey.
+const Journey = lazy(() => import("./pages/Journey"));
+const World = lazy(() => import("./pages/World"));
+const Lesson = lazy(() => import("./pages/Lesson"));
+
+function RouteFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-space">
+      <div
+        className="h-10 w-10 animate-spin rounded-full border-2 border-cosmic border-t-transparent"
+        role="status"
+        aria-label="Loading"
+      />
+    </div>
+  );
+}
 
 export default function App() {
   const bootstrap = useAuth((s) => s.bootstrap);
@@ -21,47 +41,78 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <WarpProvider>
+        <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
 
-        <Route
-          path="/register"
-          element={
-            <RedirectIfAuthed>
-              <Register />
-            </RedirectIfAuthed>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <RedirectIfAuthed>
-              <Login />
-            </RedirectIfAuthed>
-          }
-        />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/register"
+            element={
+              <RedirectIfAuthed>
+                <Register />
+              </RedirectIfAuthed>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <RedirectIfAuthed>
+                <Login />
+              </RedirectIfAuthed>
+            }
+          />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-        <Route
-          path="/dashboard"
-          element={
-            <RequireAuth>
-              <Dashboard />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/subscribe"
-          element={
-            <RequireAuth>
-              <Subscribe />
-            </RequireAuth>
-          }
-        />
+          <Route
+            path="/dashboard"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/subscribe"
+            element={
+              <RequireAuth>
+                <Subscribe />
+              </RequireAuth>
+            }
+          />
 
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+          {/* Physics Journey */}
+          <Route
+            path="/journey"
+            element={
+              <RequireAuth>
+                <Journey />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/journey/:worldSlug"
+            element={
+              <RequireAuth>
+                <World />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/journey/:worldSlug/:lessonSlug"
+            element={
+              <RequireAuth>
+                <Lesson />
+              </RequireAuth>
+            }
+          />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        </Suspense>
+        <XpToaster />
+      </WarpProvider>
     </BrowserRouter>
   );
 }

@@ -130,18 +130,24 @@ export default function Dashboard() {
         )}
 
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div className="glass p-6 opacity-80">
+          <Link
+            to="/journey"
+            className="glass group p-6 transition-all duration-300 hover:border-nebula/40 hover:shadow-glow"
+          >
             <p className="font-mono text-xs text-nebula uppercase tracking-widest">
-              Physics · Phase 2
+              Physics Journey
             </p>
-            <h2 className="mt-2 font-display text-xl font-bold">
+            <h2 className="mt-2 font-display text-xl font-bold group-hover:text-white">
               Scale of the Cosmos
             </h2>
             <p className="mt-2 text-sm text-neutron/60">
-              18 worlds, from the Moon to the Big Bang. Launching in the next build
-              phase.
+              Travel from the dust of the Moon to the birth of the universe across 18 worlds. Three
+              are charted and waiting.
             </p>
-          </div>
+            <span className="mt-3 inline-block font-display font-semibold text-nebula">
+              Launch the journey →
+            </span>
+          </Link>
           <div className="glass p-6 opacity-80">
             <p className="font-mono text-xs text-solar uppercase tracking-widest">
               Math · Phase 3
