@@ -1,8 +1,15 @@
 # Master Numerics
 
-An immersive, gamified math & physics education platform — Kindergarten through graduate school.
+An immersive, gamified math & physics education platform — Kindergarten through graduate school. All 10 build phases are complete (Physics Journey, Math City, graphing calculator, social + real-time PvP, gamification + crates, profiles, study tools, dashboard, admin).
 
-**This repository is at Phase 1 (Foundation)** of the 10-phase build plan: project scaffold, full authentication, the users/subscriptions database schema, Stripe subscriptions with a 1-day free trial, and route guards on both the API and the client.
+## 🚀 Deploy in one click
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/coltannortondaniel-cell/Master-Numerics/tree/claude/zealous-mayer-6qrsqn)
+
+Click the button → sign in to Render with GitHub → **Apply**. Render reads
+[`render.yaml`](./render.yaml) and provisions the app + PostgreSQL + Redis,
+then builds and starts it. It launches in **free-demo mode** (no paywall, no
+keys required). Full walkthrough: [`DEPLOY.md`](./DEPLOY.md).
 
 ## Stack
 
