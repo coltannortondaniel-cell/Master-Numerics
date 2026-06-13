@@ -1,9 +1,12 @@
 export type QuestionSeed = {
   scope: "CONCEPT_CHECK" | "PRACTICE";
-  kind: "MCQ" | "TRUE_FALSE" | "NUMERIC";
+  kind: "MCQ" | "TRUE_FALSE" | "NUMERIC" | "MATCHING" | "FILL_BLANK" | "ORDER";
   prompt: string;
-  options?: string[];
-  answer: number | boolean | { value: number; tolerance: number };
+  // MCQ: string[] · MATCHING: {left,right} (left[i]↔right[i]) · ORDER: correct order
+  options?: string[] | { left: string[]; right: string[] };
+  // MCQ: index · T/F: boolean · NUMERIC: {value,tolerance} · MATCHING: right[] ·
+  // FILL_BLANK: accepted strings per blank · ORDER: null (order lives in options)
+  answer: number | boolean | { value: number; tolerance: number } | string[] | string[][] | null;
   hint?: string;
   explanation: string;
 };

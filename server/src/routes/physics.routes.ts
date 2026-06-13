@@ -14,6 +14,7 @@ physicsRouter.use(requireAuth, asyncHandler(requireSubscription));
 physicsRouter.get("/worlds", asyncHandler(physics.getWorlds));
 physicsRouter.get("/worlds/:slug", asyncHandler(physics.getWorld));
 physicsRouter.get("/lessons/:slug", asyncHandler(physics.getLesson));
+physicsRouter.post("/lessons/:slug/check", asyncHandler(physics.checkAnswers));
 physicsRouter.post("/lessons/:slug/quiz", asyncHandler(physics.submitQuiz));
 physicsRouter.post("/lessons/:slug/complete", asyncHandler(physics.completeLesson));
 physicsRouter.post("/lessons/:slug/time", asyncHandler(physics.logTime));

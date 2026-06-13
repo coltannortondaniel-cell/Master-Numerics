@@ -342,6 +342,9 @@ enum QuestionKind {
   MCQ
   TRUE_FALSE
   NUMERIC
+  MATCHING
+  FILL_BLANK
+  ORDER
 }
 
 enum ProgressStatus {
@@ -412,8 +415,8 @@ model QuizQuestion {
   orderIndex  Int
   kind        QuestionKind
   prompt      String // markdown, KaTeX allowed
-  options     Json? // MCQ: string[]
-  answer      Json // MCQ: index · TRUE_FALSE: boolean · NUMERIC: { value, tolerance }
+  options     Json? // MCQ: string[] · MATCHING: {left:string[],right:string[]} · ORDER: string[] (correct order)
+  answer      Json // MCQ: index · TRUE_FALSE: boolean · NUMERIC: {value,tolerance} · MATCHING: string[] (right per left) · FILL_BLANK: string[][] (accepted per blank) · ORDER: null
   hint        String?
   explanation String
 

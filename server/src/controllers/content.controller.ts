@@ -21,7 +21,47 @@ const quizSubmitSchema = z.object({
 
 const timeSchema = z.object({ seconds: z.number().int().min(1).max(1800) });
 
+const checkSchema = z.object({
+  answers: z
+    .array(z.object({ questionId: z.string().min(1), answer: z.unknown() }))
+    .min(1)
+    .max(50),
+});
+
 const todayKey = () => new Date().toISOString().slice(0, 10);
+
+/** Fisher–Yates shuffle (returns a new array). */
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+/**
+ * Prepare a question for the client. For ORDER/MATCHING the stored options ARE
+ * the answer, so we shuffle what we send and never include the `answer` column.
+ */
+function serializeQuestion(q: {
+  id: string;
+  scope: string;
+  orderIndex: number;
+  kind: string;
+  prompt: string;
+  options: unknown;
+  hint: string | null;
+}) {
+  let options = q.options;
+  if (q.kind === "ORDER" && Array.isArray(q.options)) {
+    options = shuffle(q.options as string[]);
+  } else if (q.kind === "MATCHING" && q.options && typeof q.options === "object") {
+    const o = q.options as { left: string[]; right: string[] };
+    options = { left: o.left, right: shuffle(o.right) };
+  }
+  return { ...q, options };
+}
 
 /**
  * The lesson engine, parameterised by subject. The same World/Lesson schema
@@ -202,13 +242,45 @@ export function makeContentController(subject: Subject) {
           gradeRange: lesson.world.gradeRange,
         },
         sections: lesson.sections.map((s) => ({ kind: s.kind, title: s.title, content: s.content })),
-        questions: lesson.questions,
+        questions: lesson.questions.map(serializeQuestion),
       },
       progress: { status: progress.status, bestScore: progress.bestScore, attempts: progress.attempts },
       nextLesson: next
         ? { slug: next.slug, title: next.title, worldSlug: next.world.slug, worldName: next.world.name }
         : null,
     });
+  }
+
+  /**
+   * POST /lessons/:slug/check — grade answers WITHOUT recording an attempt.
+   * Powers the stepped player's instant per-question feedback; the official
+   * scored attempt is still recorded once via /quiz.
+   */
+  async function checkAnswers(req: Request, res: Response): Promise<void> {
+    if (!req.auth) throw unauthorized();
+    const { answers } = checkSchema.parse(req.body);
+
+    const lesson = await prisma.lesson.findUnique({
+      where: { slug: req.params.slug },
+      include: { world: { select: { subject: true } }, questions: true },
+    });
+    if (!lesson || !lesson.published || lesson.world.subject !== subject)
+      throw notFound("Lesson not found");
+
+    const byId = new Map(lesson.questions.map((q) => [q.id, q]));
+    const results = answers
+      .filter((a) => byId.has(a.questionId))
+      .map((a) => {
+        const q = byId.get(a.questionId)!;
+        return {
+          questionId: q.id,
+          correct: gradeAnswer(q, a.answer),
+          correctAnswer: revealAnswer(q),
+          explanation: q.explanation,
+        };
+      });
+    if (results.length === 0) throw badRequest("No valid answers submitted");
+    res.json({ results });
   }
 
   /** POST /lessons/:slug/quiz — grade answers server-side. */
@@ -378,5 +450,5 @@ export function makeContentController(subject: Subject) {
     res.json({ ok: true });
   }
 
-  return { getWorlds, getWorld, getLesson, submitQuiz, completeLesson, logTime };
+  return { getWorlds, getWorld, getLesson, checkAnswers, submitQuiz, completeLesson, logTime };
 }

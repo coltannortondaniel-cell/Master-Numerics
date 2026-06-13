@@ -2,6 +2,15 @@ import type { QuizQuestion } from "@prisma/client";
 
 export type SubmittedAnswer = { questionId: string; answer: unknown };
 
+/** Normalise a free-text answer for case/whitespace-insensitive comparison. */
+function normalize(s: unknown): string {
+  return String(s ?? "").trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function arraysEqual(a: unknown[], b: unknown[]): boolean {
+  return a.length === b.length && a.every((v, i) => v === b[i]);
+}
+
 /** Server-side grading — the correct answer never leaves the API ungraded. */
 export function gradeAnswer(question: QuizQuestion, submitted: unknown): boolean {
   switch (question.kind) {
@@ -24,6 +33,26 @@ export function gradeAnswer(question: QuizQuestion, submitted: unknown): boolean
       if (!Number.isFinite(num)) return false;
       return Math.abs(num - value) <= tolerance;
     }
+    case "MATCHING": {
+      // answer = correct right-value for each left, in left order.
+      const right = question.answer as string[];
+      if (!Array.isArray(submitted) || submitted.length !== right.length) return false;
+      return submitted.every((v, i) => normalize(v) === normalize(right[i]));
+    }
+    case "FILL_BLANK": {
+      // answer = list of accepted strings per blank.
+      const accepted = question.answer as string[][];
+      if (!Array.isArray(submitted) || submitted.length !== accepted.length) return false;
+      return submitted.every((v, i) =>
+        accepted[i].some((opt) => normalize(opt) === normalize(v))
+      );
+    }
+    case "ORDER": {
+      // options holds the canonical correct order; submitted is the user's order.
+      const correct = (question.options as string[]) ?? [];
+      if (!Array.isArray(submitted)) return false;
+      return arraysEqual(submitted.map(normalize), correct.map(normalize));
+    }
   }
 }
 
@@ -39,6 +68,19 @@ export function revealAnswer(question: QuizQuestion): string {
     case "NUMERIC": {
       const { value } = question.answer as { value: number; tolerance: number };
       return String(value);
+    }
+    case "MATCHING": {
+      const { left } = question.options as { left: string[]; right: string[] };
+      const right = question.answer as string[];
+      return left.map((l, i) => `${l} → ${right[i]}`).join("   ·   ");
+    }
+    case "FILL_BLANK": {
+      const accepted = question.answer as string[][];
+      return accepted.map((opts) => opts[0]).join(", ");
+    }
+    case "ORDER": {
+      const correct = (question.options as string[]) ?? [];
+      return correct.join("  →  ");
     }
   }
 }

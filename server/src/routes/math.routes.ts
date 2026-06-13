@@ -14,6 +14,7 @@ mathRouter.use(requireAuth, asyncHandler(requireSubscription));
 mathRouter.get("/worlds", asyncHandler(math.getWorlds));
 mathRouter.get("/worlds/:slug", asyncHandler(math.getWorld));
 mathRouter.get("/lessons/:slug", asyncHandler(math.getLesson));
+mathRouter.post("/lessons/:slug/check", asyncHandler(math.checkAnswers));
 mathRouter.post("/lessons/:slug/quiz", asyncHandler(math.submitQuiz));
 mathRouter.post("/lessons/:slug/complete", asyncHandler(math.completeLesson));
 mathRouter.post("/lessons/:slug/time", asyncHandler(math.logTime));

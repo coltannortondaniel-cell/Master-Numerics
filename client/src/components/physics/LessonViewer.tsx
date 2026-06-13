@@ -24,8 +24,7 @@ import { WorkedExamples } from "./sections/WorkedExamples";
 import { VideoSection } from "./sections/VideoSection";
 import { DeeperDive } from "./sections/DeeperDive";
 import { SummaryCard } from "./sections/SummaryCard";
-import { ConceptCheck } from "./quiz/ConceptCheck";
-import { PracticeSet } from "./quiz/PracticeSet";
+import { LessonQuiz } from "./quiz/LessonQuiz";
 import { LessonStudyTools } from "../study/LessonStudyTools";
 
 function Reveal({ children, index }: { children: React.ReactNode; index: number }) {
@@ -198,23 +197,25 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
               node = <VideoSection title={s.title} videos={(s.content as VideosContent).videos} />;
               break;
             case "CONCEPT_CHECK":
-              node = (
-                <ConceptCheck
+              node = conceptQs.length ? (
+                <LessonQuiz
                   slug={lesson.slug}
+                  scope="CONCEPT_CHECK"
                   intro={(s.content as IntroContent).intro}
                   questions={conceptQs}
                 />
-              );
+              ) : null;
               break;
             case "PRACTICE":
-              node = (
-                <PracticeSet
+              node = practiceQs.length ? (
+                <LessonQuiz
                   slug={lesson.slug}
+                  scope="PRACTICE"
                   intro={(s.content as IntroContent).intro}
                   questions={practiceQs}
                   onSubmitted={() => setPracticeAttempted(true)}
                 />
-              );
+              ) : null;
               break;
             case "DEEPER_DIVE":
               node = <DeeperDive title={s.title} markdown={(s.content as MarkdownContent).markdown} />;

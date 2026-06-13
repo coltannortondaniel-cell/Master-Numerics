@@ -7,7 +7,19 @@ import { api } from "./api";
 
 export type ProgressStatus = "STARTED" | "COMPLETED" | "MASTERED";
 export type QuestionScope = "CONCEPT_CHECK" | "PRACTICE";
-export type QuestionKind = "MCQ" | "TRUE_FALSE" | "NUMERIC";
+export type QuestionKind =
+  | "MCQ"
+  | "TRUE_FALSE"
+  | "NUMERIC"
+  | "MATCHING"
+  | "FILL_BLANK"
+  | "ORDER";
+
+/** MATCHING options carry the prompts (left) and a shuffled pool (right). */
+export interface MatchingOptions {
+  left: string[];
+  right: string[];
+}
 export type SectionKind =
   | "HERO"
   | "CONTEXT"
@@ -78,7 +90,8 @@ export interface Question {
   orderIndex: number;
   kind: QuestionKind;
   prompt: string;
-  options?: string[] | null;
+  /** MCQ/ORDER: string[] · MATCHING: { left, right } · others: null */
+  options?: string[] | MatchingOptions | null;
   hint?: string | null;
 }
 
@@ -182,11 +195,19 @@ export interface CompleteResponse {
   achievements: GrantedAchievement[];
 }
 
-/** MCQ → option index · TRUE_FALSE → boolean · NUMERIC → number */
-export type AnswerValue = number | boolean;
+/**
+ * MCQ → option index · TRUE_FALSE → boolean · NUMERIC → number
+ * MATCHING → chosen right value per left · FILL_BLANK → text per blank
+ * ORDER → the option strings in the user's order
+ */
+export type AnswerValue = number | boolean | string[];
 export interface SubmittedAnswer {
   questionId: string;
   answer: AnswerValue;
+}
+
+export interface CheckResponse {
+  results: QuizResult[];
 }
 
 /**
@@ -206,6 +227,13 @@ export function makeContentApi(base: string) {
     },
     async lesson(slug: string): Promise<LessonResponse> {
       const { data } = await api.get<LessonResponse>(`${base}/lessons/${slug}`);
+      return data;
+    },
+    /** Grade answers for instant feedback WITHOUT recording an attempt. */
+    async check(slug: string, answers: SubmittedAnswer[]): Promise<CheckResponse> {
+      const { data } = await api.post<CheckResponse>(`${base}/lessons/${slug}/check`, {
+        answers,
+      });
       return data;
     },
     async submitQuiz(
