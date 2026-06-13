@@ -1,20 +1,22 @@
-/** XP rank tiers (Design §5a). Shared by the header, dashboard, and later the leaderboard. */
+/** XP rank tiers (Design §5a). Shared by the header, dashboard, and leaderboard. */
+export type RankId = "stone" | "bronze" | "silver" | "gold" | "diamond" | "master" | "cosmic";
+
 export interface Rank {
   name: string;
-  icon: string;
+  id: RankId;
   min: number;
   next: number | null;
   color: string;
 }
 
 const TIERS: Omit<Rank, "next">[] = [
-  { name: "Stone", icon: "🪨", min: 0, color: "#9CA3AF" },
-  { name: "Bronze", icon: "🥉", min: 500, color: "#CD7F32" },
-  { name: "Silver", icon: "🥈", min: 2000, color: "#C0C7D0" },
-  { name: "Gold", icon: "🥇", min: 6000, color: "#FFB800" },
-  { name: "Diamond", icon: "💎", min: 15000, color: "#5AD1E6" },
-  { name: "Master", icon: "👑", min: 35000, color: "#B07CFF" },
-  { name: "Cosmic", icon: "🌌", min: 75000, color: "#6B21D6" },
+  { name: "Stone", id: "stone", min: 0, color: "#9CA3AF" },
+  { name: "Bronze", id: "bronze", min: 500, color: "#CD7F32" },
+  { name: "Silver", id: "silver", min: 2000, color: "#C0C7D0" },
+  { name: "Gold", id: "gold", min: 6000, color: "#E8B33A" },
+  { name: "Diamond", id: "diamond", min: 15000, color: "#5AD1E6" },
+  { name: "Master", id: "master", min: 35000, color: "#B07CFF" },
+  { name: "Cosmic", id: "cosmic", min: 75000, color: "#9AA7FF" },
 ];
 
 export function rankForXp(xp: number): Rank {

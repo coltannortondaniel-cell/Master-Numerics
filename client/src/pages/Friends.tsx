@@ -7,6 +7,7 @@ import {
 } from "../lib/social";
 import { parseApiError } from "../lib/api";
 import { rankForXp } from "../lib/rank";
+import { RankIcon } from "../components/ui/RankIcon";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { Button } from "../components/ui/Button";
@@ -110,8 +111,9 @@ export default function Friends() {
                   <Avatar name={u.username} />
                   <div className="min-w-0 flex-1">
                     <p className="truncate font-semibold">{u.username}</p>
-                    <p className="font-mono text-xs text-neutron/50">
-                      {rankForXp(u.xp).icon} {u.xp.toLocaleString()} XP
+                    <p className="flex items-center gap-1 font-mono text-xs text-neutron/50">
+                      <RankIcon id={rankForXp(u.xp).id} size={12} color={rankForXp(u.xp).color} />
+                      {u.xp.toLocaleString()} XP
                     </p>
                   </div>
                   <Button
@@ -176,8 +178,9 @@ export default function Friends() {
                     <Avatar name={f.username} />
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-semibold">{f.username}</p>
-                      <p className="font-mono text-xs text-neutron/50">
-                        {rankForXp(f.xp).icon} {f.xp.toLocaleString()} XP
+                      <p className="flex items-center gap-1 font-mono text-xs text-neutron/50">
+                        <RankIcon id={rankForXp(f.xp).id} size={12} color={rankForXp(f.xp).color} />
+                        {f.xp.toLocaleString()} XP
                       </p>
                     </div>
                     <span className="h-2.5 w-2.5 rounded-full bg-neutron/20" title="offline" />

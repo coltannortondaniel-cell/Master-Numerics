@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { socialApi, type LeaderScope, type LeaderPeriod, type LeaderboardResponse } from "../lib/social";
 import { parseApiError } from "../lib/api";
+import { Medal } from "lucide-react";
 import { rankForXp } from "../lib/rank";
+import { RankIcon } from "../components/ui/RankIcon";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 
-const MEDALS = ["🥇", "🥈", "🥉"];
+const MEDAL_COLORS = ["#E8B33A", "#C0C7D0", "#CD7F32"];
 
 function Tabs<T extends string>({
   value,
@@ -93,8 +95,8 @@ export default function Leaderboard() {
                 {data.me.rank ? `#${data.me.rank}` : "Unranked"}
               </p>
             </div>
-            <div className="text-right">
-              <span className="text-2xl">{rankForXp(data.me.xp).icon}</span>
+            <div className="flex flex-col items-end">
+              <RankIcon id={rankForXp(data.me.xp).id} size={24} color={rankForXp(data.me.xp).color} />
               <p className="font-mono text-sm text-neutron/60">{data.me.xp.toLocaleString()} XP</p>
             </div>
           </div>
@@ -126,11 +128,11 @@ export default function Leaderboard() {
                     e.isMe ? "bg-cosmic/15 border border-cosmic/40" : "glass"
                   }`}
                 >
-                  <span className="w-8 shrink-0 text-center font-display font-bold">
-                    {e.rank <= 3 ? MEDALS[e.rank - 1] : e.rank}
+                  <span className="flex w-8 shrink-0 items-center justify-center font-mono font-bold">
+                    {e.rank <= 3 ? <Medal size={18} color={MEDAL_COLORS[e.rank - 1]} /> : e.rank}
                   </span>
-                  <span className="text-xl" title={rank.name}>
-                    {rank.icon}
+                  <span title={rank.name}>
+                    <RankIcon id={rank.id} size={18} color={rank.color} />
                   </span>
                   <span className="min-w-0 flex-1 truncate font-display font-semibold">
                     {e.username}

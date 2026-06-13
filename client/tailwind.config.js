@@ -13,7 +13,10 @@ export default {
         alert: "#FF4757",
       },
       fontFamily: {
-        display: ['"Space Grotesk"', "sans-serif"],
+        // Elegant classical serif for headings/titles (matches the wordmark);
+        // Cinzel (Roman caps) for the brand mark; Inter for body/UI.
+        display: ['"Cormorant Garamond"', "Georgia", "serif"],
+        brand: ["Cinzel", "serif"],
         body: ["Inter", "sans-serif"],
         mono: ['"JetBrains Mono"', "monospace"],
       },

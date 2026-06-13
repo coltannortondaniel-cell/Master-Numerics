@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Bell, UserPlus, Award, Swords, Gift, Sparkles, type LucideIcon } from "lucide-react";
 import { notificationsApi, type Notification } from "../../lib/notifications";
 
-const ICON: Record<string, string> = {
-  friend_request: "🤝",
-  achievement: "🏅",
-  battle: "⚔️",
-  store: "🎁",
-  system: "✨",
+const ICON: Record<string, LucideIcon> = {
+  friend_request: UserPlus,
+  achievement: Award,
+  battle: Swords,
+  store: Gift,
+  system: Sparkles,
 };
 
 export function NotificationBell() {
@@ -56,7 +57,7 @@ export function NotificationBell() {
         className="relative grid h-9 w-9 place-items-center rounded-full bg-white/5 hover:bg-white/10"
         aria-label="Notifications"
       >
-        <span className="text-lg">🔔</span>
+        <Bell size={18} strokeWidth={1.75} className="text-neutron/80" />
         {unread > 0 && (
           <span className="absolute -right-0.5 -top-0.5 grid h-4 min-w-4 place-items-center rounded-full bg-alert px-1 text-[0.6rem] font-bold text-white">
             {unread > 9 ? "9+" : unread}
@@ -71,7 +72,9 @@ export function NotificationBell() {
             {items.length === 0 ? (
               <p className="px-4 py-8 text-center text-sm text-neutron/45">You're all caught up.</p>
             ) : (
-              items.map((n) => (
+              items.map((n) => {
+                const NIcon = ICON[n.type] ?? Sparkles;
+                return (
                 <button
                   key={n.id}
                   onClick={() => {
@@ -80,7 +83,7 @@ export function NotificationBell() {
                   }}
                   className="flex w-full items-start gap-3 border-b border-neutron/5 px-4 py-3 text-left hover:bg-white/5"
                 >
-                  <span className="text-lg">{ICON[n.type] ?? "•"}</span>
+                  <NIcon size={16} strokeWidth={1.75} className="mt-0.5 shrink-0 text-neutron/60" />
                   <div className="min-w-0 flex-1">
                     <p className="text-sm font-medium">{n.title}</p>
                     {n.body && <p className="text-xs text-neutron/55">{n.body}</p>}
@@ -89,7 +92,8 @@ export function NotificationBell() {
                     </p>
                   </div>
                 </button>
-              ))
+                );
+              })
             )}
           </div>
         </div>

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { profileApi, type ProfileResponse } from "../lib/profile";
 import { parseApiError } from "../lib/api";
+import { Medal, Swords, BookOpen } from "lucide-react";
 import { rankForXp, rankProgress } from "../lib/rank";
 import { useAuth } from "../store/auth";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { Avatar } from "../components/profile/Avatar";
+import { RankIcon } from "../components/ui/RankIcon";
 import { Button } from "../components/ui/Button";
 
 function Stat({ label, value }: { label: string; value: number }) {
@@ -57,12 +59,16 @@ export default function Profile() {
               </div>
               <div className="mt-4 flex items-center gap-2">
                 <h1 className="font-display text-3xl font-bold">{data.username}</h1>
-                {data.badge && <span title={data.badge} className="text-xl">🎖️</span>}
+                {data.badge && (
+                  <span title={data.badge} className="inline-flex">
+                    <Medal size={20} className="text-neutron/70" />
+                  </span>
+                )}
               </div>
-              {data.title && <p className="text-[#C9B6FF] font-display">{data.title}</p>}
+              {data.title && <p className="text-[#C9B6FF] font-display text-lg">{data.title}</p>}
               {rank && (
                 <div className="mt-2 flex items-center gap-2 text-sm">
-                  <span className="text-lg">{rank.icon}</span>
+                  <RankIcon id={rank.id} size={18} color={rank.color} />
                   <span className="font-semibold" style={{ color: rank.color }}>{rank.name}</span>
                   <span className="text-neutron/40">· {data.xp.toLocaleString()} XP</span>
                 </div>
@@ -104,7 +110,11 @@ export default function Profile() {
               <div className="flex flex-col gap-2">
                 {data.activity.map((a, i) => (
                   <div key={i} className="glass flex items-center gap-3 px-4 py-3">
-                    <span>{a.type === "battle" ? "⚔️" : "📘"}</span>
+                    {a.type === "battle" ? (
+                      <Swords size={16} className="text-neutron/60" strokeWidth={1.75} />
+                    ) : (
+                      <BookOpen size={16} className="text-neutron/60" strokeWidth={1.75} />
+                    )}
                     <span className="flex-1 text-sm">{a.text}</span>
                     {a.at && <span className="text-xs text-neutron/40">{new Date(a.at).toLocaleDateString()}</span>}
                   </div>

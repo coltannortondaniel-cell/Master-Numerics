@@ -2,8 +2,10 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { useXp } from "../../store/xp";
 import { rankForXp } from "../../lib/rank";
+import { Coins } from "lucide-react";
 import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
+import { RankIcon } from "../ui/RankIcon";
 import { NotificationBell } from "./NotificationBell";
 
 interface Props {
@@ -45,8 +47,8 @@ export function JourneyHeader({ back }: Props) {
 
       <div className="flex items-center gap-3 sm:gap-5">
         <div className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5" title="NumCoins">
-          <span aria-hidden>🪙</span>
-          <span className="font-mono text-sm font-semibold tabular-nums text-solar">
+          <Coins size={15} className="text-solar" strokeWidth={1.75} />
+          <span className="font-mono text-sm font-semibold tabular-nums text-neutron/90">
             {coins.toLocaleString()}
           </span>
         </div>
@@ -54,8 +56,8 @@ export function JourneyHeader({ back }: Props) {
           className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-1.5"
           title={`${rank.name} rank`}
         >
-          <span aria-hidden>{rank.icon}</span>
-          <span className="font-mono text-sm font-semibold tabular-nums text-solar">
+          <RankIcon id={rank.id} size={15} color={rank.color} />
+          <span className="font-mono text-sm font-semibold tabular-nums text-neutron/90">
             {xp.toLocaleString()}
           </span>
           <span className="hidden sm:inline text-xs text-neutron/50">XP</span>

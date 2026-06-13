@@ -5,9 +5,27 @@ import { api, parseApiError } from "../lib/api";
 import { dashboardApi, type DashboardSummary, type Challenge, type ContinueTarget } from "../lib/dashboard";
 import { rankProgress } from "../lib/rank";
 import { useXp } from "../store/xp";
+import {
+  Calculator, Swords, Trophy, Users, Gift, Award, NotebookPen, Layers, Sigma, Flame,
+} from "lucide-react";
 import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
+import { RankIcon } from "../components/ui/RankIcon";
 import { NotificationBell } from "../components/layout/NotificationBell";
+
+const QUICK = [
+  { to: "/calculator", Icon: Calculator, label: "Calculator" },
+  { to: "/battle", Icon: Swords, label: "Battle" },
+  { to: "/leaderboard", Icon: Trophy, label: "Leaderboard" },
+  { to: "/friends", Icon: Users, label: "Friends" },
+  { to: "/store", Icon: Gift, label: "Store" },
+  { to: "/achievements", Icon: Award, label: "Achievements" },
+];
+const STUDY = [
+  { to: "/notebook", Icon: NotebookPen, label: "Notebook" },
+  { to: "/flashcards", Icon: Layers, label: "Flashcards" },
+  { to: "/formulas", Icon: Sigma, label: "Formulas" },
+];
 
 function TrialCountdown({ endsAt }: { endsAt: string }) {
   const [now, setNow] = useState(Date.now());
@@ -153,8 +171,9 @@ export default function Dashboard() {
         <Logo />
         <div className="flex items-center gap-3">
           {summary && (
-            <span className="hidden sm:flex items-center gap-1 rounded-full bg-white/5 px-3 py-1.5 text-sm" title="Day streak">
-              🔥 <span className="font-mono font-semibold text-solar">{summary.streak}</span>
+            <span className="hidden sm:flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5 text-sm" title="Day streak">
+              <Flame size={15} className="text-solar" strokeWidth={1.75} />
+              <span className="font-mono font-semibold text-neutron/90">{summary.streak}</span>
             </span>
           )}
           <NotificationBell />
@@ -174,8 +193,9 @@ export default function Dashboard() {
           <div>
             <h1 className="font-display text-3xl font-bold">Welcome back, {user.username}.</h1>
             {summary && (
-              <p className="mt-1 text-neutron/55">
-                🔥 {summary.streak}-day streak · {goalDone}/3 daily challenges done
+              <p className="mt-1 flex items-center gap-1.5 text-neutron/55">
+                <Flame size={15} className="text-solar" strokeWidth={1.75} />
+                {summary.streak}-day streak · {goalDone}/3 daily challenges done
               </p>
             )}
           </div>
@@ -220,7 +240,7 @@ export default function Dashboard() {
         {prog && (
           <div className="glass px-5 py-4">
             <div className="flex items-center justify-between text-sm">
-              <span className="flex items-center gap-2">{prog.rank.icon} <span className="font-semibold" style={{ color: prog.rank.color }}>{prog.rank.name}</span></span>
+              <span className="flex items-center gap-2"><RankIcon id={prog.rank.id} size={16} color={prog.rank.color} /> <span className="font-semibold" style={{ color: prog.rank.color }}>{prog.rank.name}</span></span>
               <span className="font-mono text-neutron/60">{summary!.xp.toLocaleString()} XP</span>
             </div>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-white/10">
@@ -298,16 +318,9 @@ export default function Dashboard() {
         <section>
           <p className="mb-2 font-mono text-xs uppercase tracking-widest text-neutron/40">Quick launch</p>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              { to: "/calculator", icon: "📈", label: "Calculator" },
-              { to: "/battle", icon: "⚔️", label: "Battle" },
-              { to: "/leaderboard", icon: "🏆", label: "Leaderboard" },
-              { to: "/friends", icon: "🤝", label: "Friends" },
-              { to: "/store", icon: "🎁", label: "Store" },
-              { to: "/achievements", icon: "🏅", label: "Achievements" },
-            ].map((q) => (
-              <Link key={q.to} to={q.to} className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-cosmic/40 hover:shadow-glow">
-                <span className="text-2xl">{q.icon}</span>
+            {QUICK.map((q) => (
+              <Link key={q.to} to={q.to} className="glass flex flex-col items-center gap-2 py-5 transition-all hover:border-neutron/30 hover:bg-white/[0.03]">
+                <q.Icon size={22} strokeWidth={1.5} className="text-neutron/80" />
                 <span className="text-sm font-semibold">{q.label}</span>
               </Link>
             ))}
@@ -317,13 +330,9 @@ export default function Dashboard() {
         <section>
           <p className="mb-2 font-mono text-xs uppercase tracking-widest text-neutron/40">Study tools</p>
           <div className="grid grid-cols-3 gap-3">
-            {[
-              { to: "/notebook", icon: "📓", label: "Notebook" },
-              { to: "/flashcards", icon: "🃏", label: "Flashcards" },
-              { to: "/formulas", icon: "📐", label: "Formulas" },
-            ].map((q) => (
-              <Link key={q.to} to={q.to} className="glass flex flex-col items-center gap-1 py-4 transition-all hover:border-nebula/40 hover:shadow-glow">
-                <span className="text-2xl">{q.icon}</span>
+            {STUDY.map((q) => (
+              <Link key={q.to} to={q.to} className="glass flex flex-col items-center gap-2 py-5 transition-all hover:border-neutron/30 hover:bg-white/[0.03]">
+                <q.Icon size={22} strokeWidth={1.5} className="text-neutron/80" />
                 <span className="text-sm font-semibold">{q.label}</span>
               </Link>
             ))}

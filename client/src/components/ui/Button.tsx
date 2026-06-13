@@ -9,7 +9,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-display font-semibold " +
+  "inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-body font-semibold tracking-wide " +
   "transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed select-none";
 
 const variants: Record<Variant, string> = {
