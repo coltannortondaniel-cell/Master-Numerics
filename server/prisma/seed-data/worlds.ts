@@ -3,6 +3,7 @@ import { moonLessons } from "./moon.js";
 import { earthSurfaceLessons } from "./earth-surface.js";
 import { atmosphereLessons } from "./atmosphere.js";
 import { kinematicsLessons } from "./physics/kinematics.js";
+import { dynamicsLessons } from "./physics/dynamics.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -56,12 +57,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "inner-solar-system",
     name: "The Inner Solar System",
-    subtitle: "Worlds of rock and fire",
-    description: "Mercury, Venus, Earth, Mars — and the laws of planetary motion that govern them all.",
-    gradeRange: "5–6",
+    subtitle: "Classical Mechanics · Newton's Laws & Dynamics",
+    description: "Why things move the way they do. Newton's three laws, force and mass, friction, and inclined planes — the workhorse toolkit of all of mechanics, taught with free-body diagrams and worked examples.",
+    gradeRange: "9–11",
     scaleLabel: "5×10¹¹ m",
     palette: { accent: "#FF8C42", glow: "#C25A1E" },
-    lessons: [],
+    lessons: dynamicsLessons,
   },
   {
     slug: "outer-solar-system",

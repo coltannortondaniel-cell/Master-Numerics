@@ -14,6 +14,7 @@ import { ShapeSorter } from "./ShapeSorter";
 import { PatternMaker } from "./PatternMaker";
 import { CompareBalance } from "./CompareBalance";
 import { MotionGraphs } from "./MotionGraphs";
+import { Incline } from "./Incline";
 
 /** simId → interactive component. Keys match the `simId` fields in the seed data. */
 const REGISTRY: Record<string, ComponentType> = {
@@ -29,6 +30,7 @@ const REGISTRY: Record<string, ComponentType> = {
   "wing-lift": WingLift,
   // Physics — mechanics
   "motion-graphs": MotionGraphs,
+  "incline-plane": Incline,
   // Math
   "count-along": CountAlong,
   "shape-sorter": ShapeSorter,

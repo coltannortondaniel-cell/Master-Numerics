@@ -1,0 +1,181 @@
+import type { LessonSeed } from "../types.js";
+
+/**
+ * Classical Mechanics — Newton's Laws & Dynamics (grades 9–11 / intro
+ * university). Why things move the way they do: forces, F = ma, action–reaction,
+ * friction, and inclined planes. Mounted on the Inner Solar System stop.
+ */
+export const dynamicsLessons: LessonSeed[] = [
+  // ───────────────────── 1. Newton's First Law (Inertia) ─────────────────────
+  {
+    slug: "newtons-first-law",
+    title: "Newton's First Law — Inertia",
+    tagline: "Objects keep doing what they're doing",
+    estMinutes: 13,
+    xpReward: 160,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "The Law of Inertia", sub: "Nothing changes its motion on its own. To speed up, slow down, or turn, an object needs a push or a pull — a force." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "For two thousand years people believed motion needed a constant cause — that a moving object naturally slows and stops. Galileo and then Newton overturned this: objects slow down because of **friction**, not because stopping is their natural state. Remove the friction and motion persists forever. This single idea launched modern physics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Newton's First Law:** An object at rest stays at rest, and an object in motion stays in motion at **constant velocity** (same speed, same straight-line direction), **unless acted on by a net external force.**\n\nThe tendency of an object to resist changes to its motion is called **inertia**, and the measure of inertia is the object's **mass**. More mass ⇒ more inertia ⇒ harder to start, stop, or turn.\n\nThe crucial phrase is *net* force. Forces are vectors; what matters is their sum:\n\n$$\\vec F_{net} = \\sum \\vec F$$\n\nWhen $\\vec F_{net} = 0$, the object is in **equilibrium**: it stays at rest or keeps moving at constant velocity. A book on a table is in equilibrium — gravity pulls it down, the table's normal force pushes up with equal strength, and they cancel.\n\nSo constant velocity (including zero) needs **no** net force. Only a *change* in velocity — acceleration — requires one." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "The book on the table", problem: "A book sits motionless on a table. What is the net force on it?", steps: ["It isn't accelerating (it's at rest), so by the first law the net force must be zero.", "Gravity (down) is exactly balanced by the table's normal force (up)."], answer: "Zero net force — the forces are balanced (equilibrium)." },
+        { title: "Seatbelt physics", problem: "A car brakes suddenly and the passengers lurch forward. Why?", steps: ["Before braking, passengers move forward at the car's speed.", "By inertia, they tend to keep moving forward when the car decelerates.", "The seatbelt supplies the backward force needed to change their motion."], answer: "Inertia keeps the passengers moving; the seatbelt provides the force to stop them." },
+        { title: "Puck on ice", problem: "A hockey puck glides across nearly frictionless ice. What keeps it moving?", steps: ["Nothing needs to keep it moving — that's the first law.", "With negligible friction and no net force, it continues at constant velocity."], answer: "No force is needed; it coasts at constant velocity until friction or a wall acts." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [{ youtubeId: "1XSyyjcEHo0", title: "Newton's First Law of Motion" }] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Inertia and equilibrium." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Decide whether a net force is present." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: inertial reference frames", content: { markdown: "The first law actually *defines* a special class of viewpoints called **inertial reference frames** — frames that are not accelerating. In an accelerating frame (a braking bus), objects seem to violate the first law (you lurch forward with no obvious force), which is why we invent \"fictitious\" forces to describe them. Einstein took this puzzle about frames and inertia and built it into general relativity." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Objects keep their velocity (including rest) unless a net force acts.", "Inertia is resistance to changes in motion; mass measures it.", "What matters is the net (vector sum) force.", "Zero net force ⇒ equilibrium (rest or constant velocity)."], formulas: [{ label: "Equilibrium condition", tex: "\\vec F_{net} = \\sum \\vec F = 0" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Newton's first law is also called the law of:", options: ["inertia", "gravity", "action–reaction", "acceleration"], answer: 0, explanation: "The first law is the law of inertia." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "An object moving at constant velocity has zero net force on it.", answer: true, explanation: "Constant velocity means no acceleration, so the net force is zero." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "An object's inertia depends on its:", options: ["mass", "speed", "shape", "colour"], answer: 0, explanation: "Mass is the measure of inertia." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "A book rests motionless on a table. The net force on it is:", options: ["zero", "downward", "upward", "forward"], answer: 0, hint: "Is it accelerating?", explanation: "It's in equilibrium — gravity and normal force cancel." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "On perfectly frictionless ice, a sliding puck would keep moving at constant velocity indefinitely.", answer: true, hint: "First law with no net force.", explanation: "With no net force, motion continues unchanged." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Which object has the most inertia?", options: ["a loaded truck", "an empty bicycle", "a tennis ball", "a feather"], answer: 0, hint: "More mass, more inertia.", explanation: "The loaded truck has the greatest mass." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "A net force is needed to keep an object moving at constant velocity.", answer: false, hint: "Recall the puck on ice.", explanation: "Constant velocity needs zero net force; force is only needed to change velocity." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "When a car stops suddenly, passengers lurch forward because of:", options: ["inertia", "friction", "gravity", "the engine"], answer: 0, hint: "They tend to keep moving.", explanation: "Inertia keeps them moving forward until a force (seatbelt) stops them." },
+    ],
+  },
+
+  // ──────────────────── 2. Newton's Second Law (F = ma) ────────────────────
+  {
+    slug: "newtons-second-law",
+    title: "Newton's Second Law — F = ma",
+    tagline: "Force, mass, and acceleration in one equation",
+    estMinutes: 16,
+    xpReward: 170,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Force = Mass × Acceleration", sub: "The most useful equation in mechanics ties together the push, the stuff being pushed, and how its motion changes." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Newton's second law is the workhorse of classical physics. It predicts how rockets launch, how cars stop, how planets orbit, and how a tossed ball arcs. Give it the net force and the mass, and it hands you the acceleration — and from kinematics, the entire future of the motion." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Newton's Second Law:** the acceleration of an object is proportional to the net force on it and inversely proportional to its mass:\n\n$$\\vec F_{net} = m\\,\\vec a \\qquad\\Longleftrightarrow\\qquad \\vec a = \\frac{\\vec F_{net}}{m}$$\n\nThree readings of the same law:\n\n- **Bigger force ⇒ bigger acceleration** (same mass).\n- **Bigger mass ⇒ smaller acceleration** (same force).\n- Acceleration points in the **same direction** as the net force.\n\nThe SI unit of force is the **newton**: $1\\ \\text{N} = 1\\ \\text{kg}\\cdot\\text{m/s}^2$ — exactly the force that accelerates $1\\,\\text{kg}$ at $1\\,\\text{m/s}^2$.\n\nBecause force is a vector, you usually start with a **free-body diagram**: draw every force acting on the object as an arrow, then add them as vectors to get $\\vec F_{net}$. The first law is just the special case $\\vec a = 0$ when $\\vec F_{net} = 0$." } },
+      { kind: "SIMULATION", title: "Try it: push lab", content: { simId: "force-push", intro: "Pick a force and a mass, then push the crate. Heavier crates accelerate more slowly for the same force — read the live $a = F/m$ value and confirm." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Find the acceleration", problem: "A net force of $20\\,\\text{N}$ acts on a $4.0\\,\\text{kg}$ cart. What is its acceleration?", steps: ["$a = F_{net}/m = 20/4.0 = 5.0\\,\\text{m/s}^2$.", "It points in the direction of the force."], answer: "$a = 5.0\\,\\text{m/s}^2$." },
+        { title: "Find the force", problem: "What net force gives a $1500\\,\\text{kg}$ car an acceleration of $2.0\\,\\text{m/s}^2$?", steps: ["$F_{net} = m a = 1500 \\times 2.0 = 3000\\,\\text{N}$."], answer: "$3000\\,\\text{N}$ (3.0 kN)." },
+        { title: "Net of two forces", problem: "A $2.0\\,\\text{kg}$ box is pushed right with $10\\,\\text{N}$ while friction pulls left with $4\\,\\text{N}$. Find its acceleration.", steps: ["Net force: $10 - 4 = 6\\,\\text{N}$ to the right.", "$a = F_{net}/m = 6/2.0 = 3.0\\,\\text{m/s}^2$ to the right."], answer: "$a = 3.0\\,\\text{m/s}^2$ to the right." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [{ youtubeId: "iwP4hep8RTk", title: "Newton's Second Law" }] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Apply F = ma." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Find the net force first, then divide by mass." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: the law is really about momentum", content: { markdown: "Newton actually wrote the second law in terms of **momentum** $\\vec p = m\\vec v$: the net force equals the rate of change of momentum,\n\n$$\\vec F_{net} = \\frac{d\\vec p}{dt}.$$\n\nWhen mass is constant this becomes $\\vec F = m\\dfrac{d\\vec v}{dt} = m\\vec a$ — our familiar form. But the momentum version is more general: it correctly handles systems whose **mass changes**, like a rocket burning fuel, and it survives into relativity where $m\\vec a$ does not." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["$\\vec F_{net} = m\\vec a$: acceleration ∝ net force, ∝ 1/mass.", "Acceleration is in the direction of the net force.", "$1\\,\\text{N} = 1\\,\\text{kg·m/s}^2$.", "Start with a free-body diagram to find the net force."], formulas: [{ label: "Second law", tex: "\\vec F_{net} = m\\,\\vec a" }, { label: "Momentum form", tex: "\\vec F_{net} = \\dfrac{d\\vec p}{dt}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Newton's second law is written:", options: ["$F = ma$", "$F = mv$", "$a = Fm$", "$F = m/a$"], answer: 0, explanation: "Net force equals mass times acceleration." },
+      { scope: "CONCEPT_CHECK", kind: "NUMERIC", prompt: "A net force of $20\\,\\text{N}$ acts on a $4\\,\\text{kg}$ object. Acceleration in $\\text{m/s}^2$?", answer: { value: 5, tolerance: 0 }, explanation: "$a = 20/4 = 5\\,\\text{m/s}^2$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "One newton equals one $\\text{kg·m/s}^2$.", answer: true, explanation: "By definition of the newton." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Net force $12\\,\\text{N}$ on a $3.0\\,\\text{kg}$ mass. Acceleration in $\\text{m/s}^2$?", answer: { value: 4, tolerance: 0 }, hint: "$a = F/m$.", explanation: "$12/3 = 4\\,\\text{m/s}^2$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A $5.0\\,\\text{kg}$ object accelerates at $2.0\\,\\text{m/s}^2$. Net force in newtons?", answer: { value: 10, tolerance: 0 }, hint: "$F = ma$.", explanation: "$5 \\times 2 = 10\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A net force of $50\\,\\text{N}$ produces $a = 10\\,\\text{m/s}^2$. Find the mass in kg.", answer: { value: 5, tolerance: 0 }, hint: "$m = F/a$.", explanation: "$50/10 = 5\\,\\text{kg}$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "If you double the net force on the same mass, the acceleration:", options: ["doubles", "halves", "is unchanged", "quadruples"], answer: 0, hint: "$a \\propto F$.", explanation: "Acceleration is proportional to net force." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A $2.0\\,\\text{kg}$ box feels $10\\,\\text{N}$ right and $4\\,\\text{N}$ left. Acceleration in $\\text{m/s}^2$ (right positive)?", answer: { value: 3, tolerance: 0 }, hint: "Net force first.", explanation: "Net $= 6\\,\\text{N}$, $a = 6/2 = 3\\,\\text{m/s}^2$." },
+    ],
+  },
+
+  // ────────────────── 3. Newton's Third Law (Action–Reaction) ──────────────────
+  {
+    slug: "newtons-third-law",
+    title: "Newton's Third Law — Action & Reaction",
+    tagline: "Forces always come in pairs",
+    estMinutes: 13,
+    xpReward: 160,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Equal and Opposite", sub: "You cannot touch without being touched back. Every force is one half of a pair." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Rockets work in the vacuum of space with nothing to push against — except the exhaust they throw out. Walking, swimming, flying, and recoil are all the third law in action. Understanding it correctly clears up one of the most common misconceptions in all of physics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Newton's Third Law:** for every force (an *action*), there is an equal and opposite force (a *reaction*):\n\n$$\\vec F_{A \\to B} = -\\,\\vec F_{B \\to A}$$\n\nIf object A pushes on object B, then B pushes back on A with **equal magnitude** and **opposite direction**.\n\nThe key subtlety — and the source of endless confusion: **the two forces act on different objects.** Because they act on *different* bodies, they do **not** cancel each other out. (Only forces on the *same* object can cancel.)\n\nExamples:\n\n- You push the ground backward with your foot; the ground pushes you forward — that's how you walk.\n- A rocket pushes exhaust gases down/back; the gases push the rocket up/forward.\n- A swimmer pushes water backward; the water pushes the swimmer forward.\n- Fire a gun: it pushes the bullet forward, the bullet pushes the gun back (recoil)." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Pushing a wall", problem: "You push on a wall with $50\\,\\text{N}$. How hard does the wall push on you?", steps: ["By the third law, the reaction is equal and opposite.", "The wall pushes back on you with exactly $50\\,\\text{N}$."], answer: "$50\\,\\text{N}$, directed back toward you." },
+        { title: "Why don't they cancel?", problem: "If the wall pushes back on you just as hard, why isn't the net effect zero?", steps: ["Your push acts on the *wall*; the wall's push acts on *you*.", "They act on different objects, so they never appear in the same net-force sum.", "Whether you accelerate depends only on the forces acting on *you*."], answer: "The pair acts on two different bodies, so it doesn't cancel for either one." },
+        { title: "How walking works", problem: "What actually pushes you forward when you walk?", steps: ["Your foot pushes backward on the ground (action).", "The ground pushes forward on you (reaction).", "That forward reaction force is what accelerates you."], answer: "The ground's forward reaction force on your foot." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [{ youtubeId: "8gMr6VsozQk", title: "Newton's Third Law" }] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Pairs act on different objects." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Identify the reaction and remember which object it acts on." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: the horse-and-cart paradox", content: { markdown: "A classic puzzle: \"If the cart pulls back on the horse just as hard as the horse pulls the cart, how can they ever move?\" The resolution: those two forces act on **different objects** (one on the cart, one on the horse), so they don't cancel. To see if the *cart* accelerates, add up only the forces on the cart: the horse's forward pull versus the cart's friction. The horse, meanwhile, accelerates because the **ground** pushes its hooves forward harder than the cart pulls it back. Same law, careful bookkeeping." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Forces come in equal, opposite pairs: $\\vec F_{A\\to B} = -\\vec F_{B\\to A}$.", "The two forces act on different objects, so they don't cancel.", "Walking, rockets, and recoil are all third-law effects.", "To find an object's acceleration, sum only the forces on that object."], formulas: [{ label: "Third law", tex: "\\vec F_{A \\to B} = -\\,\\vec F_{B \\to A}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "For every action force there is an equal and opposite reaction force.", answer: true, explanation: "That is Newton's third law." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Action–reaction force pairs act on:", options: ["different objects", "the same object", "nothing", "only heavy objects"], answer: 0, explanation: "Each force of the pair acts on a different body." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "A rocket pushes exhaust gas downward. The gas:", options: ["pushes the rocket up", "slows the rocket", "has no effect", "pulls the rocket down"], answer: 0, explanation: "The reaction force pushes the rocket up." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Action–reaction pairs cancel out because they are equal and opposite.", answer: false, hint: "What do they act on?", explanation: "They act on different objects, so they never cancel for a single object." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "You push a wall with $50\\,\\text{N}$. The wall pushes on you with:", options: ["50 N", "0 N", "25 N", "100 N"], answer: 0, hint: "Equal and opposite.", explanation: "The reaction is exactly $50\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "When you walk forward, the force that pushes you forward is:", options: ["the ground's reaction to your backward push", "your muscles acting directly on you", "gravity", "air pressure"], answer: 0, hint: "Third law at your feet.", explanation: "You push the ground back; it pushes you forward." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Object A pushes object B with $30\\,\\text{N}$. How many newtons does B push on A?", answer: { value: 30, tolerance: 0 }, hint: "Equal magnitudes.", explanation: "The reaction force is also $30\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Because the cart pulls back on the horse just as hard, a horse can never accelerate a cart.", answer: false, hint: "Those forces act on different objects.", explanation: "The horse accelerates the cart via the ground's forward push on the horse; the action–reaction pair doesn't cancel for either body." },
+    ],
+  },
+
+  // ───────────────────────────── 4. Friction ─────────────────────────────
+  {
+    slug: "friction",
+    title: "Friction",
+    tagline: "The force that resists sliding",
+    estMinutes: 15,
+    xpReward: 160,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Resisting Motion", sub: "Friction is why you can walk and why nothing slides forever — a force born where surfaces meet." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Friction is the hidden force in nearly every mechanics problem. It lets tyres grip, brakes work, and knots hold — yet it also wastes energy as heat and wears parts down. Knowing when it helps, when it hurts, and how to compute it is essential." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Friction** is a force that opposes (or tends to oppose) relative sliding between two surfaces in contact. It always acts **parallel to the surface**, opposite to the motion or attempted motion.\n\nFriction comes in two flavours:\n\n- **Static friction** acts when surfaces are *not yet* sliding. It adjusts itself to match whatever you apply, up to a maximum:\n\n$$f_s \\le \\mu_s N$$\n\n- **Kinetic friction** acts when surfaces *are* sliding, with a roughly constant value:\n\n$$f_k = \\mu_k N$$\n\nHere $N$ is the **normal force** (the perpendicular push between the surfaces) and $\\mu$ (mu) is the dimensionless **coefficient of friction** — a property of the two materials. Usually $\\mu_s > \\mu_k$, which is why it takes a bigger push to *start* something sliding than to keep it sliding.\n\nKey facts: friction is proportional to the **normal force**, not to the contact area or speed (to a good approximation), and it converts mechanical energy into **heat**." } },
+      { kind: "SIMULATION", title: "Try it: ramp & friction", content: { simId: "incline-plane", intro: "Raise the angle and change μ. Watch the normal force, the friction force, and whether the block slides — it gives way exactly when $\\tan\\theta > \\mu$." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Kinetic friction", problem: "A crate slides across the floor. The normal force is $40\\,\\text{N}$ and $\\mu_k = 0.25$. Find the kinetic friction force.", steps: ["$f_k = \\mu_k N = 0.25 \\times 40 = 10\\,\\text{N}$.", "It opposes the sliding direction."], answer: "$f_k = 10\\,\\text{N}$." },
+        { title: "Will it move?", problem: "A box on the floor has a maximum static friction of $40\\,\\text{N}$. You push horizontally with $30\\,\\text{N}$. Does it move, and what is the friction force?", steps: ["Your push ($30\\,\\text{N}$) is below the maximum static friction ($40\\,\\text{N}$).", "Static friction matches your push to keep it still."], answer: "It stays put; static friction is $30\\,\\text{N}$ (not 40)." },
+        { title: "Friction on level ground", problem: "A $10\\,\\text{kg}$ box sits on level ground, $\\mu_k = 0.20$, $g = 9.8\\,\\text{m/s}^2$. Find the kinetic friction once it's sliding.", steps: ["On level ground the normal force equals the weight: $N = mg = 10 \\times 9.8 = 98\\,\\text{N}$.", "$f_k = \\mu_k N = 0.20 \\times 98 = 19.6\\,\\text{N}$."], answer: "$f_k = 19.6\\,\\text{N}$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [{ youtubeId: "fo_pmp5rtzo", title: "Friction (static and kinetic)" }] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Static vs kinetic." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Use $f = \\mu N$, and remember static friction only rises to its maximum." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: why friction barely depends on area", content: { markdown: "It seems strange that a brick slides with the same friction lying flat or on its end, despite very different contact areas. The reason: real surfaces touch only at tiny high spots (\"asperities\"). Spreading the same weight over a larger area lowers the pressure but increases the number of contact points — the two effects roughly cancel, so total friction depends on the **normal force**, not the apparent area. This is captured in the simple law $f = \\mu N$, an empirical approximation that works remarkably well." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Friction opposes sliding and acts parallel to the surface.", "Static: $f_s \\le \\mu_s N$ (adjusts up to a max). Kinetic: $f_k = \\mu_k N$.", "$N$ is the normal force; usually $\\mu_s > \\mu_k$.", "Friction depends on normal force (not area or speed) and makes heat."], formulas: [{ label: "Static friction", tex: "f_s \\le \\mu_s N" }, { label: "Kinetic friction", tex: "f_k = \\mu_k N" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The kinetic friction force is given by:", options: ["$\\mu_k N$", "$\\mu_k m$", "$N/\\mu_k$", "$\\mu_k v$"], answer: 0, explanation: "$f_k = \\mu_k N$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Static friction can take any value from zero up to a maximum.", answer: true, explanation: "It adjusts to match the applied force until it reaches $\\mu_s N$." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Friction acts:", options: ["opposite to (attempted) motion", "in the direction of motion", "straight down", "straight up"], answer: 0, explanation: "Friction opposes relative sliding." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Normal force $40\\,\\text{N}$, $\\mu_k = 0.25$. Kinetic friction in newtons?", answer: { value: 10, tolerance: 0 }, hint: "$f_k = \\mu_k N$.", explanation: "$0.25 \\times 40 = 10\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A box has $N = 100\\,\\text{N}$ and $\\mu_s = 0.40$. Maximum static friction in newtons?", answer: { value: 40, tolerance: 0 }, hint: "$f_{s,\\max} = \\mu_s N$.", explanation: "$0.40 \\times 100 = 40\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "If you push a box with $30\\,\\text{N}$ and its maximum static friction is $40\\,\\text{N}$, the box stays still.", answer: true, hint: "Compare push to the maximum.", explanation: "Static friction matches the $30\\,\\text{N}$ push, so it doesn't move." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Friction usually converts mechanical energy into:", options: ["heat", "light", "electricity", "sound only"], answer: 0, hint: "Rub your hands together.", explanation: "Friction dissipates energy mainly as heat." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A $10\\,\\text{kg}$ box on level ground ($g=9.8$), $\\mu_k = 0.20$. Kinetic friction in newtons? (Use $N = mg$.)", answer: { value: 19.6, tolerance: 0.3 }, hint: "$N = mg$, then $f_k = \\mu_k N$.", explanation: "$N = 98\\,\\text{N}$, $f_k = 0.20\\times 98 = 19.6\\,\\text{N}$." },
+    ],
+  },
+
+  // ───────────────────────── 5. Inclined Planes ─────────────────────────
+  {
+    slug: "inclined-planes",
+    title: "Inclined Planes",
+    tagline: "Splitting gravity along a ramp",
+    estMinutes: 17,
+    xpReward: 170,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Forces on a Ramp", sub: "A ramp is the ultimate test of dynamics: gravity, the normal force, and friction all at once — solved by choosing clever axes." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Ramps, hills, slides, wheelchair access, and mountain roads are all inclined planes. The technique you learn here — tilting your coordinate axes and splitting gravity into components — is the single most important problem-solving skill in introductory mechanics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "On an incline tilted at angle $\\theta$, gravity still points straight down — but it's convenient to **tilt the axes** so one points *along* the ramp and the other *perpendicular* to it. Then split the weight $mg$ into two components:\n\n- **Along the ramp (down-slope):** $\\;mg\\sin\\theta$ — this is what tends to accelerate the object down.\n- **Perpendicular to the ramp:** $\\;mg\\cos\\theta$ — this is balanced by the **normal force**, so\n\n$$N = mg\\cos\\theta.$$\n\n**Frictionless incline.** The only unbalanced force is $mg\\sin\\theta$ down-slope, so by $F=ma$:\n\n$$a = g\\sin\\theta.$$\n\nNotice the mass cancels — every object slides down a frictionless ramp with the same acceleration, just as in free fall (the $\\theta = 90^\\circ$ case gives $a = g$).\n\n**With friction.** Kinetic friction $f_k = \\mu N = \\mu mg\\cos\\theta$ acts up-slope. The net down-slope force is $mg\\sin\\theta - \\mu mg\\cos\\theta$, giving\n\n$$a = g(\\sin\\theta - \\mu\\cos\\theta).$$\n\nThe block only begins to slide when the down-slope pull exceeds maximum static friction — that is, when $\\tan\\theta > \\mu$." } },
+      { kind: "SIMULATION", title: "Try it: the ramp", content: { simId: "incline-plane", intro: "Dial in the angle and friction, watch the force components and the normal force, then release the block to see $a = g(\\sin\\theta - \\mu\\cos\\theta)$ play out." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Frictionless ramp", problem: "A block slides down a frictionless ramp inclined at $30^\\circ$. Find its acceleration ($g = 9.8\\,\\text{m/s}^2$).", steps: ["With no friction, $a = g\\sin\\theta$.", "$a = 9.8 \\times \\sin 30^\\circ = 9.8 \\times 0.5 = 4.9\\,\\text{m/s}^2$."], answer: "$a = 4.9\\,\\text{m/s}^2$ down the ramp (independent of mass)." },
+        { title: "Normal force", problem: "A $4.0\\,\\text{kg}$ block rests on a $30^\\circ$ incline. Find the normal force ($g = 9.8$).", steps: ["$N = mg\\cos\\theta = 4.0 \\times 9.8 \\times \\cos 30^\\circ$.", "$= 39.2 \\times 0.866 \\approx 33.9\\,\\text{N}$."], answer: "$N \\approx 33.9\\,\\text{N}$ (less than the full weight of $39.2\\,\\text{N}$)." },
+        { title: "Ramp with friction", problem: "A block slides down a $37^\\circ$ incline with $\\mu_k = 0.20$. Find its acceleration ($g = 9.8$; $\\sin 37^\\circ \\approx 0.60$, $\\cos 37^\\circ \\approx 0.80$).", steps: ["$a = g(\\sin\\theta - \\mu\\cos\\theta)$.", "$= 9.8(0.60 - 0.20\\times 0.80) = 9.8(0.60 - 0.16) = 9.8\\times 0.44 \\approx 4.3\\,\\text{m/s}^2$."], answer: "$a \\approx 4.3\\,\\text{m/s}^2$ down the slope." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [{ youtubeId: "f-A_iySLDFs", title: "Inclined plane problems" }] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Components of gravity on a ramp." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Use $N = mg\\cos\\theta$ and $a = g(\\sin\\theta - \\mu\\cos\\theta)$." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: why tilt the axes?", content: { markdown: "You *could* keep the usual horizontal/vertical axes, but then both the normal force and the acceleration would have two components each, and you'd solve a messy pair of simultaneous equations. By rotating the axes to align with the ramp, the acceleration has only **one** non-zero component (along the slope) and the perpendicular direction is in equilibrium ($N = mg\\cos\\theta$). Choosing smart coordinates to make a problem simple is a theme that runs all the way up to Lagrangian mechanics." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Tilt axes along/perpendicular to the ramp and split gravity.", "Down-slope component $mg\\sin\\theta$; normal force $N = mg\\cos\\theta$.", "Frictionless: $a = g\\sin\\theta$ (mass-independent).", "With friction: $a = g(\\sin\\theta - \\mu\\cos\\theta)$; slides when $\\tan\\theta > \\mu$."], formulas: [{ label: "Normal force", tex: "N = mg\\cos\\theta" }, { label: "Frictionless accel.", tex: "a = g\\sin\\theta" }, { label: "With friction", tex: "a = g(\\sin\\theta - \\mu\\cos\\theta)" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The component of gravity along a frictionless incline (angle $\\theta$) is:", options: ["$mg\\sin\\theta$", "$mg\\cos\\theta$", "$mg\\tan\\theta$", "$mg$"], answer: 0, explanation: "The down-slope component is $mg\\sin\\theta$." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The normal force on an incline is:", options: ["$mg\\cos\\theta$", "$mg\\sin\\theta$", "$mg$", "zero"], answer: 0, explanation: "$N = mg\\cos\\theta$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "A block starts to slide on an incline when $\\tan\\theta > \\mu$.", answer: true, explanation: "That's when the down-slope pull exceeds maximum static friction." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Frictionless incline at $30^\\circ$, $g = 9.8$. Acceleration down the slope in $\\text{m/s}^2$?", answer: { value: 4.9, tolerance: 0.1 }, hint: "$a = g\\sin\\theta$.", explanation: "$9.8 \\times 0.5 = 4.9\\,\\text{m/s}^2$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A $4.0\\,\\text{kg}$ block on a $30^\\circ$ incline ($g = 9.8$). Normal force in newtons?", answer: { value: 33.9, tolerance: 0.6 }, hint: "$N = mg\\cos\\theta$.", explanation: "$4\\times 9.8\\times\\cos30^\\circ \\approx 33.9\\,\\text{N}$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "As an incline gets steeper, the gravity component along the slope:", options: ["increases", "decreases", "stays the same", "becomes zero"], answer: 0, hint: "$\\sin\\theta$ grows with $\\theta$.", explanation: "$mg\\sin\\theta$ increases as $\\theta$ increases." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "On a frictionless incline, a heavier block accelerates faster than a lighter one.", answer: false, hint: "Look at $a = g\\sin\\theta$.", explanation: "Mass cancels — all objects share $a = g\\sin\\theta$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Incline $37^\\circ$, $\\mu_k = 0.20$, $g = 9.8$ ($\\sin37^\\circ\\approx0.60$, $\\cos37^\\circ\\approx0.80$). Acceleration down-slope in $\\text{m/s}^2$?", answer: { value: 4.3, tolerance: 0.3 }, hint: "$a = g(\\sin\\theta - \\mu\\cos\\theta)$.", explanation: "$9.8(0.60 - 0.16) \\approx 4.3\\,\\text{m/s}^2$." },
+    ],
+  },
+];
