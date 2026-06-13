@@ -3,27 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { physicsApi, type WorldsResponse } from "../lib/physics";
 import { parseApiError } from "../lib/api";
-import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
-import { CosmicMap } from "../components/physics/CosmicMap";
+import { ZoomUniverse } from "../components/physics/ZoomUniverse";
 import { Button } from "../components/ui/Button";
-
-function MapSkeleton() {
-  return (
-    <div className="mx-auto max-w-2xl">
-      <div className="text-center mb-8 flex flex-col items-center gap-3">
-        <div className="skeleton h-3 w-40" />
-        <div className="skeleton h-9 w-72" />
-        <div className="skeleton h-4 w-96 max-w-full" />
-      </div>
-      <div className="flex flex-col gap-3">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="skeleton h-[88px] w-full" />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function Journey() {
   const navigate = useNavigate();
@@ -37,7 +19,6 @@ export default function Journey() {
       .then((d) => alive && setData(d))
       .catch((err) => {
         if (!alive) return;
-        // Trial lapsed / no subscription → the paywall.
         if (axios.isAxiosError(err) && err.response?.status === 403) {
           navigate("/subscribe", { replace: true });
           return;
@@ -49,27 +30,30 @@ export default function Journey() {
     };
   }, [navigate]);
 
-  const accent = data?.worlds[0]?.palette ?? { accent: "#6B21D6", glow: "#1E90FF" };
-
   return (
-    <div className="relative min-h-screen">
-      <CosmicBackground palette={accent} />
-      <JourneyHeader back={{ to: "/dashboard", label: "Dashboard" }} />
-      <main className="relative z-10 px-4 sm:px-6 py-10">
-        {error ? (
-          <div className="glass mx-auto max-w-md px-6 py-8 text-center">
+    <div className="relative min-h-screen bg-space">
+      <div className="fixed inset-x-0 top-0 z-40 border-b border-neutron/10 bg-space/70 backdrop-blur-md">
+        <JourneyHeader back={{ to: "/dashboard", label: "Dashboard" }} />
+      </div>
+
+      {error ? (
+        <div className="flex min-h-screen items-center justify-center px-6">
+          <div className="glass max-w-md px-6 py-8 text-center">
             <p className="font-display text-lg font-semibold">The map didn't load</p>
             <p className="mt-1 text-sm text-neutron/60">{error}</p>
             <div className="mt-4">
               <Button onClick={() => window.location.reload()}>Try again</Button>
             </div>
           </div>
-        ) : data ? (
-          <CosmicMap worlds={data.worlds} continueTarget={data.continue} />
-        ) : (
-          <MapSkeleton />
-        )}
-      </main>
+        </div>
+      ) : data ? (
+        <ZoomUniverse worlds={data.worlds} continueTarget={data.continue} />
+      ) : (
+        <div className="flex min-h-screen flex-col items-center justify-center gap-4">
+          <div className="h-12 w-12 animate-spin rounded-full border-2 border-cosmic border-t-transparent" />
+          <p className="font-mono text-xs uppercase tracking-[0.3em] text-neutron/40">Charting the cosmos…</p>
+        </div>
+      )}
     </div>
   );
 }
