@@ -2,6 +2,7 @@ import type { WorldSeed } from "../types.js";
 import { kindergartenParkLessons } from "./kindergarten-park.js";
 import { elementarySchoolStLessons } from "./elementary-school-st.js";
 import { theBakeryLessons } from "./the-bakery.js";
+import { theMarketLessons } from "./the-market.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -44,11 +45,11 @@ export const districts: WorldSeed[] = [
     slug: "the-market",
     name: "The Market",
     subtitle: "Deals, rates, and percents",
-    description: "Bustling stalls and bartering crowds: ratios, proportions, and the percentages on every price tag.",
+    description: "Bustling stalls and bartering crowds: ratios, unit rates, proportions, finding a percent of a number, and percent change — the math on every price tag.",
     gradeRange: "5–6",
     scaleLabel: "Market Square",
     palette: { accent: "#22D3A0", glow: "#1E90FF" },
-    lessons: [],
+    lessons: theMarketLessons,
   },
   {
     slug: "city-hall-plaza",

@@ -6,6 +6,7 @@ import { kinematicsLessons } from "./physics/kinematics.js";
 import { dynamicsLessons } from "./physics/dynamics.js";
 import { energyLessons } from "./physics/energy.js";
 import { momentumLessons } from "./physics/momentum.js";
+import { rotationLessons } from "./physics/rotation.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -89,12 +90,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "interstellar-space",
     name: "Interstellar Space",
-    subtitle: "Between the stars",
-    description: "The vast dark between suns — light-years, the interstellar medium, and the voyage of Voyager.",
-    gradeRange: "9–10",
+    subtitle: "Classical Mechanics · Rotational Motion",
+    description: "How things spin. Angular kinematics, torque, moment of inertia and τ = Iα, rotational kinetic energy & rolling, and angular momentum with its conservation.",
+    gradeRange: "11–12",
     scaleLabel: "1×10¹⁶ m",
     palette: { accent: "#3E4C8C", glow: "#27305C" },
-    lessons: [],
+    lessons: rotationLessons,
   },
   {
     slug: "the-sun",
