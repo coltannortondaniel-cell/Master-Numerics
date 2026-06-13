@@ -1,0 +1,195 @@
+import type { LessonSeed } from "../types.js";
+
+/**
+ * Classical Mechanics — Kinematics (the physics of motion, grades 9–11 /
+ * intro university). Algebra-based with the calculus definitions surfaced.
+ * Lessons are named by their academic unit; the Earth–Moon System is just the
+ * themed stop on the journey.
+ */
+export const kinematicsLessons: LessonSeed[] = [
+  // ───────────────── 1. Position, Displacement & Distance ─────────────────
+  {
+    slug: "position-displacement-distance",
+    title: "Position, Displacement & Distance",
+    tagline: "Where something is, and how far it has moved",
+    estMinutes: 14,
+    xpReward: 150,
+    sections: [
+      { kind: "HERO", content: { scene: "earth", headline: "Describing Motion", sub: "Before we can talk about how fast or how soon, we need a precise language for where an object is and how far it has travelled." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Every GPS fix, every spacecraft trajectory, every self-driving car begins with the same question: *where is it, and how has that changed?*\n\nIn everyday speech we use \"distance\" loosely. Physics needs two distinct ideas — **distance** and **displacement** — because they answer different questions and, as you'll see, they are often **not** the same number." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Position** ($x$) is an object's location measured from a chosen reference point (the origin) along a chosen axis. Position needs a sign: $+x$ to one side of the origin, $-x$ to the other.\n\n**Displacement** ($\\Delta x$) is the *change* in position — how far and in which direction the object ended up relative to where it started:\n\n$$\\Delta x = x_f - x_i$$\n\nDisplacement is a **vector**: it has both size and direction (a sign). \n\n**Distance** is the total length of the path actually travelled. Distance is a **scalar**: it has size only, is never negative, and ignores direction.\n\nThe key consequence:\n\n- If you walk $5\\,\\text{m}$ east, then $2\\,\\text{m}$ west, your **distance** is $7\\,\\text{m}$ but your **displacement** is $+3\\,\\text{m}$ (east).\n- Distance is always **greater than or equal to** the magnitude of displacement: $\\text{distance} \\ge |\\Delta x|$. They are equal only when motion never reverses direction." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "There and partway back", problem: "Maya starts at $x_i = 0$, walks to $x = +5\\,\\text{m}$, then back to $x_f = +3\\,\\text{m}$. Find her displacement and the distance she walked.", steps: ["Displacement uses only start and end: $\\Delta x = x_f - x_i = 3 - 0 = +3\\,\\text{m}$.", "Distance is the whole path: $5\\,\\text{m}$ out $+ 2\\,\\text{m}$ back $= 7\\,\\text{m}$."], answer: "Displacement $= +3\\,\\text{m}$; distance $= 7\\,\\text{m}$." },
+        { title: "One full lap", problem: "A runner completes exactly one lap of a $400\\,\\text{m}$ track, finishing where they began. Displacement? Distance?", steps: ["End position equals start position, so $\\Delta x = 0$.", "The path length is one full lap $= 400\\,\\text{m}$."], answer: "Displacement $= 0$; distance $= 400\\,\\text{m}$. A big distance can have zero displacement." },
+        { title: "Choosing a sign", problem: "Taking east as positive, a car moves from $x_i=+8\\,\\text{m}$ to $x_f=+2\\,\\text{m}$. Which way did it move, and what is its displacement?", steps: ["$\\Delta x = 2 - 8 = -6\\,\\text{m}$.", "A negative result means the displacement points in the $-x$ direction (west)."], answer: "It moved $6\\,\\text{m}$ west; $\\Delta x = -6\\,\\text{m}$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [
+        { youtubeId: "tk_wYrojUbI", title: "Distance vs Displacement | Khan-style intro" },
+        { youtubeId: "9Q4XAB1JjQc", title: "Position, Distance & Displacement" },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Vectors vs scalars — answer carefully." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Take the positive direction as stated in each problem." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: vectors in more than one dimension", content: { markdown: "On a line, direction is just a sign. In two or three dimensions, displacement becomes a true vector $\\vec{\\Delta r} = \\langle \\Delta x, \\Delta y, \\Delta z\\rangle$, and its magnitude comes from the Pythagorean theorem: $|\\vec{\\Delta r}| = \\sqrt{\\Delta x^2 + \\Delta y^2}$. Distance is still the length of the actual (possibly curved) path — found with calculus as the integral of speed over time. We'll meet that idea again." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Position $x$ is location from an origin, with a sign for direction.", "Displacement $\\Delta x = x_f - x_i$ is a vector (size + direction).", "Distance is total path length: a non-negative scalar.", "$\\text{distance} \\ge |\\Delta x|$, equal only if motion never reverses."], formulas: [{ label: "Displacement", tex: "\\Delta x = x_f - x_i" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Displacement is a vector — it has a direction.", answer: true, explanation: "Yes. Displacement carries a sign (direction); distance does not." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "You walk $4\\,\\text{m}$ east, then $4\\,\\text{m}$ west. Your displacement is:", options: ["8 m", "0 m", "4 m east", "4 m west"], answer: 1, explanation: "You end where you started, so $\\Delta x = 0$ (distance is 8 m)." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Compared with the magnitude of displacement, distance is:", options: ["always greater than or equal", "always equal", "always smaller", "sometimes negative"], answer: 0, explanation: "Distance $\\ge |\\Delta x|$ always; they're equal only if direction never reverses." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "An object moves from $x_i = 2\\,\\text{m}$ to $x_f = 9\\,\\text{m}$. Displacement in metres?", answer: { value: 7, tolerance: 0 }, hint: "$\\Delta x = x_f - x_i$.", explanation: "$9 - 2 = 7\\,\\text{m}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Taking right as positive: you walk $6\\,\\text{m}$ right then $10\\,\\text{m}$ left. Displacement in metres?", answer: { value: -4, tolerance: 0 }, hint: "Add with signs: $+6 - 10$.", explanation: "$+6 - 10 = -4\\,\\text{m}$ (4 m to the left)." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "For that same trip (6 m right, then 10 m left), what total distance did you travel, in metres?", answer: { value: 16, tolerance: 0 }, hint: "Distance ignores direction.", explanation: "$6 + 10 = 16\\,\\text{m}$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "A car drives $3\\,\\text{km}$ north then $3\\,\\text{km}$ south. Its displacement is:", options: ["6 km", "0 km", "3 km north", "3 km south"], answer: 1, hint: "Where does it end up?", explanation: "It returns to the start, so displacement is 0 (distance is 6 km)." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "It is possible to travel zero distance but have a non-zero displacement.", answer: false, hint: "Can you change position without moving along a path?", explanation: "No. Any change in position requires travelling some path, so distance $\\ge |\\Delta x|$." },
+    ],
+  },
+
+  // ───────────────────────── 2. Velocity & Speed ─────────────────────────
+  {
+    slug: "velocity-and-speed",
+    title: "Velocity & Speed",
+    tagline: "How fast — and in which direction",
+    estMinutes: 15,
+    xpReward: 150,
+    sections: [
+      { kind: "HERO", content: { scene: "earth", headline: "Rates of Change", sub: "Speed tells you how fast. Velocity tells you how fast and which way. The difference is the whole game in physics." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "A weather report saying \"wind 30 km/h\" is almost useless to a pilot — they need the *direction* too. That's the difference between **speed** (a scalar) and **velocity** (a vector). Getting this distinction right is the foundation for everything from projectile motion to orbital mechanics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Average velocity** is displacement per unit time:\n\n$$\\bar v = \\frac{\\Delta x}{\\Delta t}$$\n\nIt is a vector — its sign is the sign of the displacement. Units are metres per second, $\\text{m/s}$.\n\n**Average speed** is total distance per unit time:\n\n$$\\text{average speed} = \\frac{\\text{distance}}{\\Delta t}$$\n\nIt is a scalar and never negative.\n\nThe **instantaneous velocity** is the velocity at a single instant — what a speedometer (plus a direction) reads. It is the limit of average velocity over a vanishingly small time interval, i.e. the derivative of position with respect to time:\n\n$$v = \\lim_{\\Delta t \\to 0}\\frac{\\Delta x}{\\Delta t} = \\frac{dx}{dt}$$\n\nThat calculus definition is the bridge between this algebra-based course and the full university treatment. **Instantaneous speed** is just the magnitude $|v|$.\n\n**Unit conversion** matters constantly. To convert $\\text{km/h}$ to $\\text{m/s}$, multiply by $\\tfrac{1000}{3600} = \\tfrac{1}{3.6}$. So $72\\,\\text{km/h} = 72/3.6 = 20\\,\\text{m/s}$." } },
+      { kind: "SIMULATION", title: "Try it: motion grapher", content: { simId: "motion-graphs", intro: "Set an initial velocity and zero acceleration to see constant-velocity motion: a straight, sloped position–time line and a flat velocity line. The slope of $x(t)$ is the velocity." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Straight-line sprint", problem: "A runner covers $100\\,\\text{m}$ in a straight line in $5.0\\,\\text{s}$. Average velocity?", steps: ["Motion is straight and one-way, so $\\Delta x = 100\\,\\text{m}$.", "$\\bar v = \\Delta x/\\Delta t = 100/5.0 = 20\\,\\text{m/s}$."], answer: "$\\bar v = 20\\,\\text{m/s}$ in the direction of running." },
+        { title: "Velocity vs speed on a round trip", problem: "From the lesson before: a runner does one $400\\,\\text{m}$ lap in $50\\,\\text{s}$, finishing at the start. Average speed? Average velocity?", steps: ["Average speed $= \\text{distance}/\\Delta t = 400/50 = 8\\,\\text{m/s}$.", "Displacement is $0$, so $\\bar v = 0/50 = 0\\,\\text{m/s}$."], answer: "Average speed $= 8\\,\\text{m/s}$; average velocity $= 0$." },
+        { title: "Converting units", problem: "A car's speed is $90\\,\\text{km/h}$. Express it in $\\text{m/s}$.", steps: ["Divide by $3.6$: $90 / 3.6 = 25$."], answer: "$25\\,\\text{m/s}$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [
+        { youtubeId: "tk_wYrojUbI", title: "Speed and Velocity" },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Mind the difference between speed and velocity." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Use $1\\,\\text{m/s} = 3.6\\,\\text{km/h}$ where needed." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: slope is velocity", content: { markdown: "On a **position–time graph**, the slope of the line at a point *is* the instantaneous velocity, $v = dx/dt$. A steeper line means faster motion; a downward slope means negative velocity; a flat line means at rest. This geometric reading of a derivative is one of the most useful skills in all of physics — and it works in reverse too: the **area under a velocity–time graph** equals displacement, which is the integral $\\Delta x = \\int v\\,dt$." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Average velocity $\\bar v = \\Delta x/\\Delta t$ (vector).", "Average speed = distance/time (scalar, never negative).", "Instantaneous velocity is the derivative $v = dx/dt$ — the slope of $x(t)$.", "Convert km/h to m/s by dividing by 3.6."], formulas: [{ label: "Average velocity", tex: "\\bar v = \\dfrac{\\Delta x}{\\Delta t}" }, { label: "Instantaneous velocity", tex: "v = \\dfrac{dx}{dt}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Average velocity is defined as:", options: ["distance / time", "$\\Delta x / \\Delta t$", "$\\Delta t / \\Delta x$", "speed × time"], answer: 1, explanation: "Average velocity is displacement over time, $\\Delta x/\\Delta t$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Speed is the magnitude of velocity.", answer: true, explanation: "Correct — speed is $|v|$, dropping the direction." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "$72\\,\\text{km/h}$ equals how many $\\text{m/s}$?", options: ["20", "72", "7.2", "200"], answer: 0, explanation: "$72 / 3.6 = 20\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A car travels $150\\,\\text{m}$ in a straight line in $6.0\\,\\text{s}$. Average speed in m/s?", answer: { value: 25, tolerance: 0 }, hint: "distance / time.", explanation: "$150/6.0 = 25\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "An object's displacement is $-40\\,\\text{m}$ over $8.0\\,\\text{s}$. Average velocity in m/s?", answer: { value: -5, tolerance: 0 }, hint: "Keep the sign: $\\Delta x/\\Delta t$.", explanation: "$-40/8.0 = -5\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Instantaneous velocity is the:", options: ["derivative $dx/dt$", "derivative $dv/dt$", "product $x\\cdot t$", "ratio $\\Delta t/\\Delta x$"], answer: 0, hint: "Rate of change of position.", explanation: "$v = dx/dt$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Convert $36\\,\\text{km/h}$ to $\\text{m/s}$.", answer: { value: 10, tolerance: 0 }, hint: "Divide by 3.6.", explanation: "$36/3.6 = 10\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "If your average velocity over a trip is exactly zero, you ended where you started.", answer: true, hint: "Zero average velocity means zero displacement.", explanation: "$\\bar v = 0 \\Rightarrow \\Delta x = 0$, so start and end coincide." },
+    ],
+  },
+
+  // ───────────────────────────── 3. Acceleration ─────────────────────────────
+  {
+    slug: "acceleration",
+    title: "Acceleration",
+    tagline: "How quickly velocity itself changes",
+    estMinutes: 14,
+    xpReward: 150,
+    sections: [
+      { kind: "HERO", content: { scene: "earth", headline: "Changing Velocity", sub: "A sports car's bragging right — 0 to 100 km/h in 3 seconds — is a statement about acceleration: how fast the velocity changes." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Whenever an object speeds up, slows down, or changes direction, it is **accelerating**. Acceleration is what forces produce (next course: Newton's laws), and it is the quantity that makes motion *interesting* — constant velocity is easy; changing velocity is where the physics lives." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Average acceleration** is the change in velocity per unit time:\n\n$$\\bar a = \\frac{\\Delta v}{\\Delta t} = \\frac{v_f - v_i}{\\Delta t}$$\n\nUnits are metres per second per second, $\\text{m/s}^2$.\n\nThe **instantaneous acceleration** is the derivative of velocity — and therefore the second derivative of position:\n\n$$a = \\frac{dv}{dt} = \\frac{d^2x}{dt^2}$$\n\n**Sign and direction.** Acceleration is a vector. A common trap: *negative acceleration does not always mean \"slowing down.\"* What matters is the acceleration's direction **relative to the velocity**:\n\n- If $a$ points the **same way** as $v$, the object speeds up.\n- If $a$ points **opposite** to $v$, the object slows down (this is what we usually call *deceleration*).\n\nSo a ball moving in the $-x$ direction ($v<0$) with $a<0$ is actually speeding up." } },
+      { kind: "SIMULATION", title: "Try it: motion grapher", content: { simId: "motion-graphs", intro: "Give it an initial velocity and a non-zero acceleration. Watch the velocity line tilt (its slope is $a$) and the position curve bend into a parabola. Try opposite signs of $v_0$ and $a$ to see slowing down." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Launch", problem: "A car goes from rest to $30\\,\\text{m/s}$ in $6.0\\,\\text{s}$. Average acceleration?", steps: ["$\\Delta v = 30 - 0 = 30\\,\\text{m/s}$.", "$\\bar a = \\Delta v/\\Delta t = 30/6.0 = 5.0\\,\\text{m/s}^2$."], answer: "$\\bar a = 5.0\\,\\text{m/s}^2$." },
+        { title: "Braking", problem: "A car slows from $20\\,\\text{m/s}$ to rest in $4.0\\,\\text{s}$. Find its acceleration.", steps: ["$\\Delta v = 0 - 20 = -20\\,\\text{m/s}$.", "$\\bar a = -20/4.0 = -5.0\\,\\text{m/s}^2$."], answer: "$\\bar a = -5.0\\,\\text{m/s}^2$ — negative because it opposes the motion." },
+        { title: "Negative but speeding up", problem: "A puck moves in the $-x$ direction at $v_i = -2\\,\\text{m/s}$ and reaches $v_f = -8\\,\\text{m/s}$ in $3\\,\\text{s}$. Is it speeding up or slowing down?", steps: ["$\\bar a = (-8 - (-2))/3 = -6/3 = -2\\,\\text{m/s}^2$.", "$a$ and $v$ are both negative — same direction — so the speed $|v|$ increases."], answer: "Speeding up, with $\\bar a = -2\\,\\text{m/s}^2$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [
+        { youtubeId: "FOkQszg1-j8", title: "Acceleration" },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Watch the signs." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Compute average acceleration; mind directions." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: the derivative chain", content: { markdown: "Position, velocity, and acceleration form a derivative chain:\n\n$$x(t) \\xrightarrow{\\;d/dt\\;} v(t) \\xrightarrow{\\;d/dt\\;} a(t)$$\n\nDifferentiate position to get velocity, differentiate again to get acceleration. Run it backwards with integration: $v = \\int a\\,dt$ and $x = \\int v\\,dt$. When $a$ is **constant**, doing those two integrals produces exactly the kinematic equations you'll meet in the next lesson." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Average acceleration $\\bar a = \\Delta v/\\Delta t$, units $\\text{m/s}^2$.", "Instantaneous acceleration $a = dv/dt = d^2x/dt^2$.", "Acceleration is a vector; compare its direction to the velocity.", "Same direction ⇒ speeding up; opposite ⇒ slowing down."], formulas: [{ label: "Average acceleration", tex: "\\bar a = \\dfrac{v_f - v_i}{\\Delta t}" }, { label: "Instantaneous acceleration", tex: "a = \\dfrac{dv}{dt} = \\dfrac{d^2x}{dt^2}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The units of acceleration are:", options: ["m/s", "$\\text{m/s}^2$", "m", "s"], answer: 1, explanation: "Acceleration is velocity (m/s) per second, i.e. $\\text{m/s}^2$." },
+      { scope: "CONCEPT_CHECK", kind: "NUMERIC", prompt: "Velocity rises from $10$ to $40\\,\\text{m/s}$ in $5.0\\,\\text{s}$. Acceleration in $\\text{m/s}^2$?", answer: { value: 6, tolerance: 0 }, explanation: "$\\Delta v = 30$, $a = 30/5 = 6\\,\\text{m/s}^2$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Acceleration is the rate of change of velocity.", answer: true, explanation: "Exactly — $a = dv/dt$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A rocket goes $0 \\to 100\\,\\text{m/s}$ in $20\\,\\text{s}$. Acceleration in $\\text{m/s}^2$?", answer: { value: 5, tolerance: 0 }, hint: "$\\Delta v/\\Delta t$.", explanation: "$100/20 = 5\\,\\text{m/s}^2$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A car slows from $30\\,\\text{m/s}$ to rest in $6.0\\,\\text{s}$. Acceleration in $\\text{m/s}^2$ (with sign)?", answer: { value: -5, tolerance: 0 }, hint: "$\\Delta v$ is negative.", explanation: "$(0-30)/6 = -5\\,\\text{m/s}^2$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "$a = dv/dt$ can also be written as:", options: ["$d^2x/dt^2$", "$dx/dt$", "$\\int v\\,dt$", "$x/t$"], answer: 0, hint: "Differentiate position twice.", explanation: "Acceleration is the second derivative of position." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Negative acceleration always means an object is slowing down.", answer: false, hint: "Compare the directions of $a$ and $v$.", explanation: "If velocity is also negative, a negative acceleration speeds the object up." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A cyclist accelerates at $2.5\\,\\text{m/s}^2$ from $5$ to $15\\,\\text{m/s}$. How many seconds does it take?", answer: { value: 4, tolerance: 0 }, hint: "$t = \\Delta v / a$.", explanation: "$\\Delta v = 10$, $t = 10/2.5 = 4\\,\\text{s}$." },
+    ],
+  },
+
+  // ─────────────────────── 4. The Kinematic Equations ───────────────────────
+  {
+    slug: "kinematic-equations",
+    title: "The Kinematic Equations",
+    tagline: "Four equations that solve constant-acceleration motion",
+    estMinutes: 18,
+    xpReward: 160,
+    sections: [
+      { kind: "HERO", content: { scene: "earth", headline: "The Equations of Motion", sub: "When acceleration is constant, four compact equations let you predict an object's entire future — position, velocity, and time." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "Constant acceleration is everywhere: a dropped object, a braking car, a puck on ice given a steady push. For these, you don't need calculus on every problem — four **kinematic equations** package the answers. Master choosing the right one and you can solve the vast majority of intro-mechanics problems." } },
+      { kind: "CONCEPT", title: "The four equations", content: { markdown: "For motion with **constant acceleration** $a$, with initial velocity $v_0$, final velocity $v$, and displacement $\\Delta x$ over time $t$:\n\n$$v = v_0 + at$$\n$$\\Delta x = v_0 t + \\tfrac{1}{2}a t^2$$\n$$v^2 = v_0^2 + 2a\\,\\Delta x$$\n$$\\Delta x = \\tfrac{1}{2}(v_0 + v)\\,t$$\n\n**How to choose.** Each equation is missing exactly one of the five quantities $\\{v_0, v, a, t, \\Delta x\\}$. Identify what you know and what you want, then pick the equation that doesn't involve the variable you neither know nor need:\n\n- No $\\Delta x$? Use $v = v_0 + at$.\n- No $v$? Use $\\Delta x = v_0 t + \\tfrac12 a t^2$.\n- No $t$? Use $v^2 = v_0^2 + 2a\\,\\Delta x$.\n- No $a$? Use $\\Delta x = \\tfrac12(v_0+v)t$ (displacement = average velocity × time).\n\n**Where they come from (calculus).** Starting from constant $a$: integrate once, $v = \\int a\\,dt = v_0 + at$. Integrate again, $\\Delta x = \\int v\\,dt = v_0 t + \\tfrac12 a t^2$. The other two follow by eliminating $t$ algebraically. That's the whole derivation." } },
+      { kind: "SIMULATION", title: "Try it: motion grapher", content: { simId: "motion-graphs", intro: "Pick $v_0$ and $a$, then play. The position curve is the parabola $\\Delta x = v_0 t + \\tfrac12 a t^2$ and the velocity line is $v = v_0 + at$. Read values off the live readout and check them against the equations." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Find final velocity and displacement", problem: "A car starts at $v_0 = 10\\,\\text{m/s}$ and accelerates at $a = 2.0\\,\\text{m/s}^2$ for $t = 5.0\\,\\text{s}$. Find $v$ and $\\Delta x$.", steps: ["$v = v_0 + at = 10 + 2.0\\times 5.0 = 20\\,\\text{m/s}$.", "$\\Delta x = v_0 t + \\tfrac12 a t^2 = 10(5) + \\tfrac12(2)(5^2) = 50 + 25 = 75\\,\\text{m}$."], answer: "$v = 20\\,\\text{m/s}$, $\\Delta x = 75\\,\\text{m}$." },
+        { title: "No time given", problem: "Starting from rest, a sled accelerates at $a = 3.0\\,\\text{m/s}^2$ over $\\Delta x = 24\\,\\text{m}$. Final speed?", steps: ["No $t$, so use $v^2 = v_0^2 + 2a\\,\\Delta x$.", "$v^2 = 0 + 2(3.0)(24) = 144$, so $v = \\sqrt{144} = 12\\,\\text{m/s}$."], answer: "$v = 12\\,\\text{m/s}$." },
+        { title: "Braking distance and time", problem: "A car braking from $20\\,\\text{m/s}$ stops in $40\\,\\text{m}$. Find $a$, then the stopping time.", steps: ["No $t$: $v^2 = v_0^2 + 2a\\,\\Delta x \\Rightarrow 0 = 20^2 + 2a(40)$.", "$400 = -80a \\Rightarrow a = -5.0\\,\\text{m/s}^2$.", "Now use $v = v_0 + at$: $0 = 20 + (-5)t \\Rightarrow t = 4.0\\,\\text{s}$."], answer: "$a = -5.0\\,\\text{m/s}^2$; stopping time $= 4.0\\,\\text{s}$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [
+        { youtubeId: "2vXf7N7bGyg", title: "Kinematic Equations" },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Pick the right tool." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "List knowns, choose the equation missing your unwanted variable, solve." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: when acceleration isn't constant", content: { markdown: "These four equations are valid **only** for constant $a$. If acceleration varies with time, you must go back to calculus: $v(t) = v_0 + \\int_0^t a(t')\\,dt'$ and $x(t) = x_0 + \\int_0^t v(t')\\,dt'$. Air resistance, springs (where $a$ depends on position), and rockets (changing mass) all break the constant-$a$ assumption — and lead to the richer methods of later mechanics courses." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["The four equations hold only for constant acceleration.", "Each omits one variable — choose the one missing your unknown/unneeded quantity.", "They come from integrating constant $a$ twice.", "$\\Delta x = \\tfrac12(v_0+v)t$ says displacement = average velocity × time."], formulas: [{ label: "Velocity–time", tex: "v = v_0 + at" }, { label: "Position–time", tex: "\\Delta x = v_0 t + \\tfrac{1}{2}a t^2" }, { label: "Time-free", tex: "v^2 = v_0^2 + 2a\\,\\Delta x" }, { label: "Average-velocity", tex: "\\Delta x = \\tfrac{1}{2}(v_0+v)t" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Which equation finds final velocity without knowing the time?", options: ["$v = v_0 + at$", "$v^2 = v_0^2 + 2a\\,\\Delta x$", "$\\Delta x = v_0 t + \\tfrac12 a t^2$", "$\\Delta x = \\tfrac12(v_0+v)t$"], answer: 1, explanation: "$v^2 = v_0^2 + 2a\\,\\Delta x$ contains no $t$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "The kinematic equations assume the acceleration is constant.", answer: true, explanation: "Yes — they are derived for constant $a$." },
+      { scope: "CONCEPT_CHECK", kind: "NUMERIC", prompt: "Starting from rest with $a = 4\\,\\text{m/s}^2$, what is $v$ after $3\\,\\text{s}$ (m/s)?", answer: { value: 12, tolerance: 0 }, explanation: "$v = 0 + 4\\times 3 = 12\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "From rest, $a = 2.0\\,\\text{m/s}^2$ for $t = 5.0\\,\\text{s}$. Displacement in metres?", answer: { value: 25, tolerance: 0 }, hint: "$\\Delta x = \\tfrac12 a t^2$ (since $v_0=0$).", explanation: "$\\tfrac12(2)(25) = 25\\,\\text{m}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "$v_0 = 8\\,\\text{m/s}$, $a = 0$, $t = 6\\,\\text{s}$. Displacement in metres?", answer: { value: 48, tolerance: 0 }, hint: "No acceleration ⇒ constant velocity.", explanation: "$\\Delta x = v_0 t = 8\\times 6 = 48\\,\\text{m}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "From rest, $a = 3.0\\,\\text{m/s}^2$ over $\\Delta x = 24\\,\\text{m}$. Final speed in m/s?", answer: { value: 12, tolerance: 0 }, hint: "$v^2 = 2a\\,\\Delta x$.", explanation: "$v^2 = 2(3)(24) = 144 \\Rightarrow v = 12\\,\\text{m/s}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A car braking from $20\\,\\text{m/s}$ stops in $40\\,\\text{m}$. Acceleration in $\\text{m/s}^2$ (with sign)?", answer: { value: -5, tolerance: 0 }, hint: "$0 = v_0^2 + 2a\\Delta x$.", explanation: "$0 = 400 + 80a \\Rightarrow a = -5\\,\\text{m/s}^2$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "The equation $\\Delta x = \\tfrac12(v_0+v)t$ multiplies time by the ___ velocity.", options: ["average", "final", "initial", "instantaneous"], answer: 0, hint: "$\\tfrac12(v_0+v)$ is the mean of start and end.", explanation: "It's displacement = average velocity × time." },
+    ],
+  },
+
+  // ─────────────────── 5. Free Fall & Projectile Motion ───────────────────
+  {
+    slug: "free-fall-and-projectiles",
+    title: "Free Fall & Projectile Motion",
+    tagline: "Gravity as constant acceleration — straight down and across",
+    estMinutes: 18,
+    xpReward: 160,
+    sections: [
+      { kind: "HERO", content: { scene: "earth", headline: "Falling and Flying", sub: "Drop a ball or fire it sideways — gravity treats both the same. Projectile motion is just two kinematics problems running at once." } },
+      { kind: "CONTEXT", title: "Why this matters", content: { markdown: "From a basketball's arc to a spacecraft's re-entry, motion under gravity is the classic application of kinematics. The deep insight — first nailed by Galileo — is that **horizontal and vertical motion are independent**: gravity only affects the vertical part." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "Near Earth's surface, gravity gives every object the same downward acceleration, the **acceleration due to gravity**:\n\n$$g \\approx 9.8\\,\\text{m/s}^2 \\;(\\text{downward})$$\n\n**Free fall** is motion under gravity alone (no air resistance). Taking *up* as positive, the acceleration is $a = -g$, and the kinematic equations apply directly. For an object **dropped from rest** ($v_0 = 0$):\n\n$$v = gt, \\qquad h = \\tfrac{1}{2}g t^2, \\qquad t = \\sqrt{\\tfrac{2h}{g}}$$\n\nCrucially, in a vacuum a hammer and a feather fall **together** — mass does not affect the rate of fall.\n\n**Projectile motion** is two-dimensional motion under gravity. Split it into independent axes:\n\n- **Horizontal ($x$):** no acceleration, so velocity is constant: $x = v_{0x}\\,t$.\n- **Vertical ($y$):** acceleration $-g$, so ordinary free-fall kinematics: $y = v_{0y}t - \\tfrac12 g t^2$.\n\nThe two share only **one** thing: the **time** $t$. That's the link you use to solve them. At the **top** of a trajectory the vertical velocity is momentarily zero (the horizontal velocity never changes)." } },
+      { kind: "SIMULATION", title: "Try it: drop lab", content: { simId: "gravity-drop", intro: "Drop balls under different gravities and watch the fall time. On Earth ($g \\approx 9.8\\,\\text{m/s}^2$) the times match $t = \\sqrt{2h/g}$ — check it against the readout." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Dropped from rest", problem: "A stone is dropped from rest and falls for $2.0\\,\\text{s}$. Using $g = 9.8\\,\\text{m/s}^2$, find its speed and how far it falls.", steps: ["$v = gt = 9.8\\times 2.0 = 19.6\\,\\text{m/s}$.", "$h = \\tfrac12 g t^2 = \\tfrac12 (9.8)(2.0^2) = 19.6\\,\\text{m}$."], answer: "Speed $\\approx 19.6\\,\\text{m/s}$; distance $\\approx 19.6\\,\\text{m}$." },
+        { title: "Thrown straight up", problem: "A ball is thrown upward at $v_0 = 14.7\\,\\text{m/s}$. How long until it reaches its highest point? ($g = 9.8$)", steps: ["At the top, $v = 0$. Use $v = v_0 - g t$.", "$0 = 14.7 - 9.8\\,t \\Rightarrow t = 14.7/9.8 = 1.5\\,\\text{s}$."], answer: "$t = 1.5\\,\\text{s}$." },
+        { title: "Horizontal launch", problem: "A ball rolls off a $45\\,\\text{m}$ high table horizontally. Using $g \\approx 10\\,\\text{m/s}^2$, how long until it lands?", steps: ["Vertical motion sets the time; it starts with $v_{0y}=0$, so $h = \\tfrac12 g t^2$.", "$45 = \\tfrac12 (10) t^2 = 5t^2 \\Rightarrow t^2 = 9 \\Rightarrow t = 3\\,\\text{s}$.", "(Horizontal speed doesn't affect the fall time.)"], answer: "$t = 3\\,\\text{s}$." },
+      ] } },
+      { kind: "VIDEOS", title: "Watch", content: { videos: [
+        { youtubeId: "_Z0X0yE8Ioo", title: "Projectile Motion" },
+        { youtubeId: "E43-CfukEgs", title: "Free Fall & the Feather/Hammer drop" },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Up is positive; $g = 9.8\\,\\text{m/s}^2$ unless told otherwise." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Separate vertical and horizontal; the shared quantity is time." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: range and the role of air", content: { markdown: "For a projectile launched from ground level at speed $v_0$ and angle $\\theta$, the range (ignoring air) is $R = \\dfrac{v_0^2 \\sin(2\\theta)}{g}$, which is maximised at $\\theta = 45^\\circ$. Real projectiles feel **air resistance**, which lowers the optimal angle and shortens the range — one reason a long jumper or a golf ball doesn't quite follow the ideal parabola. Modelling that drag requires the calculus-based methods of later mechanics." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Near Earth, gravity gives $a = g \\approx 9.8\\,\\text{m/s}^2$ downward, independent of mass.", "Free fall is kinematics with $a = -g$ (up positive).", "Projectile motion = independent horizontal (constant $v$) and vertical (free fall) motions.", "Horizontal and vertical share only the time $t$; at the peak $v_y = 0$."], formulas: [{ label: "Fall from rest", tex: "h = \\tfrac{1}{2}g t^2,\\quad t = \\sqrt{\\tfrac{2h}{g}}" }, { label: "Projectile (horizontal)", tex: "x = v_{0x}\\,t" }, { label: "Range (ground level)", tex: "R = \\dfrac{v_0^2 \\sin 2\\theta}{g}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "NUMERIC", prompt: "An object is dropped from rest. Its speed after $3.0\\,\\text{s}$ (use $g = 9.8\\,\\text{m/s}^2$), in m/s?", answer: { value: 29.4, tolerance: 0.4 }, explanation: "$v = gt = 9.8\\times 3.0 = 29.4\\,\\text{m/s}$." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "In projectile motion, the horizontal and vertical motions are independent.", answer: true, explanation: "Gravity acts only vertically; the horizontal motion is unaffected." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The free-fall acceleration near Earth's surface is about:", options: ["$9.8\\,\\text{m/s}^2$", "$9.8\\,\\text{m/s}$", "$98\\,\\text{m/s}^2$", "$0$"], answer: 0, explanation: "$g \\approx 9.8\\,\\text{m/s}^2$ downward." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "Dropped from rest, an object falls for $2.0\\,\\text{s}$. Distance fallen (m, $g=9.8$)?", answer: { value: 19.6, tolerance: 0.3 }, hint: "$h = \\tfrac12 g t^2$.", explanation: "$\\tfrac12(9.8)(4) = 19.6\\,\\text{m}$." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A ball is thrown up at $14.7\\,\\text{m/s}$. Time to the highest point (s, $g=9.8$)?", answer: { value: 1.5, tolerance: 0.1 }, hint: "At the top $v=0$; $t = v_0/g$.", explanation: "$14.7/9.8 = 1.5\\,\\text{s}$." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "In a vacuum, a heavy ball and a light feather dropped together hit the ground at the same time.", answer: true, hint: "Does $g$ depend on mass?", explanation: "Free-fall acceleration is independent of mass, so they fall together." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "At the very top of its arc, a ball thrown straight up has a velocity of:", options: ["zero", "its maximum", "$9.8\\,\\text{m/s}$", "$v_0$"], answer: 0, hint: "It's momentarily neither rising nor falling.", explanation: "Vertical velocity is zero at the peak (then it reverses)." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A ball rolls off a $45\\,\\text{m}$ high table horizontally. Time to land (s, use $g = 10\\,\\text{m/s}^2$)?", answer: { value: 3, tolerance: 0.2 }, hint: "$45 = \\tfrac12 g t^2$.", explanation: "$45 = 5t^2 \\Rightarrow t^2 = 9 \\Rightarrow t = 3\\,\\text{s}$." },
+    ],
+  },
+];

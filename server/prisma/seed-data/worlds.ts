@@ -2,6 +2,7 @@ import type { WorldSeed } from "./types.js";
 import { moonLessons } from "./moon.js";
 import { earthSurfaceLessons } from "./earth-surface.js";
 import { atmosphereLessons } from "./atmosphere.js";
+import { kinematicsLessons } from "./physics/kinematics.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -45,12 +46,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "earth-moon-system",
     name: "The Earth–Moon System",
-    subtitle: "A dance of two worlds",
-    description: "Tides, orbits, and eclipses — how two worlds hold each other in an endless gravitational waltz.",
-    gradeRange: "3–5",
+    subtitle: "Classical Mechanics · Kinematics",
+    description: "The physics of motion. Position and displacement, velocity and acceleration, the kinematic equations, and free fall & projectiles — taught with the calculus definitions surfaced.",
+    gradeRange: "9–11",
     scaleLabel: "4×10⁸ m",
     palette: { accent: "#7FB3FF", glow: "#3D6FC9" },
-    lessons: [],
+    lessons: kinematicsLessons,
   },
   {
     slug: "inner-solar-system",
