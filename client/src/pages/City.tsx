@@ -3,22 +3,19 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { mathApi, type WorldsResponse } from "../lib/physics";
 import { parseApiError } from "../lib/api";
-import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
-import { CityScape } from "../components/math/CityScape";
+import { AppShell } from "../components/layout/AppNav";
+import { LearningPath } from "../components/path/LearningPath";
 import { Button } from "../components/ui/Button";
 
-function MapSkeleton() {
+function PathSkeleton() {
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="text-center mb-8 flex flex-col items-center gap-3">
-        <div className="skeleton h-3 w-32" />
-        <div className="skeleton h-9 w-72" />
-        <div className="skeleton h-4 w-96 max-w-full" />
-      </div>
-      <div className="flex flex-col gap-3">
-        {Array.from({ length: 7 }).map((_, i) => (
-          <div key={i} className="skeleton h-[88px] w-full" />
+    <div className="mx-auto flex max-w-2xl flex-col items-center gap-4">
+      <div className="skeleton h-9 w-64" />
+      <div className="skeleton h-4 w-80 max-w-full" />
+      <div className="mt-6 flex flex-col items-center gap-12">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="skeleton h-[88px] w-[88px] rounded-full" />
         ))}
       </div>
     </div>
@@ -48,27 +45,31 @@ export default function City() {
     };
   }, [navigate]);
 
-  const palette = data?.worlds[0]?.palette ?? { accent: "#22D3A0", glow: "#6B21D6" };
-
   return (
-    <div className="relative min-h-screen">
-      <CosmicBackground palette={palette} intensity={0.8} />
-      <JourneyHeader back={{ to: "/dashboard", label: "Dashboard" }} />
-      <main className="relative z-10 px-4 sm:px-6 py-10">
-        {error ? (
-          <div className="glass mx-auto max-w-md px-6 py-8 text-center">
-            <p className="font-display text-lg font-semibold">The city didn't load</p>
-            <p className="mt-1 text-sm text-neutron/60">{error}</p>
-            <div className="mt-4">
-              <Button onClick={() => window.location.reload()}>Try again</Button>
+    <AppShell>
+      <div className="relative min-h-screen">
+        <JourneyHeader back={{ to: "/dashboard", label: "Dashboard" }} />
+        <main className="relative z-10 px-4 sm:px-6 py-10">
+          {error ? (
+            <div className="glass mx-auto max-w-md px-6 py-8 text-center">
+              <p className="font-display text-lg font-semibold">The city didn't load</p>
+              <p className="mt-1 text-sm text-fg/60">{error}</p>
+              <div className="mt-4">
+                <Button onClick={() => window.location.reload()}>Try again</Button>
+              </div>
             </div>
-          </div>
-        ) : data ? (
-          <CityScape worlds={data.worlds} continueTarget={data.continue} />
-        ) : (
-          <MapSkeleton />
-        )}
-      </main>
-    </div>
+          ) : data ? (
+            <LearningPath
+              worlds={data.worlds}
+              continueTarget={data.continue}
+              basePath="/city"
+              subject="math"
+            />
+          ) : (
+            <PathSkeleton />
+          )}
+        </main>
+      </div>
+    </AppShell>
   );
 }
