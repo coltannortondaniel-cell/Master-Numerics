@@ -1,6 +1,7 @@
 import type { WorldSeed } from "../types.js";
 import { kindergartenParkLessons } from "./kindergarten-park.js";
 import { elementarySchoolStLessons } from "./elementary-school-st.js";
+import { theBakeryLessons } from "./the-bakery.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -33,11 +34,11 @@ export const districts: WorldSeed[] = [
     slug: "the-bakery",
     name: "The Bakery",
     subtitle: "Slices, shares, and decimals",
-    description: "Warm brick and pastel awnings. Slice the pies and price the loaves to discover fractions and decimals.",
+    description: "Warm brick and pastel awnings. Slice the pies and price the loaves to master fractions — understanding, equivalence, comparing, adding and subtracting — and their link to decimals and percents.",
     gradeRange: "3–5",
     scaleLabel: "12 Pastry Place",
     palette: { accent: "#FF9E5C", glow: "#C2569C" },
-    lessons: [],
+    lessons: theBakeryLessons,
   },
   {
     slug: "the-market",

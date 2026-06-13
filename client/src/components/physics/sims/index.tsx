@@ -17,6 +17,7 @@ import { MotionGraphs } from "./MotionGraphs";
 import { Incline } from "./Incline";
 import { EnergyBars } from "./EnergyBars";
 import { NumberLine } from "./NumberLine";
+import { FractionPie } from "./FractionPie";
 
 /** simId → interactive component. Keys match the `simId` fields in the seed data. */
 const REGISTRY: Record<string, ComponentType> = {
@@ -40,6 +41,7 @@ const REGISTRY: Record<string, ComponentType> = {
   "pattern-maker": PatternMaker,
   "compare-balance": CompareBalance,
   "number-line": NumberLine,
+  "fraction-pie": FractionPie,
 };
 
 /** Renders the simulation for a simId, or a tasteful placeholder if not yet built. */
