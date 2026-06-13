@@ -5,7 +5,7 @@ import { mathApi, type WorldsResponse } from "../lib/physics";
 import { parseApiError } from "../lib/api";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
-import { CityMap } from "../components/math/CityMap";
+import { CityScape } from "../components/math/CityScape";
 import { Button } from "../components/ui/Button";
 
 function MapSkeleton() {
@@ -64,7 +64,7 @@ export default function City() {
             </div>
           </div>
         ) : data ? (
-          <CityMap worlds={data.worlds} continueTarget={data.continue} />
+          <CityScape worlds={data.worlds} continueTarget={data.continue} />
         ) : (
           <MapSkeleton />
         )}
