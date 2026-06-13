@@ -4,6 +4,7 @@ import { earthSurfaceLessons } from "./earth-surface.js";
 import { atmosphereLessons } from "./atmosphere.js";
 import { kinematicsLessons } from "./physics/kinematics.js";
 import { dynamicsLessons } from "./physics/dynamics.js";
+import { energyLessons } from "./physics/energy.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -67,12 +68,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "outer-solar-system",
     name: "The Outer Solar System",
-    subtitle: "Giants of gas and ice",
-    description: "Jupiter's storms, Saturn's rings, and orbital mechanics at the grandest planetary scale.",
-    gradeRange: "6–8",
+    subtitle: "Classical Mechanics · Work, Energy & Power",
+    description: "The currency of physics: energy. Work as force through a distance, kinetic and potential energy, the conservation of mechanical energy, and power — the rate energy is transferred.",
+    gradeRange: "10–12",
     scaleLabel: "5×10¹² m",
     palette: { accent: "#5AD1E6", glow: "#2A8FA3" },
-    lessons: [],
+    lessons: energyLessons,
   },
   {
     slug: "oort-cloud",

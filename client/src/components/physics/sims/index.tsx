@@ -15,6 +15,7 @@ import { PatternMaker } from "./PatternMaker";
 import { CompareBalance } from "./CompareBalance";
 import { MotionGraphs } from "./MotionGraphs";
 import { Incline } from "./Incline";
+import { EnergyBars } from "./EnergyBars";
 import { NumberLine } from "./NumberLine";
 
 /** simId → interactive component. Keys match the `simId` fields in the seed data. */
@@ -32,6 +33,7 @@ const REGISTRY: Record<string, ComponentType> = {
   // Physics — mechanics
   "motion-graphs": MotionGraphs,
   "incline-plane": Incline,
+  "energy-bars": EnergyBars,
   // Math
   "count-along": CountAlong,
   "shape-sorter": ShapeSorter,
