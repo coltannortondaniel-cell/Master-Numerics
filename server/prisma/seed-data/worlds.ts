@@ -5,6 +5,7 @@ import { atmosphereLessons } from "./atmosphere.js";
 import { kinematicsLessons } from "./physics/kinematics.js";
 import { dynamicsLessons } from "./physics/dynamics.js";
 import { energyLessons } from "./physics/energy.js";
+import { momentumLessons } from "./physics/momentum.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -78,12 +79,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "oort-cloud",
     name: "The Oort Cloud",
-    subtitle: "The edge of the Sun's reach",
-    description: "A frozen shell of a trillion comets, where the Sun is just the brightest star in the sky.",
-    gradeRange: "8–9",
+    subtitle: "Classical Mechanics · Momentum & Collisions",
+    description: "Mass in motion and what it takes to change it. Momentum and impulse, conservation of momentum, inelastic and elastic collisions, and the center of mass — the tools for analysing any collision.",
+    gradeRange: "11–12",
     scaleLabel: "1×10¹⁵ m",
     palette: { accent: "#9AA7FF", glow: "#5662B8" },
-    lessons: [],
+    lessons: momentumLessons,
   },
   {
     slug: "interstellar-space",

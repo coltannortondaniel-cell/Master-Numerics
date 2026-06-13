@@ -16,6 +16,7 @@ import { CompareBalance } from "./CompareBalance";
 import { MotionGraphs } from "./MotionGraphs";
 import { Incline } from "./Incline";
 import { EnergyBars } from "./EnergyBars";
+import { Collision } from "./Collision";
 import { NumberLine } from "./NumberLine";
 import { FractionPie } from "./FractionPie";
 
@@ -35,6 +36,7 @@ const REGISTRY: Record<string, ComponentType> = {
   "motion-graphs": MotionGraphs,
   "incline-plane": Incline,
   "energy-bars": EnergyBars,
+  "collision": Collision,
   // Math
   "count-along": CountAlong,
   "shape-sorter": ShapeSorter,
