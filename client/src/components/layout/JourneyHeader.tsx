@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { useXp } from "../../store/xp";
 import { rankForXp } from "../../lib/rank";
-import { Coins } from "lucide-react";
+import { Coins, Settings as SettingsIcon } from "lucide-react";
 import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
 import { RankIcon } from "../ui/RankIcon";
@@ -63,6 +63,14 @@ export function JourneyHeader({ back }: Props) {
           <span className="hidden sm:inline text-xs text-neutron/50">XP</span>
         </div>
         <NotificationBell />
+        <Link
+          to="/settings"
+          aria-label="Settings"
+          title="Settings"
+          className="text-neutron/55 transition-colors hover:text-neutron"
+        >
+          <SettingsIcon size={18} strokeWidth={1.75} />
+        </Link>
         {user && (
           <Link
             to={`/profile/${user.username}`}

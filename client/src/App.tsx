@@ -15,6 +15,8 @@ import NotFound from "./pages/NotFound";
 import { WarpProvider } from "./components/physics/WarpTransition";
 import { XpToaster } from "./components/ui/XpToaster";
 import { mathApi } from "./lib/physics";
+// Initializes display/accessibility prefs (theme, motion, contrast) on import.
+import "./store/settings";
 
 // Code-split the journeys: KaTeX, the lesson viewer, and the simulations only
 // load once a student actually enters a journey.
@@ -33,6 +35,7 @@ const Customize = lazy(() => import("./pages/Customize"));
 const Notebook = lazy(() => import("./pages/Notebook"));
 const Flashcards = lazy(() => import("./pages/Flashcards"));
 const Formulas = lazy(() => import("./pages/Formulas"));
+const Settings = lazy(() => import("./pages/Settings"));
 const Admin = lazy(() => import("./pages/Admin"));
 
 function RouteFallback() {
@@ -55,6 +58,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      {/* Subtle, ever-present star-field behind every screen (per design brief). */}
+      <div className="starfield" aria-hidden />
       <WarpProvider>
         <Suspense fallback={<RouteFallback />}>
         <Routes>
@@ -236,6 +241,14 @@ export default function App() {
             element={
               <RequireAuth>
                 <Formulas />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <RequireAuth>
+                <Settings />
               </RequireAuth>
             }
           />
