@@ -42,7 +42,7 @@ export default function Register() {
     setLoading(true);
     try {
       await register(form);
-      navigate("/dashboard");
+      navigate("/welcome");
     } catch (err) {
       const { message, code, fields } = err as {
         message: string;
