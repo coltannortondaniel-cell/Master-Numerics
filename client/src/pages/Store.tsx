@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { storeApi, type StoreResponse, type Crate, type CrateResult } from "../lib/store";
 import { parseApiError } from "../lib/api";
-import { RARITY_META, typeIcon, type Rarity } from "../lib/rarity";
+import { Coins, Gift } from "lucide-react";
+import { RARITY_META, type Rarity } from "../lib/rarity";
+import { CosmeticTypeIcon } from "../components/ui/CosmeticTypeIcon";
 import { useXp } from "../store/xp";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
@@ -44,7 +46,7 @@ export default function Store() {
     setData((d) => (d ? { ...d, coins: res.newBalance } : d));
     setCoinsGlobal(res.newBalance);
     for (const a of res.achievements) {
-      pushToast({ kind: "mastery", title: `Achievement: ${a.name}`, amount: a.xpReward, detail: a.coinReward ? `+🪙 ${a.coinReward}` : undefined });
+      pushToast({ kind: "mastery", title: `Achievement: ${a.name}`, amount: a.xpReward, detail: a.coinReward ? `+${a.coinReward} coins` : undefined });
     }
   }
 
@@ -95,7 +97,9 @@ export default function Store() {
           </div>
           <div className="glass px-4 py-2 text-right">
             <p className="text-[0.7rem] uppercase tracking-widest text-neutron/45">Balance</p>
-            <p className="font-mono text-xl font-bold text-solar">🪙 {coins.toLocaleString()}</p>
+            <p className="flex items-center justify-end gap-1.5 font-mono text-xl font-bold text-solar">
+              <Coins size={18} strokeWidth={1.75} /> {coins.toLocaleString()}
+            </p>
           </div>
         </div>
 
@@ -116,10 +120,12 @@ export default function Store() {
                 return (
                   <div key={crate.key} className="glass flex flex-col p-5">
                     <div className="mb-3 flex items-center gap-3">
-                      <span className="text-4xl">🎁</span>
+                      <Gift size={34} strokeWidth={1.4} style={{ color: "#C9B6FF" }} />
                       <div>
                         <h3 className="font-display font-bold">{crate.name}</h3>
-                        <p className="font-mono text-sm text-solar">🪙 {crate.cost}</p>
+                        <p className="flex items-center gap-1 font-mono text-sm text-solar">
+                          <Coins size={13} strokeWidth={1.75} /> {crate.cost}
+                        </p>
                       </div>
                     </div>
                     <p className="mb-3 flex-1 text-sm text-neutron/55">{crate.blurb}</p>
@@ -141,7 +147,7 @@ export default function Store() {
                 const m = RARITY_META[c.rarity];
                 return (
                   <div key={c.key} className="glass flex flex-col items-center p-4 text-center" style={{ borderTop: `2px solid ${m.color}` }}>
-                    <span className="text-3xl">{typeIcon(c.type)}</span>
+                    <CosmeticTypeIcon type={c.type} size={26} strokeWidth={1.5} style={{ color: m.color }} />
                     <p className="mt-1 text-sm font-semibold">{c.name}</p>
                     <p className="text-[0.7rem] font-semibold" style={{ color: m.color }}>{m.label}</p>
                     <div className="mt-3 w-full">
@@ -151,9 +157,9 @@ export default function Store() {
                         <button
                           onClick={() => buy(c.key)}
                           disabled={busy || coins < c.coinPrice}
-                          className="w-full rounded-lg bg-cosmic py-2 text-sm font-semibold text-neutron hover:brightness-110 disabled:opacity-40"
+                          className="flex w-full items-center justify-center gap-1 rounded-lg bg-cosmic py-2 text-sm font-semibold text-neutron hover:brightness-110 disabled:opacity-40"
                         >
-                          🪙 {c.coinPrice}
+                          <Coins size={13} strokeWidth={1.75} /> {c.coinPrice}
                         </button>
                       )}
                     </div>

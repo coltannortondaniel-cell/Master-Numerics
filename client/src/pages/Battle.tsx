@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Swords, Trophy, Handshake, Dumbbell } from "lucide-react";
 import { getSocket } from "../lib/socket";
 import { useXp } from "../store/xp";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
@@ -86,7 +87,7 @@ export default function Battle() {
           kind: o.result === "win" ? "bonus" : "xp",
           amount: o.xp,
           title: o.result === "win" ? "Victory!" : o.result === "draw" ? "Hard-fought draw" : "Good fight",
-          detail: o.coins > 0 ? `+🪙 ${o.coins}` : undefined,
+          detail: o.coins > 0 ? `+${o.coins} coins` : undefined,
         });
       }
       for (const a of o.achievements ?? []) {
@@ -196,7 +197,7 @@ export default function Battle() {
                 ))}
               </div>
               <Button variant="danger" onClick={findMatch} className="w-full">
-                ⚔️ Find match
+                <Swords size={16} strokeWidth={1.75} /> Find match
               </Button>
               {error && <p className="mt-3 text-sm text-alert">{error}</p>}
             </div>
@@ -346,9 +347,9 @@ export default function Battle() {
             animate={{ opacity: 1, scale: 1 }}
             className="mx-auto max-w-sm text-center"
           >
-            <p className="text-6xl">
-              {over.result === "win" ? "🏆" : over.result === "draw" ? "🤝" : "💪"}
-            </p>
+            <div className="flex justify-center" style={{ color: over.result === "win" ? "#E8B33A" : over.result === "draw" ? "#C0C7D0" : "#FF4757" }}>
+              {over.result === "win" ? <Trophy size={56} strokeWidth={1.4} /> : over.result === "draw" ? <Handshake size={56} strokeWidth={1.4} /> : <Dumbbell size={56} strokeWidth={1.4} />}
+            </div>
             <h1 className="mt-3 font-display text-3xl font-bold">
               {over.result === "win" ? "Victory!" : over.result === "draw" ? "Draw" : "Defeat"}
             </h1>

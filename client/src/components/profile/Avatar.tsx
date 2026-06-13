@@ -9,19 +9,6 @@ const OUTFIT_COLOR: Record<string, string> = {
   "outfit-event-horizon": "#6B21D6",
 };
 const HELMET = new Set(["outfit-space-suit", "outfit-event-horizon"]);
-const HAT_GLYPH: Record<string, string> = {
-  "hat-grad-cap": "🎓",
-  "hat-explorer-helm": "⛑️",
-  "hat-astronaut-helmet": "🚀",
-  "hat-halo-of-stars": "🌟",
-};
-const PET_GLYPH: Record<string, string> = {
-  "pet-mini-robot": "🤖",
-  "pet-floating-pi": "π",
-  "pet-mini-planet": "🪐",
-  "pet-pocket-comet": "☄️",
-  "pet-baby-star": "⭐",
-};
 const AURA_COLOR: Record<string, string> = {
   "aura-soft-glow": "#F0F4FF",
   "aura-solar-flare": "#FFB800",
@@ -37,6 +24,91 @@ const BG_GRADIENT: Record<string, [string, string]> = {
   "bg-galactic-core": ["#5a3a00", "#1a140a"],
 };
 
+const INK = "#F0F4FF";
+const GOLD = "#E8B33A";
+
+/** Clean SVG hat marks (no emoji), drawn around the head (centre x=50, top ~y23). */
+function HatMark({ hat }: { hat: string }) {
+  switch (hat) {
+    case "hat-grad-cap":
+      return (
+        <g>
+          <polygon points="50,6 74,16 50,26 26,16" fill="#15161f" stroke={INK} strokeWidth="1.5" />
+          <rect x="40" y="20" width="20" height="7" rx="2" fill="#15161f" stroke={INK} strokeWidth="1.5" />
+          <line x1="74" y1="16" x2="74" y2="26" stroke={GOLD} strokeWidth="1.5" />
+          <circle cx="74" cy="27" r="1.8" fill={GOLD} />
+        </g>
+      );
+    case "hat-explorer-helm":
+      return (
+        <g fill="none" stroke={INK} strokeWidth="1.8">
+          <path d="M31 22 A19 15 0 0 1 69 22" fill="#2a3340" />
+          <line x1="26" y1="22" x2="74" y2="22" />
+        </g>
+      );
+    case "hat-halo-of-stars":
+      return (
+        <g>
+          <ellipse cx="50" cy="14" rx="20" ry="5" fill="none" stroke={GOLD} strokeWidth="1.5" opacity="0.9" />
+          {[26, 50, 74].map((x, i) => (
+            <circle key={i} cx={x} cy={14} r="1.6" fill={GOLD} />
+          ))}
+        </g>
+      );
+    case "hat-astronaut-helmet":
+      return <circle cx="50" cy="10" r="1.8" fill={INK} />; // antenna tip (helmet drawn on head)
+    default:
+      return null;
+  }
+}
+
+/** Clean SVG pet marks (bottom-right). π kept as a real math symbol. */
+function PetMark({ pet }: { pet: string }) {
+  switch (pet) {
+    case "pet-mini-robot":
+      return (
+        <g>
+          <line x1="80" y1="74" x2="80" y2="78" stroke={INK} strokeWidth="1.2" />
+          <circle cx="80" cy="73" r="1.4" fill={GOLD} />
+          <rect x="73" y="78" width="14" height="12" rx="3" fill="#2a3340" stroke={INK} strokeWidth="1.2" />
+          <circle cx="77" cy="84" r="1.6" fill={GOLD} />
+          <circle cx="83" cy="84" r="1.6" fill={GOLD} />
+        </g>
+      );
+    case "pet-floating-pi":
+      return (
+        <text x="80" y="88" textAnchor="middle" fontFamily="'Cormorant Garamond', serif" fontStyle="italic" fontSize="18" fill={GOLD}>
+          π
+        </text>
+      );
+    case "pet-mini-planet":
+      return (
+        <g>
+          <circle cx="80" cy="83" r="6" fill="#5AD1E6" />
+          <ellipse cx="80" cy="83" rx="10" ry="3.4" fill="none" stroke={INK} strokeWidth="1.3" opacity="0.8" />
+        </g>
+      );
+    case "pet-pocket-comet":
+      return (
+        <g>
+          <line x1="86" y1="78" x2="74" y2="90" stroke={GOLD} strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+          <circle cx="86" cy="78" r="3.2" fill={INK} />
+        </g>
+      );
+    case "pet-baby-star":
+      return (
+        <polygon
+          points="80,76 82,82 88,82 83,86 85,92 80,88 75,92 77,86 72,82 78,82"
+          fill={GOLD}
+          stroke="#0A0B14"
+          strokeWidth="0.6"
+        />
+      );
+    default:
+      return null;
+  }
+}
+
 export function Avatar({
   layers,
   baseColor,
@@ -47,7 +119,7 @@ export function Avatar({
   size?: number;
 }) {
   const outfit = layers.outfit ? OUTFIT_COLOR[layers.outfit] ?? baseColor : baseColor;
-  const helmet = layers.outfit ? HELMET.has(layers.outfit) || layers.hat === "hat-astronaut-helmet" : false;
+  const helmet = layers.outfit ? HELMET.has(layers.outfit) || layers.hat === "hat-astronaut-helmet" : layers.hat === "hat-astronaut-helmet";
   const aura = layers.aura ? AURA_COLOR[layers.aura] ?? "#6B21D6" : null;
   const bg = layers.background ? BG_GRADIENT[layers.background] ?? ["#10121f", "#05060c"] : ["#10121f", "#05060c"];
   const id = `av-${Math.random().toString(36).slice(2, 8)}`;
@@ -66,7 +138,6 @@ export function Avatar({
 
       <rect x="0" y="0" width="100" height="100" rx="16" fill={`url(#${id}-bg)`} />
 
-      {/* tiny background stars */}
       <g fill="#ffffff" opacity="0.5">
         <circle cx="18" cy="20" r="0.8" />
         <circle cx="82" cy="26" r="0.8" />
@@ -78,7 +149,6 @@ export function Avatar({
 
       {/* body */}
       <rect x="31" y="56" width="38" height="36" rx="13" fill={outfit} />
-      {/* arms */}
       <rect x="24" y="60" width="9" height="24" rx="4.5" fill={outfit} />
       <rect x="67" y="60" width="9" height="24" rx="4.5" fill={outfit} />
 
@@ -98,19 +168,8 @@ export function Avatar({
         </>
       )}
 
-      {/* hat */}
-      {layers.hat && HAT_GLYPH[layers.hat] && (
-        <text x="50" y="22" textAnchor="middle" fontSize="20">
-          {HAT_GLYPH[layers.hat]}
-        </text>
-      )}
-
-      {/* pet companion */}
-      {layers.pet && PET_GLYPH[layers.pet] && (
-        <text x="82" y="86" textAnchor="middle" fontSize="15" fontStyle={layers.pet === "pet-floating-pi" ? "italic" : "normal"} fill="#FFB800">
-          {PET_GLYPH[layers.pet]}
-        </text>
-      )}
+      {layers.hat && <HatMark hat={layers.hat} />}
+      {layers.pet && <PetMark pet={layers.pet} />}
     </svg>
   );
 }

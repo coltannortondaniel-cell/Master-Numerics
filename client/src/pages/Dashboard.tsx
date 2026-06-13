@@ -6,7 +6,7 @@ import { dashboardApi, type DashboardSummary, type Challenge, type ContinueTarge
 import { rankProgress } from "../lib/rank";
 import { useXp } from "../store/xp";
 import {
-  Calculator, Swords, Trophy, Users, Gift, Award, NotebookPen, Layers, Sigma, Flame,
+  Calculator, Swords, Trophy, Users, Gift, Award, NotebookPen, Layers, Sigma, Flame, Coins,
 } from "lucide-react";
 import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
@@ -77,7 +77,7 @@ function ChallengeRow({ c, onClaim, claiming }: { c: Challenge; onClaim: (k: str
     <div className="glass px-4 py-3">
       <div className="flex items-center justify-between gap-2">
         <p className="text-sm font-medium">{c.label}</p>
-        <span className="font-mono text-xs text-solar">🪙{c.coin} · {c.xp}xp</span>
+        <span className="flex items-center gap-1 font-mono text-xs text-solar"><Coins size={11} strokeWidth={1.75} />{c.coin} · {c.xp}xp</span>
       </div>
       <div className="mt-2 flex items-center gap-3">
         <div className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">

@@ -1,7 +1,8 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import type { CrateResult } from "../../lib/store";
-import { RARITY_META, RARITY_ORDER, typeIcon, type Rarity } from "../../lib/rarity";
+import { RARITY_META, RARITY_ORDER, type Rarity } from "../../lib/rarity";
+import { CosmeticTypeIcon } from "../ui/CosmeticTypeIcon";
 
 const CARD = 124; // px per reel card incl. gap
 const WINNER_INDEX = 48;
@@ -26,14 +27,14 @@ function fillerRarity(): Rarity {
   return "COMMON";
 }
 
-function ReelCard({ rarity, label, icon }: { rarity: Rarity; label: string; icon: string }) {
+function ReelCard({ rarity, label, type }: { rarity: Rarity; label: string; type?: string }) {
   const m = RARITY_META[rarity];
   return (
     <div
       className="mx-1.5 flex h-32 w-28 shrink-0 flex-col items-center justify-center rounded-lg border-2"
       style={{ borderColor: m.color, background: `linear-gradient(160deg, ${m.glow}, rgba(10,11,20,0.85))` }}
     >
-      <span className="text-3xl">{icon}</span>
+      <CosmeticTypeIcon type={type} size={30} strokeWidth={1.5} style={{ color: m.color }} />
       <span className="mt-1 px-1 text-center text-[0.65rem] font-semibold" style={{ color: m.color }}>
         {label}
       </span>
@@ -62,12 +63,12 @@ export function CrateOpener({
   const reel = useMemo(() => {
     const items = Array.from({ length: REEL_LEN }, () => {
       const rar = fillerRarity();
-      return { rarity: rar, label: RARITY_META[rar].label, icon: "❔" };
+      return { rarity: rar, label: RARITY_META[rar].label, type: undefined as string | undefined };
     });
     items[WINNER_INDEX] = {
       rarity: result.rarity,
       label: result.cosmetic.name,
-      icon: typeIcon(result.cosmetic.type),
+      type: result.cosmetic.type,
     };
     return items;
   }, [result]);
@@ -104,7 +105,7 @@ export function CrateOpener({
                 onAnimationComplete={() => setPhase("revealed")}
               >
                 {reel.map((it, i) => (
-                  <ReelCard key={i} rarity={it.rarity} label={it.label} icon={it.icon} />
+                  <ReelCard key={i} rarity={it.rarity} label={it.label} type={it.type} />
                 ))}
               </motion.div>
             )}
@@ -146,7 +147,7 @@ export function CrateOpener({
             className="mt-4 flex h-40 w-36 flex-col items-center justify-center rounded-2xl border-2"
             style={{ borderColor: win.color, background: `linear-gradient(160deg, ${win.glow}, rgba(10,11,20,0.85))`, boxShadow: `0 0 40px ${win.glow}` }}
           >
-            <span className="text-5xl">{typeIcon(result.cosmetic.type)}</span>
+            <CosmeticTypeIcon type={result.cosmetic.type} size={52} strokeWidth={1.4} style={{ color: win.color }} />
             <span className="mt-2 px-2 text-sm font-semibold" style={{ color: win.color }}>
               {result.cosmetic.name}
             </span>
@@ -155,7 +156,7 @@ export function CrateOpener({
           {result.pity && <p className="mt-1 text-xs text-solar">✦ Pity guarantee triggered!</p>}
           {result.duplicate && (
             <p className="mt-1 text-sm text-neutron/50">
-              Duplicate — refunded <span className="text-solar">🪙 {result.refund}</span>
+              Duplicate — refunded <span className="font-semibold text-solar">+{result.refund} coins</span>
             </p>
           )}
 

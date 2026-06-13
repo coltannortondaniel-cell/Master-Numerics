@@ -1,4 +1,5 @@
 import type { ComponentType } from "react";
+import { Telescope } from "lucide-react";
 import { GravityDrop } from "./GravityDrop";
 import { MoonPhases } from "./MoonPhases";
 import { EarthSpin } from "./EarthSpin";
@@ -38,7 +39,7 @@ export function SimulationHost({ simId }: { simId: string }) {
   if (!Sim) {
     return (
       <div className="rounded-xl border border-dashed border-neutron/15 bg-space/40 px-5 py-8 text-center">
-        <p className="text-2xl">🔭</p>
+        <Telescope size={26} strokeWidth={1.4} className="mx-auto text-neutron/40" />
         <p className="mt-2 font-display font-semibold">Interactive coming online</p>
         <p className="mt-1 text-sm text-neutron/50">This simulation is being calibrated.</p>
       </div>

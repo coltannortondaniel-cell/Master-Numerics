@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Crown } from "lucide-react";
 import {
   type Question,
   type QuizResult,
@@ -92,7 +93,7 @@ export function PracticeSet({
           </div>
           <div className="text-right">
             {mastered ? (
-              <p className="font-display font-semibold text-[#C9B6FF]">👑 Mastered!</p>
+              <p className="flex items-center justify-end gap-1.5 font-display font-semibold text-[#C9B6FF]"><Crown size={16} strokeWidth={1.75} /> Mastered!</p>
             ) : percent >= 90 ? (
               <p className="font-display font-semibold text-success">Brilliant!</p>
             ) : percent >= 60 ? (

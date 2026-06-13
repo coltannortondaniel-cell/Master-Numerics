@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
+import { Coins } from "lucide-react";
 import { adminApi, type AdminOverview, type AdminUser, type AdminLesson } from "../lib/admin";
 import { parseApiError } from "../lib/api";
 import { useAuth } from "../store/auth";
@@ -62,14 +63,14 @@ function UsersTab() {
                 </p>
                 <p className="text-xs text-neutron/45">{u.email} · {u.subscription ?? "no sub"}</p>
               </div>
-              <p className="font-mono text-xs text-solar">{u.xp.toLocaleString()} XP · 🪙{u.coins.toLocaleString()}</p>
+              <p className="flex items-center gap-1 font-mono text-xs text-solar">{u.xp.toLocaleString()} XP · <Coins size={11} strokeWidth={1.75} />{u.coins.toLocaleString()}</p>
             </div>
             <div className="mt-2 flex flex-wrap gap-1.5 text-xs">
               {[100, 500].map((d) => (
                 <button key={`xp${d}`} disabled={busy === u.id} onClick={() => act(u.id, { xpDelta: d })} className="rounded bg-white/5 px-2 py-1 hover:bg-white/10">+{d} XP</button>
               ))}
               {[100, 1000].map((d) => (
-                <button key={`c${d}`} disabled={busy === u.id} onClick={() => act(u.id, { coinDelta: d })} className="rounded bg-white/5 px-2 py-1 hover:bg-white/10">+{d}🪙</button>
+                <button key={`c${d}`} disabled={busy === u.id} onClick={() => act(u.id, { coinDelta: d })} className="inline-flex items-center gap-0.5 rounded bg-white/5 px-2 py-1 hover:bg-white/10">+{d}<Coins size={11} strokeWidth={1.75} /></button>
               ))}
               <button onClick={() => grant(u.id)} className="rounded bg-cosmic/30 px-2 py-1 hover:bg-cosmic/50">Grant cosmetic</button>
               <button disabled={busy === u.id} onClick={() => act(u.id, { banned: !u.banned })} className={`rounded px-2 py-1 ${u.banned ? "bg-success/20 hover:bg-success/40" : "bg-alert/20 hover:bg-alert/40"}`}>

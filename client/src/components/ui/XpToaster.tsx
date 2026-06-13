@@ -1,11 +1,17 @@
 import { useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Sparkles, Star, Crown, type LucideIcon } from "lucide-react";
 import { useXp, type XpToast } from "../../store/xp";
 
-const ICONS: Record<XpToast["kind"], string> = {
-  xp: "✦",
-  bonus: "★",
-  mastery: "👑",
+const ICONS: Record<XpToast["kind"], LucideIcon> = {
+  xp: Sparkles,
+  bonus: Star,
+  mastery: Crown,
+};
+const ICON_COLOR: Record<XpToast["kind"], string> = {
+  xp: "#B07CFF",
+  bonus: "#FFB800",
+  mastery: "#22D3A0",
 };
 
 const ACCENTS: Record<XpToast["kind"], string> = {
@@ -31,9 +37,10 @@ function ToastRow({ toast }: { toast: XpToast }) {
       className={`glass flex items-center gap-3 px-4 py-3 border ${ACCENTS[toast.kind]}`}
       role="status"
     >
-      <span className="text-2xl leading-none" aria-hidden>
-        {ICONS[toast.kind]}
-      </span>
+      {(() => {
+        const I = ICONS[toast.kind];
+        return <I size={22} strokeWidth={1.75} style={{ color: ICON_COLOR[toast.kind] }} className="shrink-0" />;
+      })()}
       <div className="min-w-0">
         <p className="font-display font-semibold text-sm leading-tight">{toast.title}</p>
         {toast.detail && <p className="text-xs text-neutron/60">{toast.detail}</p>}

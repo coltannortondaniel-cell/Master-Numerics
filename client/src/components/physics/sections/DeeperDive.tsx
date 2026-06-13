@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { FlaskConical, ChevronDown } from "lucide-react";
 import { Markdown } from "../../ui/Markdown";
 
 /** Optional advanced section — collapsed by default to keep the main flow tight. */
@@ -13,13 +14,11 @@ export function DeeperDive({ title, markdown }: { title?: string | null; markdow
         aria-expanded={open}
       >
         <span className="flex items-center gap-2">
-          <span className="text-lg" aria-hidden>
-            🔬
-          </span>
+          <FlaskConical size={17} strokeWidth={1.6} className="text-[#C9B6FF]" />
           <span className="font-display font-semibold">{title ?? "Deeper dive"}</span>
         </span>
         <motion.span animate={{ rotate: open ? 180 : 0 }} className="text-neutron/50">
-          ▾
+          <ChevronDown size={18} />
         </motion.span>
       </button>
       <AnimatePresence initial={false}>

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { NotebookPen } from "lucide-react";
 import { studyApi, type NoteSummary } from "../lib/study";
 import { parseApiError } from "../lib/api";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
@@ -51,7 +52,7 @@ export default function Notebook() {
           </div>
         ) : notes.length === 0 ? (
           <div className="glass px-6 py-10 text-center">
-            <p className="text-3xl">📓</p>
+            <NotebookPen size={30} strokeWidth={1.4} className="mx-auto text-neutron/40" />
             <p className="mt-2 font-display font-semibold">No notes yet</p>
             <p className="mt-1 text-sm text-neutron/55">
               Open any lesson and use the notebook panel — your notes collect here.

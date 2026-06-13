@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 import {
   type LessonResponse,
   type HeroContent,
@@ -106,7 +107,7 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
       setCompleted(true);
       pushToast({ kind: "xp", amount: res.xpAwarded, title: "Lesson complete!", detail: lesson.title });
       if (res.coinsAwarded > 0) {
-        pushToast({ kind: "bonus", amount: res.coinsAwarded, title: "Coins earned", detail: "🪙 NumCoins" });
+        pushToast({ kind: "bonus", amount: res.coinsAwarded, title: "Coins earned", detail: "NumCoins" });
       }
       if (res.bonusAwarded > 0) {
         pushToast({ kind: "bonus", amount: res.bonusAwarded, title: "Perfect practice bonus" });
@@ -242,7 +243,7 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
         >
           {completed ? (
             <>
-              <p className="text-3xl">🎉</p>
+              <CheckCircle2 size={40} strokeWidth={1.4} className="mx-auto text-success" />
               <p className="mt-2 font-display text-xl font-bold">Lesson complete</p>
               {nextLesson ? (
                 <>

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Lightbulb } from "lucide-react";
 import type { Question, QuizResult, AnswerValue } from "../../../lib/physics";
 import { Markdown } from "../../ui/Markdown";
 
@@ -120,7 +121,9 @@ export function QuestionCard({
       {allowHint && question.hint && !graded && (
         <div className="mt-3 pl-9">
           {hintOpen ? (
-            <p className="rounded-lg bg-solar/10 px-3 py-2 text-sm text-solar/90">💡 {question.hint}</p>
+            <p className="flex items-center gap-2 rounded-lg bg-solar/10 px-3 py-2 text-sm text-solar/90">
+              <Lightbulb size={14} strokeWidth={1.75} className="shrink-0" /> {question.hint}
+            </p>
           ) : (
             <button
               onClick={() => setHintOpen(true)}

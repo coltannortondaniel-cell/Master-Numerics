@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Layers } from "lucide-react";
 import { studyApi } from "../../lib/study";
 import { useXp } from "../../store/xp";
 
@@ -60,9 +61,9 @@ export function LessonStudyTools({ slug }: { slug: string }) {
       <button
         onClick={addFlashcards}
         disabled={generating}
-        className="mt-3 rounded-lg border border-neutron/15 px-4 py-2 text-sm font-semibold text-neutron hover:border-cosmic hover:text-white disabled:opacity-50"
+        className="mt-3 inline-flex items-center gap-2 rounded-lg border border-neutron/15 px-4 py-2 text-sm font-semibold text-neutron hover:border-cosmic hover:text-white disabled:opacity-50"
       >
-        🃏 {generating ? "Adding…" : "Add this lesson to flashcards"}
+        <Layers size={15} strokeWidth={1.75} /> {generating ? "Adding…" : "Add this lesson to flashcards"}
       </button>
     </section>
   );

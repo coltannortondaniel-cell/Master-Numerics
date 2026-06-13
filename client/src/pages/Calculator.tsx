@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { Sun, Moon } from "lucide-react";
 import { compile, freeVars, type Compiled, type Scope } from "../lib/mathEval";
 import { Graph, type PlotExpr, type Viewport } from "../components/calculator/Graph";
 import { ExpressionList, type ExprRow } from "../components/calculator/ExpressionList";
@@ -160,7 +161,7 @@ export default function Calculator() {
           <button className={btn} onClick={() => zoom(1.4)} aria-label="Zoom out">－</button>
           <button className={btn} onClick={reset}>Reset</button>
           <button className={btn} onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}>
-            {theme === "dark" ? "☀️" : "🌙"}
+            {theme === "dark" ? <Sun size={15} strokeWidth={1.75} /> : <Moon size={15} strokeWidth={1.75} />}
           </button>
           <button className={btn} onClick={exportPng}>Export</button>
           <button className={`${btn} border-cosmic/50 text-cosmic`} onClick={share}>

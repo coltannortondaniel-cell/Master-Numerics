@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { profileApi, type MeResponse, type AvatarLayers, type OwnedCosmetic } from "../lib/profile";
 import { parseApiError } from "../lib/api";
-import { RARITY_META, typeIcon, type Rarity } from "../lib/rarity";
+import { RARITY_META, type Rarity } from "../lib/rarity";
+import { CosmeticTypeIcon } from "../components/ui/CosmeticTypeIcon";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { Avatar } from "../components/profile/Avatar";
@@ -134,7 +135,7 @@ export default function Customize() {
               </div>
             ) : itemsForTab.length === 0 ? (
               <div className="glass px-6 py-10 text-center">
-                <p className="text-3xl">{typeIcon(tab)}</p>
+                <CosmeticTypeIcon type={tab} size={30} strokeWidth={1.4} className="mx-auto text-neutron/40" />
                 <p className="mt-2 text-sm text-neutron/55">
                   No {tab.toLowerCase()} cosmetics yet — open crates in the Store to find some.
                 </p>
@@ -157,7 +158,7 @@ export default function Customize() {
                         border: c.equipped ? `1px solid ${m.color}` : undefined,
                       }}
                     >
-                      <span className="text-3xl">{typeIcon(c.type)}</span>
+                      <CosmeticTypeIcon type={c.type} size={26} strokeWidth={1.5} style={{ color: m.color }} />
                       <span className="mt-1 text-sm font-semibold">{c.name}</span>
                       <span className="text-[0.7rem] font-semibold" style={{ color: m.color }}>{m.label}</span>
                       <span className={`mt-2 text-[0.7rem] ${c.equipped ? "text-success" : "text-neutron/40"}`}>

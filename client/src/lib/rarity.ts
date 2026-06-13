@@ -10,14 +10,3 @@ export const RARITY_META: Record<Rarity, { label: string; color: string; glow: s
 };
 
 export const RARITY_ORDER: Rarity[] = ["COMMON", "UNCOMMON", "RARE", "EPIC", "LEGENDARY", "MYTHIC"];
-
-const TYPE_ICON: Record<string, string> = {
-  TITLE: "🏷️",
-  BADGE: "🎖️",
-  OUTFIT: "🧥",
-  HAT: "🎩",
-  AURA: "✨",
-  PET: "🐾",
-  BACKGROUND: "🖼️",
-};
-export const typeIcon = (t: string) => TYPE_ICON[t] ?? "❓";

@@ -1,38 +1,40 @@
 import { useEffect, useState } from "react";
+import { Compass, BookOpen, Flame, Target, Users, Calculator, Gift, Sparkles, Award, HelpCircle, Check, type LucideIcon } from "lucide-react";
 import { achievementsApi, type Achievement, type AchievementsResponse } from "../lib/achievements";
 import { parseApiError } from "../lib/api";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 
-const CAT_ICON: Record<string, string> = {
-  EXPLORER: "🧭",
-  SCHOLAR: "📚",
-  STREAK: "🔥",
-  PERFECT: "💯",
-  SOCIAL: "🤝",
-  CALCULATOR: "📈",
-  COLLECTOR: "🎁",
-  LEGENDARY: "🌌",
+const CAT_ICON: Record<string, LucideIcon> = {
+  EXPLORER: Compass,
+  SCHOLAR: BookOpen,
+  STREAK: Flame,
+  PERFECT: Target,
+  SOCIAL: Users,
+  CALCULATOR: Calculator,
+  COLLECTOR: Gift,
+  LEGENDARY: Sparkles,
 };
 
 function Card({ a }: { a: Achievement }) {
   const pct = Math.min(100, (a.progress / a.threshold) * 100);
   const locked = !a.earned;
+  const Icon = locked && a.secret ? HelpCircle : CAT_ICON[a.category] ?? Award;
   return (
     <div
       className={`glass flex gap-3 p-4 transition-all ${locked ? "opacity-80" : "border border-success/30"}`}
     >
       <div
-        className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl text-2xl ${
-          locked ? "bg-white/5 grayscale" : "bg-success/15"
+        className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl ${
+          locked ? "bg-white/5 text-neutron/40" : "bg-success/15 text-success"
         }`}
       >
-        {a.secret && locked ? "❔" : CAT_ICON[a.category] ?? "🏅"}
+        <Icon size={22} strokeWidth={1.6} />
       </div>
       <div className="min-w-0 flex-1">
         <div className="flex items-center justify-between gap-2">
           <p className="font-display font-semibold">{a.name}</p>
-          {a.earned && <span className="text-success">✓</span>}
+          {a.earned && <Check size={16} className="text-success" />}
         </div>
         <p className="text-sm text-neutron/55">{a.description}</p>
         {!a.earned && (
@@ -47,7 +49,7 @@ function Card({ a }: { a: Achievement }) {
         )}
         <div className="mt-1 flex gap-3 font-mono text-[0.65rem] text-neutron/40">
           {a.xpReward > 0 && <span className="text-solar/70">+{a.xpReward} XP</span>}
-          {a.coinReward > 0 && <span className="text-solar/70">+🪙 {a.coinReward}</span>}
+          {a.coinReward > 0 && <span className="text-solar/70">+{a.coinReward} coins</span>}
         </div>
       </div>
     </div>
@@ -96,8 +98,9 @@ export default function Achievements() {
         ) : (
           Object.entries(byCategory).map(([cat, items]) => (
             <section key={cat} className="mb-6">
-              <p className="mb-2 font-mono text-[0.7rem] uppercase tracking-widest text-neutron/40">
-                {CAT_ICON[cat]} {cat.toLowerCase()}
+              <p className="mb-2 flex items-center gap-1.5 font-mono text-[0.7rem] uppercase tracking-widest text-neutron/40">
+                {(() => { const I = CAT_ICON[cat] ?? Award; return <I size={13} strokeWidth={1.75} />; })()}
+                {cat.toLowerCase()}
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {items.map((a) => (

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Sigma } from "lucide-react";
 import { studyApi, type FormulaGroup } from "../lib/study";
 import { parseApiError } from "../lib/api";
 import { Tex } from "../components/ui/Tex";
@@ -62,7 +63,7 @@ export default function Formulas() {
           </div>
         ) : visible.length === 0 ? (
           <div className="glass px-6 py-10 text-center">
-            <p className="text-3xl">📐</p>
+            <Sigma size={30} strokeWidth={1.4} className="mx-auto text-neutron/40" />
             <p className="mt-2 font-display font-semibold">
               {starredOnly ? "No starred formulas yet" : "No formulas yet"}
             </p>

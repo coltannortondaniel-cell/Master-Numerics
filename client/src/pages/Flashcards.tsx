@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Layers, CheckCircle2 } from "lucide-react";
 import { studyApi, type Deck, type ReviewCard } from "../lib/study";
 import { parseApiError } from "../lib/api";
 import { Markdown } from "../components/ui/Markdown";
@@ -72,7 +73,7 @@ export default function Flashcards() {
             </div>
           ) : decks.length === 0 ? (
             <div className="glass px-6 py-10 text-center">
-              <p className="text-3xl">🃏</p>
+              <Layers size={30} strokeWidth={1.4} className="mx-auto text-neutron/40" />
               <p className="mt-2 font-display font-semibold">No decks yet</p>
               <p className="mt-1 text-sm text-neutron/55">
                 Open a lesson and tap “Add this lesson to flashcards” to build your first deck.
@@ -102,7 +103,7 @@ export default function Flashcards() {
           )
         ) : queue && queue.length === 0 ? (
           <div className="glass px-6 py-10 text-center">
-            <p className="text-4xl">✅</p>
+            <CheckCircle2 size={44} strokeWidth={1.4} className="mx-auto text-success" />
             <p className="mt-2 font-display text-xl font-bold">
               {reviewedCount > 0 ? "Review complete!" : "Nothing due right now"}
             </p>
