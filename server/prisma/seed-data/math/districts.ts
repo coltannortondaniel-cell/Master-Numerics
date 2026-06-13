@@ -1,5 +1,6 @@
 import type { WorldSeed } from "../types.js";
 import { kindergartenParkLessons } from "./kindergarten-park.js";
+import { elementarySchoolStLessons } from "./elementary-school-st.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -22,11 +23,11 @@ export const districts: WorldSeed[] = [
     slug: "elementary-school-st",
     name: "Elementary School St.",
     subtitle: "Adding it all up",
-    description: "Chalkboards and lunch counts: addition, subtraction, and the place-value secret behind every number.",
+    description: "Chalkboards and lunch counts: addition, subtraction, place value, and two-digit regrouping — the foundations every later number skill is built on.",
     gradeRange: "1–3",
     scaleLabel: "Schoolhouse Row",
     palette: { accent: "#FFB800", glow: "#C77F00" },
-    lessons: [],
+    lessons: elementarySchoolStLessons,
   },
   {
     slug: "the-bakery",

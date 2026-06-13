@@ -15,6 +15,7 @@ import { PatternMaker } from "./PatternMaker";
 import { CompareBalance } from "./CompareBalance";
 import { MotionGraphs } from "./MotionGraphs";
 import { Incline } from "./Incline";
+import { NumberLine } from "./NumberLine";
 
 /** simId → interactive component. Keys match the `simId` fields in the seed data. */
 const REGISTRY: Record<string, ComponentType> = {
@@ -36,6 +37,7 @@ const REGISTRY: Record<string, ComponentType> = {
   "shape-sorter": ShapeSorter,
   "pattern-maker": PatternMaker,
   "compare-balance": CompareBalance,
+  "number-line": NumberLine,
 };
 
 /** Renders the simulation for a simId, or a tasteful placeholder if not yet built. */
