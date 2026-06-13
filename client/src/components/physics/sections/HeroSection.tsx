@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { HeroContent, Palette } from "../../../lib/physics";
+import { LineArtScene, isLineArtScene } from "../../math/LineArtScene";
 
 /** Per-scene gradient for the cinematic lesson opener (space + city themes). */
 const SCENES: Record<string, { from: string; to: string }> = {
@@ -18,6 +19,29 @@ const SCENES: Record<string, { from: string; to: string }> = {
 
 export function HeroSection({ content, palette }: { content: HeroContent; palette: Palette }) {
   const reduce = useReducedMotion();
+
+  // Math scenes get the sharp B&W line-art treatment on a flat surface.
+  if (isLineArtScene(content.scene)) {
+    return (
+      <div className="relative overflow-hidden rounded-2xl border border-line/10 bg-surface px-6 py-8 sm:px-10 sm:py-10">
+        <div className="flex flex-col items-center gap-6 sm:flex-row sm:justify-between">
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-lg"
+          >
+            <h2 className="font-display text-4xl font-bold leading-tight sm:text-5xl">{content.headline}</h2>
+            <p className="mt-4 max-w-xl text-lg text-fg/70">{content.sub}</p>
+          </motion.div>
+          <div className="w-full max-w-[16rem] shrink-0">
+            <LineArtScene scene={content.scene} />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const scene = SCENES[content.scene] ?? { from: palette.glow, to: palette.accent };
 
   return (

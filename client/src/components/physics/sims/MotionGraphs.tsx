@@ -85,18 +85,17 @@ export function MotionGraphs() {
       <div className="relative mb-4 h-12 rounded-lg border border-neutron/10 bg-space/60">
         <div className="absolute top-1/2 left-2 right-2 h-px -translate-y-1/2 bg-neutron/15" />
         <div
-          className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
+          className="absolute top-1/2 h-5 w-5 -translate-y-1/2 rounded-full border-2 border-white"
           style={{
             left: `calc(${Math.max(2, Math.min(98, trackFrac * 100))}% - 10px)`,
-            background: "radial-gradient(circle at 35% 30%, #fff, #1E90FF)",
-            boxShadow: "0 0 12px #1E90FF",
+            background: "#2D7DFF",
           }}
         />
       </div>
 
       <div className="mb-4 flex gap-3">
-        <Graph label="position x(t)" d={path(xVals, xMax)} color="#22D3A0" markY={H / 2 - (x(t) / xMax) * (H / 2 - 6)} />
-        <Graph label="velocity v(t)" d={path(vVals, vMax)} color="#FFB800" markY={H / 2 - (v(t) / vMax) * (H / 2 - 6)} />
+        <Graph label="position x(t)" d={path(xVals, xMax)} color="#2D7DFF" markY={H / 2 - (x(t) / xMax) * (H / 2 - 6)} />
+        <Graph label="velocity v(t)" d={path(vVals, vMax)} color="#9FB6D4" markY={H / 2 - (v(t) / vMax) * (H / 2 - 6)} />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -111,8 +110,8 @@ export function MotionGraphs() {
         <Readout
           items={[
             { label: "Time", value: `${t.toFixed(2)} s` },
-            { label: "Position", value: `${x(t).toFixed(1)} m`, color: "#22D3A0" },
-            { label: "Velocity", value: `${v(t).toFixed(1)} m/s`, color: "#FFB800" },
+            { label: "Position", value: `${x(t).toFixed(1)} m`, color: "#2D7DFF" },
+            { label: "Velocity", value: `${v(t).toFixed(1)} m/s`, color: "#9FB6D4" },
           ]}
         />
       </div>

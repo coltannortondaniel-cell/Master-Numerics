@@ -22,6 +22,8 @@ import { ProseSection } from "./sections/ProseSection";
 import { SimulationSection } from "./sections/SimulationSection";
 import { WorkedExamples } from "./sections/WorkedExamples";
 import { VideoSection } from "./sections/VideoSection";
+import { AnimatedExplainer } from "../explainer/AnimatedExplainer";
+import { getExplainer } from "../explainer/explainers";
 import { DeeperDive } from "./sections/DeeperDive";
 import { SummaryCard } from "./sections/SummaryCard";
 import { LessonQuiz } from "./quiz/LessonQuiz";
@@ -193,9 +195,17 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
                 />
               );
               break;
-            case "VIDEOS":
-              node = <VideoSection title={s.title} videos={(s.content as VideosContent).videos} />;
+            case "VIDEOS": {
+              // Prefer our custom animated explainer; fall back to video only
+              // for lessons we haven't animated yet.
+              const beats = getExplainer(lesson.slug);
+              node = beats ? (
+                <AnimatedExplainer title={s.title} beats={beats} />
+              ) : (
+                <VideoSection title={s.title} videos={(s.content as VideosContent).videos} />
+              );
               break;
+            }
             case "CONCEPT_CHECK":
               node = conceptQs.length ? (
                 <LessonQuiz
