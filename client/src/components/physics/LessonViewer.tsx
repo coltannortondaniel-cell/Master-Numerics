@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2, Sigma } from "lucide-react";
+import { CheckCircle2, Sigma, Printer } from "lucide-react";
 import {
   type LessonResponse,
   type HeroContent,
@@ -158,6 +158,12 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
             <span className="font-mono text-xs text-neutron/40">~{lesson.estMinutes} min</span>
             <span className="font-mono text-xs text-solar/70">+{lesson.xpReward} XP</span>
             {lesson.difficulty != null && <Difficulty level={lesson.difficulty} label />}
+            <Link
+              to={`/worksheet/${lesson.slug}`}
+              className="flex items-center gap-1.5 font-mono text-xs text-neutron/50 hover:text-neutron"
+            >
+              <Printer size={13} strokeWidth={1.75} /> Worksheet
+            </Link>
           </div>
 
           {lesson.requiresMath && (

@@ -1,0 +1,11 @@
+
+/* ─── Print: worksheets save to clean PDF via the browser print dialog ─── */
+@media print {
+  .no-print { display: none !important; }
+  .starfield, .nebula-glow { display: none !important; }
+  body { background: #fff !important; }
+  .worksheet { color: #000 !important; max-width: none; padding: 0; }
+  .worksheet .katex { color: #000 !important; }
+  .break-before-page { break-before: page; }
+  .break-inside-avoid { break-inside: avoid; }
+}
