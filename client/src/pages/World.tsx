@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import axios from "axios";
 import { physicsApi, type ContentApi, type WorldResponse, type LessonSummary } from "../lib/physics";
 import { parseApiError } from "../lib/api";
+import { useAuth } from "../store/auth";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { StatusChip } from "../components/physics/StatusChip";
@@ -100,7 +101,7 @@ export default function World({
       .then((d) => alive && setData(d))
       .catch((err) => {
         if (!alive) return;
-        if (axios.isAxiosError(err) && err.response?.status === 403) {
+        if (axios.isAxiosError(err) && err.response?.status === 403 && useAuth.getState().paywallEnabled) {
           navigate("/subscribe", { replace: true });
           return;
         }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { physicsApi, type WorldsResponse } from "../lib/physics";
 import { parseApiError } from "../lib/api";
+import { useAuth } from "../store/auth";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { AppShell } from "../components/layout/AppNav";
 import { LearningPath } from "../components/path/LearningPath";
@@ -34,7 +35,7 @@ export default function Journey() {
       .then((d) => alive && setData(d))
       .catch((err) => {
         if (!alive) return;
-        if (axios.isAxiosError(err) && err.response?.status === 403) {
+        if (axios.isAxiosError(err) && err.response?.status === 403 && useAuth.getState().paywallEnabled) {
           navigate("/subscribe", { replace: true });
           return;
         }

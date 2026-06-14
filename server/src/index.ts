@@ -51,6 +51,12 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "master-numerics", ts: new Date().toISOString() });
 });
 
+// Public runtime flags the client needs before/without auth. In free-demo mode
+// (PAYWALL_ENABLED=false) the client hides every subscription prompt.
+app.get("/api/config", (_req, res) => {
+  res.json({ paywallEnabled: env.PAYWALL_ENABLED });
+});
+
 app.use("/api/auth", authRouter);
 app.use("/api/billing", billingRouter);
 app.use("/api/users", usersRouter);

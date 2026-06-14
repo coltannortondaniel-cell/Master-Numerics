@@ -25,10 +25,10 @@ export function RequireAuth({ children }: { children: ReactNode }) {
 
 /** Only users with an active trial or subscription pass. Others see the paywall. */
 export function RequireEntitlement({ children }: { children: ReactNode }) {
-  const { user, subscription, initializing } = useAuth();
+  const { user, subscription, paywallEnabled, initializing } = useAuth();
   if (initializing) return <FullScreenLoader />;
   if (!user) return <Navigate to="/login" replace />;
-  if (!hasEntitlement(user, subscription)) return <Navigate to="/subscribe" replace />;
+  if (!hasEntitlement(user, subscription, paywallEnabled)) return <Navigate to="/subscribe" replace />;
   return <>{children}</>;
 }
 

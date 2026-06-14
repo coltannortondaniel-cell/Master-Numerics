@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { api, parseApiError } from "../lib/api";
 import { useAuth } from "../store/auth";
 import { AuthLayout } from "../components/layout/AuthLayout";
@@ -25,10 +26,27 @@ const PLANS = [
 
 export default function Subscribe() {
   const user = useAuth((s) => s.user);
+  const paywallEnabled = useAuth((s) => s.paywallEnabled);
   const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
   const [error, setError] = useState("");
 
   const trialEnded = user && new Date(user.trialEndsAt).getTime() < Date.now();
+
+  // Free-demo mode: nothing is gated, so never show plans — reassure and route back.
+  if (!paywallEnabled) {
+    return (
+      <AuthLayout
+        title="Everything's unlocked"
+        subtitle="All lessons, worlds, and districts are free right now — no subscription needed."
+      >
+        <div className="text-center">
+          <Link to="/dashboard">
+            <Button variant="primary">Back to learning</Button>
+          </Link>
+        </div>
+      </AuthLayout>
+    );
+  }
 
   async function startCheckout(plan: "MONTHLY" | "YEARLY") {
     setError("");
