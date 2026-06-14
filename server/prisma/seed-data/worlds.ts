@@ -10,6 +10,7 @@ import { rotationLessons } from "./physics/rotation.js";
 import { gravitationLessons } from "./physics/gravitation.js";
 import { oscillationsLessons } from "./physics/oscillations.js";
 import { electromagnetismLessons } from "./physics/electromagnetism.js";
+import { modernPhysicsLessons } from "./physics/modern-physics.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -133,12 +134,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "supernovae",
     name: "Supernovae",
-    subtitle: "The death of giants",
-    description: "Core collapse, shockwaves, and the explosions that forged the iron in your blood.",
-    gradeRange: "12",
+    subtitle: "Modern Physics",
+    description: "Where classical physics breaks down. Special relativity and E = mc², photons and the photoelectric effect, and the quantum nature of light and matter — the physics that explodes a star.",
+    gradeRange: "12–Undergrad",
     scaleLabel: "1×10¹³ m",
     palette: { accent: "#FF5A3C", glow: "#C22E14" },
-    lessons: [],
+    lessons: modernPhysicsLessons,
   },
   {
     slug: "neutron-stars",
