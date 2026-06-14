@@ -1,12 +1,22 @@
 export type QuestionSeed = {
   scope: "CONCEPT_CHECK" | "PRACTICE";
-  kind: "MCQ" | "TRUE_FALSE" | "NUMERIC" | "MATCHING" | "FILL_BLANK" | "ORDER";
+  kind: "MCQ" | "TRUE_FALSE" | "NUMERIC" | "MATCHING" | "FILL_BLANK" | "ORDER" | "SYMBOLIC";
   prompt: string;
   // MCQ: string[] · MATCHING: {left,right} (left[i]↔right[i]) · ORDER: correct order
   options?: string[] | { left: string[]; right: string[] };
   // MCQ: index · T/F: boolean · NUMERIC: {value,tolerance} · MATCHING: right[] ·
-  // FILL_BLANK: accepted strings per blank · ORDER: null (order lives in options)
-  answer: number | boolean | { value: number; tolerance: number } | string[] | string[][] | null;
+  // FILL_BLANK: accepted strings per blank · ORDER: null (order lives in options) ·
+  // SYMBOLIC: {expr, vars?, tolerance?} (algebraic equivalence, checked locally)
+  answer:
+    | number
+    | boolean
+    | { value: number; tolerance: number }
+    | string[]
+    | string[][]
+    | { expr: string; vars?: string[]; tolerance?: number }
+    | null;
+  /** 1 (easiest) → 5 (hardest), relative within the unit. Defaults to 2. */
+  difficulty?: number;
   hint?: string;
   explanation: string;
 };
@@ -33,6 +43,8 @@ export type LessonSeed = {
   tagline: string;
   estMinutes: number;
   xpReward: number;
+  /** 1 (gentle) → 5 (graduate). Shown as the lesson/node difficulty badge. */
+  difficulty?: number;
   sections: SectionSeed[];
   questions: QuestionSeed[];
 };

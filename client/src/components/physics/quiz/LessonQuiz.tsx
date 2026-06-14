@@ -10,8 +10,10 @@ import type {
 } from "../../../lib/physics";
 import { useContentApi } from "../../../lib/contentApi";
 import { parseApiError } from "../../../lib/api";
+import { gradeSymbolic } from "../../../lib/grader";
 import { Button } from "../../ui/Button";
 import { Markdown } from "../../ui/Markdown";
+import { Difficulty } from "../../ui/Difficulty";
 import { Mascot } from "../../mascot/Mascot";
 import { QuestionInput, isAnswered } from "./QuestionInput";
 
@@ -58,8 +60,23 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
 
   async function check() {
     if (!isAnswered(q, value)) return;
-    setChecking(true);
     setError("");
+
+    // SYMBOLIC is graded locally (algebraic equivalence) — instant, no network.
+    if (q.kind === "SYMBOLIC" && q.answer) {
+      const g = gradeSymbolic(String(value), q.answer);
+      const r = {
+        questionId: q.id,
+        correct: g.correct,
+        correctAnswer: q.answer.expr,
+        explanation: q.explanation ?? g.feedback,
+      };
+      setResult(r);
+      if (r.correct) setCorrectCount((c) => c + 1);
+      return;
+    }
+
+    setChecking(true);
     try {
       const res = await contentApi.check(slug, [{ questionId: q.id, answer: value! }]);
       const r = res.results[0];
@@ -145,6 +162,7 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
           <p className="font-mono text-[0.7rem] uppercase tracking-[0.25em] text-nebula">
             {eyebrow} · {idx + 1} / {total}
           </p>
+          {q.difficulty != null && <Difficulty level={q.difficulty} label />}
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-line/15">
           <motion.div

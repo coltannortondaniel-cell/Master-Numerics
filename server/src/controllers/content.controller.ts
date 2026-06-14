@@ -51,6 +51,9 @@ function serializeQuestion(q: {
   kind: string;
   prompt: string;
   options: unknown;
+  difficulty: number;
+  answer: unknown;
+  explanation: string;
   hint: string | null;
 }) {
   let options = q.options;
@@ -60,7 +63,21 @@ function serializeQuestion(q: {
     const o = q.options as { left: string[]; right: string[] };
     options = { left: o.left, right: shuffle(o.right) };
   }
-  return { ...q, options };
+  const base = {
+    id: q.id,
+    scope: q.scope,
+    orderIndex: q.orderIndex,
+    kind: q.kind,
+    prompt: q.prompt,
+    options,
+    difficulty: q.difficulty,
+    hint: q.hint,
+  };
+  // SYMBOLIC answers are graded locally on the client for instant feedback, so
+  // they ship the answer expression + explanation. Every other kind keeps its
+  // answer key server-side (the client only learns it after grading via /check).
+  if (q.kind === "SYMBOLIC") return { ...base, answer: q.answer, explanation: q.explanation };
+  return base;
 }
 
 /**
@@ -198,6 +215,9 @@ export function makeContentController(subject: Subject) {
             kind: true,
             prompt: true,
             options: true,
+            difficulty: true,
+            answer: true,
+            explanation: true,
             hint: true,
           },
         },
@@ -235,6 +255,7 @@ export function makeContentController(subject: Subject) {
         tagline: lesson.tagline,
         xpReward: lesson.xpReward,
         estMinutes: lesson.estMinutes,
+        difficulty: lesson.difficulty,
         world: {
           slug: lesson.world.slug,
           name: lesson.world.name,

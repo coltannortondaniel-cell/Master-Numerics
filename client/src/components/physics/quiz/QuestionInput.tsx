@@ -31,6 +31,8 @@ export function isAnswered(question: Question, value: AnswerValue | undefined): 
     }
     case "ORDER":
       return Array.isArray(value) && value.length > 0;
+    case "SYMBOLIC":
+      return typeof value === "string" && value.trim() !== "";
   }
 }
 
@@ -115,6 +117,38 @@ export function QuestionInput({ question, value, onChange, result, disabled }: P
             : "border-line/15 focus:border-accent"
         }`}
       />
+    );
+  }
+
+  /* ---- SYMBOLIC (algebraic, graded locally) ---- */
+  if (question.kind === "SYMBOLIC") {
+    const str = typeof value === "string" ? value : "";
+    return (
+      <div>
+        <input
+          type="text"
+          autoComplete="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          disabled={disabled}
+          value={str}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="Type an expression, e.g. x_f - x_i"
+          className={`w-full max-w-md rounded-xl border bg-base/50 px-4 py-3 font-mono outline-none transition-colors ${
+            graded
+              ? result!.correct
+                ? "border-success text-success"
+                : "border-alert text-alert"
+              : "border-line/15 focus:border-accent"
+          }`}
+        />
+        {str.trim() !== "" && (
+          <div className="mt-2 flex items-center gap-2 text-sm text-fg/55">
+            <span className="font-mono text-[0.7rem] uppercase tracking-widest text-fg/40">Preview</span>
+            <Markdown>{`$${str}$`}</Markdown>
+          </div>
+        )}
+      </div>
     );
   }
 

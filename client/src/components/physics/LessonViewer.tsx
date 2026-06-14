@@ -16,6 +16,7 @@ import { useContentApi } from "../../lib/contentApi";
 import { parseApiError } from "../../lib/api";
 import { useXp } from "../../store/xp";
 import { Button } from "../ui/Button";
+import { Difficulty } from "../ui/Difficulty";
 import { StatusChip } from "./StatusChip";
 import { HeroSection } from "./sections/HeroSection";
 import { ProseSection } from "./sections/ProseSection";
@@ -156,6 +157,7 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
             <StatusChip status={completed ? "COMPLETED" : progress.status} />
             <span className="font-mono text-xs text-neutron/40">~{lesson.estMinutes} min</span>
             <span className="font-mono text-xs text-solar/70">+{lesson.xpReward} XP</span>
+            {lesson.difficulty != null && <Difficulty level={lesson.difficulty} label />}
           </div>
         </header>
 

@@ -1,6 +1,9 @@
 import type { QuizQuestion } from "@prisma/client";
+import { symbolicEquivalent } from "./symbolic.js";
 
 export type SubmittedAnswer = { questionId: string; answer: unknown };
+
+export type SymbolicAnswer = { expr: string; vars?: string[]; tolerance?: number };
 
 /** Normalise a free-text answer for case/whitespace-insensitive comparison. */
 function normalize(s: unknown): string {
@@ -53,6 +56,11 @@ export function gradeAnswer(question: QuizQuestion, submitted: unknown): boolean
       if (!Array.isArray(submitted)) return false;
       return arraysEqual(submitted.map(normalize), correct.map(normalize));
     }
+    case "SYMBOLIC": {
+      const { expr, vars, tolerance } = question.answer as SymbolicAnswer;
+      if (typeof submitted !== "string" || submitted.trim() === "") return false;
+      return symbolicEquivalent(submitted, expr, vars, tolerance);
+    }
   }
 }
 
@@ -81,6 +89,9 @@ export function revealAnswer(question: QuizQuestion): string {
     case "ORDER": {
       const correct = (question.options as string[]) ?? [];
       return correct.join("  →  ");
+    }
+    case "SYMBOLIC": {
+      return (question.answer as SymbolicAnswer).expr;
     }
   }
 }

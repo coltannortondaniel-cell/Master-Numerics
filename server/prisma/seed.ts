@@ -33,6 +33,7 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
           orderIndex: li + 1,
           xpReward: l.xpReward,
           estMinutes: l.estMinutes,
+          difficulty: l.difficulty ?? 2,
           published: true,
         },
       });
@@ -58,6 +59,7 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
           prompt: q.prompt,
           options: q.options ?? undefined,
           answer: q.answer as object,
+          difficulty: q.difficulty ?? 2,
           hint: q.hint ?? null,
           explanation: q.explanation,
         })),

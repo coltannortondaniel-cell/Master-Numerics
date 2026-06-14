@@ -347,6 +347,7 @@ enum QuestionKind {
   MATCHING
   FILL_BLANK
   ORDER
+  SYMBOLIC
 }
 
 enum ProgressStatus {
@@ -386,6 +387,8 @@ model Lesson {
   orderIndex Int
   xpReward   Int             @default(100)
   estMinutes Int             @default(12)
+  // 1 (gentle) → 5 (graduate). Drives the node + lesson-header difficulty badge.
+  difficulty Int             @default(2)
   published  Boolean         @default(true)
   sections   LessonSection[]
   questions  QuizQuestion[]
@@ -418,7 +421,9 @@ model QuizQuestion {
   kind        QuestionKind
   prompt      String // markdown, KaTeX allowed
   options     Json? // MCQ: string[] · MATCHING: {left:string[],right:string[]} · ORDER: string[] (correct order)
-  answer      Json // MCQ: index · TRUE_FALSE: boolean · NUMERIC: {value,tolerance} · MATCHING: string[] (right per left) · FILL_BLANK: string[][] (accepted per blank) · ORDER: null
+  answer      Json // MCQ: index · TRUE_FALSE: boolean · NUMERIC: {value,tolerance} · MATCHING: string[] (right per left) · FILL_BLANK: string[][] (accepted per blank) · ORDER: null · SYMBOLIC: {expr,vars?,tolerance?}
+  // 1 (easiest) → 5 (hardest), shown relative to the other questions in the unit.
+  difficulty  Int           @default(2)
   hint        String?
   explanation String
 

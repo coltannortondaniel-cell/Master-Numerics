@@ -13,7 +13,16 @@ export type QuestionKind =
   | "NUMERIC"
   | "MATCHING"
   | "FILL_BLANK"
-  | "ORDER";
+  | "ORDER"
+  | "SYMBOLIC";
+
+/** SYMBOLIC answer key — shipped to the client because symbolic answers are
+ *  graded locally (algebraic equivalence) for instant, explainable feedback. */
+export interface SymbolicAnswer {
+  expr: string;
+  vars?: string[];
+  tolerance?: number;
+}
 
 /** MATCHING options carry the prompts (left) and a shuffled pool (right). */
 export interface MatchingOptions {
@@ -92,6 +101,12 @@ export interface Question {
   prompt: string;
   /** MCQ/ORDER: string[] · MATCHING: { left, right } · others: null */
   options?: string[] | MatchingOptions | null;
+  /** 1 (easiest) → 5 (hardest), relative within the unit. */
+  difficulty?: number;
+  /** Present only for SYMBOLIC (graded locally). */
+  answer?: SymbolicAnswer;
+  /** Present only for SYMBOLIC (shown after local grading). */
+  explanation?: string;
   hint?: string | null;
 }
 
@@ -153,6 +168,7 @@ export interface LessonResponse {
     tagline: string;
     xpReward: number;
     estMinutes: number;
+    difficulty: number;
     world: { slug: string; name: string; palette: Palette; gradeRange: string };
     sections: LessonSection[];
     questions: Question[];
@@ -200,7 +216,7 @@ export interface CompleteResponse {
  * MATCHING → chosen right value per left · FILL_BLANK → text per blank
  * ORDER → the option strings in the user's order
  */
-export type AnswerValue = number | boolean | string[];
+export type AnswerValue = number | boolean | string | string[];
 export interface SubmittedAnswer {
   questionId: string;
   answer: AnswerValue;
