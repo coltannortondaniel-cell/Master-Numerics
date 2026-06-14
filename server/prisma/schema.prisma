@@ -348,6 +348,8 @@ enum QuestionKind {
   FILL_BLANK
   ORDER
   SYMBOLIC
+  GRAPH
+  PROOF
 }
 
 enum ProgressStatus {
@@ -389,6 +391,9 @@ model Lesson {
   estMinutes Int             @default(12)
   // 1 (gentle) → 5 (graduate). Drives the node + lesson-header difficulty badge.
   difficulty Int             @default(2)
+  // Cross-subject prerequisite: slug of the math lesson this lesson leans on.
+  // Surfaced as a non-blocking "jump to the math" prompt.
+  requiresMathSlug String?
   published  Boolean         @default(true)
   sections   LessonSection[]
   questions  QuizQuestion[]

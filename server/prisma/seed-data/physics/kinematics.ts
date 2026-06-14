@@ -43,6 +43,7 @@ export const kinematicsLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "NUMERIC", prompt: "An object moves from $x_i = 2\\,\\text{m}$ to $x_f = 9\\,\\text{m}$. Displacement in metres?", answer: { value: 7, tolerance: 0 }, hint: "$\\Delta x = x_f - x_i$.", explanation: "$9 - 2 = 7\\,\\text{m}$." },
       { scope: "PRACTICE", kind: "NUMERIC", prompt: "Taking right as positive: you walk $6\\,\\text{m}$ right then $10\\,\\text{m}$ left. Displacement in metres?", answer: { value: -4, tolerance: 0 }, difficulty: 3, hint: "Add with signs: $+6 - 10$.", explanation: "$+6 - 10 = -4\\,\\text{m}$ (4 m to the left)." },
       { scope: "PRACTICE", kind: "SYMBOLIC", prompt: "Write displacement $\\Delta x$ as a formula in terms of the final position $x_f$ and the initial position $x_i$. (Type it like `x_f - x_i`.)", answer: { expr: "x_f - x_i", vars: ["x_f", "x_i"] }, difficulty: 2, hint: "Displacement is the *change* in position.", explanation: "$\\Delta x = x_f - x_i$ — final minus initial position. (Any equivalent form, like $-x_i + x_f$, is accepted.)" },
+      { scope: "PRACTICE", kind: "PROOF", prompt: "Build the argument: if an object returns to where it started, its displacement is zero.", options: ["Let the start position be $x_i$ and the end position be $x_f$.", "Returning to the start means $x_f = x_i$.", "Displacement is defined as $\\Delta x = x_f - x_i$.", "Substitute $x_f = x_i$ to get $\\Delta x = x_i - x_i$.", "Therefore $\\Delta x = 0$."], answer: [], difficulty: 4, hint: "Start by naming the positions, end with the conclusion.", explanation: "Naming the positions, using the return condition $x_f=x_i$, and substituting into $\\Delta x = x_f - x_i$ gives $\\Delta x = 0$." },
       { scope: "PRACTICE", kind: "NUMERIC", prompt: "For that same trip (6 m right, then 10 m left), what total distance did you travel, in metres?", answer: { value: 16, tolerance: 0 }, hint: "Distance ignores direction.", explanation: "$6 + 10 = 16\\,\\text{m}$." },
       { scope: "PRACTICE", kind: "MCQ", prompt: "A car drives $3\\,\\text{km}$ north then $3\\,\\text{km}$ south. Its displacement is:", options: ["6 km", "0 km", "3 km north", "3 km south"], answer: 1, hint: "Where does it end up?", explanation: "It returns to the start, so displacement is 0 (distance is 6 km)." },
       { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "It is possible to travel zero distance but have a non-zero displacement.", answer: false, hint: "Can you change position without moving along a path?", explanation: "No. Any change in position requires travelling some path, so distance $\\ge |\\Delta x|$." },
@@ -56,6 +57,8 @@ export const kinematicsLessons: LessonSeed[] = [
     tagline: "How fast — and in which direction",
     estMinutes: 15,
     xpReward: 150,
+    difficulty: 3,
+    requiresMath: "rates-and-unit-rates",
     sections: [
       { kind: "HERO", content: { scene: "earth", headline: "Rates of Change", sub: "Speed tells you how fast. Velocity tells you how fast and which way. The difference is the whole game in physics." } },
       { kind: "CONTEXT", title: "Why this matters", content: { markdown: "A weather report saying \"wind 30 km/h\" is almost useless to a pilot — they need the *direction* too. That's the difference between **speed** (a scalar) and **velocity** (a vector). Getting this distinction right is the foundation for everything from projectile motion to orbital mechanics." } },
@@ -83,6 +86,7 @@ export const kinematicsLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "MCQ", prompt: "Instantaneous velocity is the:", options: ["derivative $dx/dt$", "derivative $dv/dt$", "product $x\\cdot t$", "ratio $\\Delta t/\\Delta x$"], answer: 0, hint: "Rate of change of position.", explanation: "$v = dx/dt$." },
       { scope: "PRACTICE", kind: "NUMERIC", prompt: "Convert $36\\,\\text{km/h}$ to $\\text{m/s}$.", answer: { value: 10, tolerance: 0 }, hint: "Divide by 3.6.", explanation: "$36/3.6 = 10\\,\\text{m/s}$." },
       { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "If your average velocity over a trip is exactly zero, you ended where you started.", answer: true, hint: "Zero average velocity means zero displacement.", explanation: "$\\bar v = 0 \\Rightarrow \\Delta x = 0$, so start and end coincide." },
+      { scope: "PRACTICE", kind: "GRAPH", prompt: "On a position–time graph, an object starts at the origin and moves at a constant $2\\,\\text{m/s}$. Enter its position $x$ as a function of time $t$.", answer: { expr: "2*t", domain: [0, 5], variable: "t" }, difficulty: 3, hint: "Position = velocity × time when starting at the origin.", explanation: "$x(t) = 2t$ — a straight line through the origin with slope equal to the velocity." },
     ],
   },
 

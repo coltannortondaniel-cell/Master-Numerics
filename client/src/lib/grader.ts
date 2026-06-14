@@ -12,7 +12,7 @@
  * not just judge.
  */
 import { compile, freeVars, isValid } from "./mathEval";
-import type { SymbolicAnswer } from "./physics";
+import type { SymbolicAnswer, GraphAnswer } from "./physics";
 
 export interface LocalGrade {
   correct: boolean;
@@ -69,4 +69,54 @@ export function gradeSymbolic(input: string, key: SymbolicAnswer): LocalGrade {
   }
   if (valid < 6) return { correct: false, feedback: "I couldn't verify that — try a simpler equivalent form." };
   return { correct: true, feedback: "Correct — that's algebraically equivalent." };
+}
+
+/** Graph: does the entered function match the target across a domain? */
+export function gradeGraph(input: string, key: GraphAnswer): LocalGrade {
+  const cleaned = input.trim();
+  if (cleaned === "") return { correct: false, feedback: "Enter a function." };
+  if (!isValid(cleaned)) return { correct: false, feedback: "I couldn't read that function — check your syntax." };
+
+  const variable = key.variable ?? "x";
+  const [lo, hi] = key.domain ?? [-5, 5];
+  const tol = key.tolerance ?? 1e-3;
+  let fIn: (s: Record<string, number>) => number;
+  let fKey: (s: Record<string, number>) => number;
+  try {
+    fIn = compile(cleaned);
+    fKey = compile(key.expr);
+  } catch {
+    return { correct: false, feedback: "I couldn't evaluate that function." };
+  }
+
+  const N = 40;
+  let valid = 0;
+  for (let i = 0; i <= N; i++) {
+    const x = lo + ((hi - lo) * i) / N;
+    const a = fIn({ [variable]: x });
+    const b = fKey({ [variable]: x });
+    if (!Number.isFinite(a) || !Number.isFinite(b)) continue;
+    const scale = Math.max(1, Math.abs(a), Math.abs(b));
+    if (Math.abs(a - b) > tol * scale) {
+      return { correct: false, feedback: `That curve doesn't match. The target is $y = ${key.expr}$.` };
+    }
+    valid++;
+  }
+  if (valid < N * 0.6) return { correct: false, feedback: "I couldn't verify that over the domain — check for gaps." };
+  return { correct: true, feedback: "Correct — your curve matches the target." };
+}
+
+/** Plot points for a function over a domain, for live previews. Returns NaN
+ *  where the function is undefined so callers can break the polyline. */
+export function samplePlot(expr: string, domain: [number, number], n = 80, variable = "x"): { x: number; y: number }[] {
+  if (!isValid(expr)) return [];
+  let f: (s: Record<string, number>) => number;
+  try { f = compile(expr); } catch { return []; }
+  const [lo, hi] = domain;
+  const pts: { x: number; y: number }[] = [];
+  for (let i = 0; i <= n; i++) {
+    const x = lo + ((hi - lo) * i) / n;
+    pts.push({ x, y: f({ [variable]: x }) });
+  }
+  return pts;
 }

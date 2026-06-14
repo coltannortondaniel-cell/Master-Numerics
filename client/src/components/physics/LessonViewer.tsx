@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useReducedMotion } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Sigma } from "lucide-react";
 import {
   type LessonResponse,
   type HeroContent,
@@ -159,6 +159,21 @@ export function LessonViewer({ data, basePath = "/journey" }: { data: LessonResp
             <span className="font-mono text-xs text-solar/70">+{lesson.xpReward} XP</span>
             {lesson.difficulty != null && <Difficulty level={lesson.difficulty} label />}
           </div>
+
+          {lesson.requiresMath && (
+            <Link
+              to={`/city/${lesson.requiresMath.worldSlug}/${lesson.requiresMath.slug}`}
+              className="mt-4 flex items-center gap-3 rounded-xl border border-nebula/30 bg-nebula/5 px-4 py-3 text-sm transition-colors hover:border-nebula/60"
+            >
+              <Sigma size={18} className="shrink-0 text-nebula" strokeWidth={1.75} />
+              <span className="min-w-0 flex-1">
+                <span className="text-neutron/60">Uses math from </span>
+                <span className="font-semibold">{lesson.requiresMath.title}</span>
+                <span className="text-neutron/60"> — need a refresher?</span>
+              </span>
+              <span className="shrink-0 font-semibold text-nebula">Jump to it →</span>
+            </Link>
+          )}
         </header>
 
         {/* Sections in order */}

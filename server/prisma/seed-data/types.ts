@@ -1,12 +1,14 @@
 export type QuestionSeed = {
   scope: "CONCEPT_CHECK" | "PRACTICE";
-  kind: "MCQ" | "TRUE_FALSE" | "NUMERIC" | "MATCHING" | "FILL_BLANK" | "ORDER" | "SYMBOLIC";
+  kind:
+    | "MCQ" | "TRUE_FALSE" | "NUMERIC" | "MATCHING" | "FILL_BLANK"
+    | "ORDER" | "SYMBOLIC" | "GRAPH" | "PROOF";
   prompt: string;
-  // MCQ: string[] · MATCHING: {left,right} (left[i]↔right[i]) · ORDER: correct order
+  // MCQ: string[] · MATCHING: {left,right} · ORDER/PROOF: steps in correct order
   options?: string[] | { left: string[]; right: string[] };
   // MCQ: index · T/F: boolean · NUMERIC: {value,tolerance} · MATCHING: right[] ·
-  // FILL_BLANK: accepted strings per blank · ORDER: null (order lives in options) ·
-  // SYMBOLIC: {expr, vars?, tolerance?} (algebraic equivalence, checked locally)
+  // FILL_BLANK: accepted strings per blank · ORDER/PROOF: null (order in options) ·
+  // SYMBOLIC: {expr,vars?,tolerance?} · GRAPH: {expr,domain?,variable?,tolerance?}
   answer:
     | number
     | boolean
@@ -14,6 +16,7 @@ export type QuestionSeed = {
     | string[]
     | string[][]
     | { expr: string; vars?: string[]; tolerance?: number }
+    | { expr: string; domain?: [number, number]; variable?: string; tolerance?: number }
     | null;
   /** 1 (easiest) → 5 (hardest), relative within the unit. Defaults to 2. */
   difficulty?: number;
@@ -45,6 +48,8 @@ export type LessonSeed = {
   xpReward: number;
   /** 1 (gentle) → 5 (graduate). Shown as the lesson/node difficulty badge. */
   difficulty?: number;
+  /** Slug of a math lesson this (physics) lesson depends on — shows a jump prompt. */
+  requiresMath?: string;
   sections: SectionSeed[];
   questions: QuestionSeed[];
 };

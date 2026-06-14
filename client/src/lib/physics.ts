@@ -14,13 +14,23 @@ export type QuestionKind =
   | "MATCHING"
   | "FILL_BLANK"
   | "ORDER"
-  | "SYMBOLIC";
+  | "SYMBOLIC"
+  | "GRAPH"
+  | "PROOF";
 
 /** SYMBOLIC answer key — shipped to the client because symbolic answers are
  *  graded locally (algebraic equivalence) for instant, explainable feedback. */
 export interface SymbolicAnswer {
   expr: string;
   vars?: string[];
+  tolerance?: number;
+}
+
+/** GRAPH answer key — a target function sampled over a domain (graded locally). */
+export interface GraphAnswer {
+  expr: string;
+  domain?: [number, number];
+  variable?: string;
   tolerance?: number;
 }
 
@@ -103,9 +113,9 @@ export interface Question {
   options?: string[] | MatchingOptions | null;
   /** 1 (easiest) → 5 (hardest), relative within the unit. */
   difficulty?: number;
-  /** Present only for SYMBOLIC (graded locally). */
-  answer?: SymbolicAnswer;
-  /** Present only for SYMBOLIC (shown after local grading). */
+  /** Present only for SYMBOLIC / GRAPH (graded locally). */
+  answer?: SymbolicAnswer | GraphAnswer;
+  /** Present only for SYMBOLIC / GRAPH (shown after local grading). */
   explanation?: string;
   hint?: string | null;
 }
@@ -169,6 +179,7 @@ export interface LessonResponse {
     xpReward: number;
     estMinutes: number;
     difficulty: number;
+    requiresMath?: { slug: string; worldSlug: string; title: string } | null;
     world: { slug: string; name: string; palette: Palette; gradeRange: string };
     sections: LessonSection[];
     questions: Question[];

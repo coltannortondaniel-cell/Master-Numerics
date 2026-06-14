@@ -1,9 +1,10 @@
 import type { QuizQuestion } from "@prisma/client";
-import { symbolicEquivalent } from "./symbolic.js";
+import { symbolicEquivalent, graphEquivalent } from "./symbolic.js";
 
 export type SubmittedAnswer = { questionId: string; answer: unknown };
 
 export type SymbolicAnswer = { expr: string; vars?: string[]; tolerance?: number };
+export type GraphAnswer = { expr: string; domain?: [number, number]; variable?: string; tolerance?: number };
 
 /** Normalise a free-text answer for case/whitespace-insensitive comparison. */
 function normalize(s: unknown): string {
@@ -61,6 +62,17 @@ export function gradeAnswer(question: QuizQuestion, submitted: unknown): boolean
       if (typeof submitted !== "string" || submitted.trim() === "") return false;
       return symbolicEquivalent(submitted, expr, vars, tolerance);
     }
+    case "GRAPH": {
+      const { expr, domain, variable, tolerance } = question.answer as GraphAnswer;
+      if (typeof submitted !== "string" || submitted.trim() === "") return false;
+      return graphEquivalent(submitted, expr, domain, variable, tolerance);
+    }
+    case "PROOF": {
+      // Build-the-proof: options holds the canonical step order (like ORDER).
+      const correct = (question.options as string[]) ?? [];
+      if (!Array.isArray(submitted)) return false;
+      return arraysEqual(submitted.map(normalize), correct.map(normalize));
+    }
   }
 }
 
@@ -92,6 +104,13 @@ export function revealAnswer(question: QuizQuestion): string {
     }
     case "SYMBOLIC": {
       return (question.answer as SymbolicAnswer).expr;
+    }
+    case "GRAPH": {
+      return (question.answer as GraphAnswer).expr;
+    }
+    case "PROOF": {
+      const correct = (question.options as string[]) ?? [];
+      return correct.join("  →  ");
     }
   }
 }

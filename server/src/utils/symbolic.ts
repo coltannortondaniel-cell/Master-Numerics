@@ -154,3 +154,31 @@ export function symbolicEquivalent(a: string, b: string, vars?: string[], tolera
   }
   return agreed >= 6; // require enough valid samples to trust the verdict
 }
+
+/**
+ * Graph equivalence: do two single-variable functions agree across a domain?
+ * Samples evenly over [min,max] in the given variable (default x).
+ */
+export function graphEquivalent(
+  a: string,
+  b: string,
+  domain: [number, number] = [-5, 5],
+  variable = "x",
+  tolerance = 1e-3
+): boolean {
+  let ca, cb;
+  try { ca = compile(a); cb = compile(b); } catch { return false; }
+  const [lo, hi] = domain;
+  const N = 40;
+  let valid = 0;
+  for (let i = 0; i <= N; i++) {
+    const x = lo + ((hi - lo) * i) / N;
+    const va = ca.eval({ [variable]: x });
+    const vb = cb.eval({ [variable]: x });
+    if (!Number.isFinite(va) || !Number.isFinite(vb)) continue;
+    const scale = Math.max(1, Math.abs(va), Math.abs(vb));
+    if (Math.abs(va - vb) > tolerance * scale) return false;
+    valid++;
+  }
+  return valid >= N * 0.6;
+}

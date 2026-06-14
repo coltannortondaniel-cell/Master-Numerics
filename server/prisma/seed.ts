@@ -34,6 +34,7 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
           xpReward: l.xpReward,
           estMinutes: l.estMinutes,
           difficulty: l.difficulty ?? 2,
+          requiresMathSlug: l.requiresMath ?? null,
           published: true,
         },
       });

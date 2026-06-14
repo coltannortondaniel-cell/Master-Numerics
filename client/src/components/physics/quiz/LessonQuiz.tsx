@@ -10,7 +10,8 @@ import type {
 } from "../../../lib/physics";
 import { useContentApi } from "../../../lib/contentApi";
 import { parseApiError } from "../../../lib/api";
-import { gradeSymbolic } from "../../../lib/grader";
+import { gradeSymbolic, gradeGraph } from "../../../lib/grader";
+import type { GraphAnswer, SymbolicAnswer } from "../../../lib/physics";
 import { Button } from "../../ui/Button";
 import { Markdown } from "../../ui/Markdown";
 import { Difficulty } from "../../ui/Difficulty";
@@ -52,7 +53,7 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
   // Seed ORDER questions with their (shuffled) starting order so any
   // arrangement is submittable.
   useEffect(() => {
-    if (q?.kind === "ORDER" && answers[q.id] === undefined && Array.isArray(q.options)) {
+    if ((q?.kind === "ORDER" || q?.kind === "PROOF") && answers[q.id] === undefined && Array.isArray(q.options)) {
       setAnswers((a) => ({ ...a, [q.id]: q.options as string[] }));
     }
     setHintOpen(false);
@@ -62,13 +63,16 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
     if (!isAnswered(q, value)) return;
     setError("");
 
-    // SYMBOLIC is graded locally (algebraic equivalence) — instant, no network.
-    if (q.kind === "SYMBOLIC" && q.answer) {
-      const g = gradeSymbolic(String(value), q.answer);
+    // SYMBOLIC / GRAPH are graded locally (sampling) — instant, no network.
+    if ((q.kind === "SYMBOLIC" || q.kind === "GRAPH") && q.answer) {
+      const g =
+        q.kind === "SYMBOLIC"
+          ? gradeSymbolic(String(value), q.answer as SymbolicAnswer)
+          : gradeGraph(String(value), q.answer as GraphAnswer);
       const r = {
         questionId: q.id,
         correct: g.correct,
-        correctAnswer: q.answer.expr,
+        correctAnswer: (q.answer as SymbolicAnswer | GraphAnswer).expr,
         explanation: q.explanation ?? g.feedback,
       };
       setResult(r);

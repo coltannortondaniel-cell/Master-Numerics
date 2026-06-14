@@ -45,6 +45,27 @@ const NEW_QUESTIONS: Record<string, QuestionSeed[]> = {
       hint: "Displacement is the *change* in position.",
       explanation: "$\\Delta x = x_f - x_i$ — final minus initial position. (Any equivalent form, like $-x_i + x_f$, is accepted.)",
     },
+    {
+      scope: "PRACTICE",
+      kind: "PROOF",
+      prompt: "Build the argument: if an object returns to where it started, its displacement is zero.",
+      options: ["Let the start position be $x_i$ and the end position be $x_f$.", "Returning to the start means $x_f = x_i$.", "Displacement is defined as $\\Delta x = x_f - x_i$.", "Substitute $x_f = x_i$ to get $\\Delta x = x_i - x_i$.", "Therefore $\\Delta x = 0$."],
+      answer: [],
+      difficulty: 4,
+      hint: "Start by naming the positions, end with the conclusion.",
+      explanation: "Naming the positions, using the return condition $x_f=x_i$, and substituting into $\\Delta x = x_f - x_i$ gives $\\Delta x = 0$.",
+    },
+  ],
+  "velocity-and-speed": [
+    {
+      scope: "PRACTICE",
+      kind: "GRAPH",
+      prompt: "On a position–time graph, an object starts at the origin and moves at a constant $2\\,\\text{m/s}$. Enter its position $x$ as a function of time $t$.",
+      answer: { expr: "2*t", domain: [0, 5], variable: "t" },
+      difficulty: 3,
+      hint: "Position = velocity × time when starting at the origin.",
+      explanation: "$x(t) = 2t$ — a straight line through the origin with slope equal to the velocity.",
+    },
   ],
 };
 

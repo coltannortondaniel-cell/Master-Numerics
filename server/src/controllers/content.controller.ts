@@ -57,7 +57,7 @@ function serializeQuestion(q: {
   hint: string | null;
 }) {
   let options = q.options;
-  if (q.kind === "ORDER" && Array.isArray(q.options)) {
+  if ((q.kind === "ORDER" || q.kind === "PROOF") && Array.isArray(q.options)) {
     options = shuffle(q.options as string[]);
   } else if (q.kind === "MATCHING" && q.options && typeof q.options === "object") {
     const o = q.options as { left: string[]; right: string[] };
@@ -73,10 +73,12 @@ function serializeQuestion(q: {
     difficulty: q.difficulty,
     hint: q.hint,
   };
-  // SYMBOLIC answers are graded locally on the client for instant feedback, so
-  // they ship the answer expression + explanation. Every other kind keeps its
-  // answer key server-side (the client only learns it after grading via /check).
-  if (q.kind === "SYMBOLIC") return { ...base, answer: q.answer, explanation: q.explanation };
+  // SYMBOLIC and GRAPH are graded locally on the client for instant feedback,
+  // so they ship the answer expression + explanation. Every other kind keeps
+  // its answer key server-side (the client only learns it after grading).
+  if (q.kind === "SYMBOLIC" || q.kind === "GRAPH") {
+    return { ...base, answer: q.answer, explanation: q.explanation };
+  }
   return base;
 }
 
@@ -248,6 +250,15 @@ export function makeContentController(subject: Subject) {
       });
     }
 
+    let requiresMath: { slug: string; worldSlug: string; title: string } | null = null;
+    if (lesson.requiresMathSlug) {
+      const m = await prisma.lesson.findUnique({
+        where: { slug: lesson.requiresMathSlug },
+        include: { world: { select: { slug: true } } },
+      });
+      if (m) requiresMath = { slug: m.slug, worldSlug: m.world.slug, title: m.title };
+    }
+
     res.json({
       lesson: {
         slug: lesson.slug,
@@ -256,6 +267,7 @@ export function makeContentController(subject: Subject) {
         xpReward: lesson.xpReward,
         estMinutes: lesson.estMinutes,
         difficulty: lesson.difficulty,
+        requiresMath,
         world: {
           slug: lesson.world.slug,
           name: lesson.world.name,
