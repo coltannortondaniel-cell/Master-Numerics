@@ -73,4 +73,68 @@ export const nuclearParticleLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "MCQ", prompt: "Particles are excitations of underlying fields in:", options: ["thermodynamics", "quantum field theory", "classical mechanics", "optics"], answer: 1, hint: "QFT.", explanation: "Quantum field theory treats particles as field excitations." },
     ],
   },
+
+  // ───────────────────────── 3. Half-Life & Radioactive Decay ─────────────────────────
+  {
+    slug: "half-life-and-decay",
+    title: "Half-Life & Radioactive Decay",
+    tagline: "The clock hidden inside every unstable nucleus",
+    estMinutes: 16,
+    xpReward: 180,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "A Clock You Can't Stop or Start", sub: "Unstable nuclei decay at a perfectly steady statistical rate — turning rocks, bones, and stars into datable clocks." } },
+      { kind: "CONTEXT", title: "Timing the universe", content: { markdown: "Having met the nucleus and radioactivity, we now quantify it. The **half-life** turns random nuclear decay into one of science's most powerful tools, dating everything from prehistoric campfires to the age of the Earth and the cosmos." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "A radioactive nucleus is unstable and will eventually **decay**, emitting radiation. You can't predict *when* a single nucleus decays — it's random — but a huge collection decays at a precise statistical rate.\n\nThe **half-life** $t_{1/2}$ is the time for **half** of the nuclei in a sample to decay. After each half-life, half of what remains is left:\n\n$$N = N_0 \\left(\\tfrac{1}{2}\\right)^{n}, \\qquad n = \\frac{t}{t_{1/2}}.$$\n\nSo after 1 half-life, $1/2$ remains; after 2, $1/4$; after 3, $1/8$; and so on. Half-lives range from fractions of a second to billions of years.\n\nThree decay types differ in penetrating power:\n\n- **Alpha** ($\\alpha$): a helium nucleus; heavy, stopped by paper.\n- **Beta** ($\\beta$): a fast electron; stopped by aluminum.\n- **Gamma** ($\\gamma$): high-energy photon; needs thick lead or concrete.\n\n**Radiometric dating** uses this clock. **Carbon-14** (half-life ~5,700 years) dates organic remains up to ~50,000 years; **uranium** isotopes (billions of years) date rocks and meteorites — that's how we know the Earth is about 4.5 billion years old." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Three half-lives", problem: "An 80 g sample has a half-life of 5 years. How much remains after 15 years?", steps: ["$n = 15/5 = 3$ half-lives.", "Halve three times: $80 \\to 40 \\to 20 \\to 10$."], answer: "10 g remain." },
+        { title: "Reading the fraction", problem: "What fraction remains after 4 half-lives?", steps: ["$(1/2)^4$.", "$= 1/16$."], answer: "One sixteenth." },
+        { title: "Choosing a dating clock", problem: "Why use uranium, not carbon-14, to date a billion-year-old rock?", steps: ["Carbon-14's half-life is only ~5,700 years.", "After a billion years, none is left."], answer: "Long half-life isotopes suit old samples." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Each half-life halves what remains." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Compute remaining amounts and reason about decay." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: carbon dating", content: { markdown: "Living things constantly take in carbon, including a steady trace of radioactive **carbon-14**. When they die, intake stops and the carbon-14 decays with its ~5,700-year half-life. Measuring how much remains gives the time since death. Carbon dating revolutionized archaeology — dating the Dead Sea Scrolls, Ötzi the Iceman, and cave art — and earned Willard Libby the Nobel Prize. The randomness of single nuclei becomes, in bulk, an exquisitely reliable clock." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Radioactive decay is random per nucleus but statistically precise in bulk.", "Half-life is the time for half a sample to decay; after n half-lives, $(1/2)^n$ remains.", "Alpha (paper), beta (aluminum), gamma (lead) differ in penetrating power.", "Radiometric dating uses known half-lives as clocks.", "Carbon-14 dates organic remains; uranium dates rocks and the 4.5-billion-year-old Earth."], formulas: [{ label: "Decay law", tex: "N = N_0 \\left(\\tfrac{1}{2}\\right)^{t/t_{1/2}}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "A half-life is the time for:", options: ["all nuclei to decay", "half of the nuclei to decay", "a nucleus to double", "radiation to stop"], answer: 1, difficulty: 2, explanation: "Half of the remaining nuclei decay each half-life." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "You cannot predict exactly when a single radioactive nucleus will decay.", answer: true, difficulty: 3, explanation: "Individual decay is random; only bulk rates are predictable." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Which radiation is most penetrating, needing thick lead to stop?", options: ["alpha", "beta", "gamma", "all equal"], answer: 2, difficulty: 3, explanation: "Gamma rays are high-energy photons requiring dense shielding." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "A sample starts at 240 g with a half-life of 2 hours. How many grams remain after 6 hours?", answer: { value: 30, tolerance: 0 }, difficulty: 3, hint: "6 h = 3 half-lives; halve three times.", explanation: "$240 \\to 120 \\to 60 \\to 30$ g after 3 half-lives." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "After 4 half-lives, what fraction of the original sample remains? Give as a decimal.", answer: { value: 0.0625, tolerance: 0.001 }, difficulty: 3, hint: "(1/2)^4.", explanation: "$(1/2)^4 = 1/16 = 0.0625$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "To date a rock billions of years old, scientists use isotopes with:", options: ["very short half-lives", "very long half-lives (e.g., uranium)", "no half-life", "only carbon-14"], answer: 1, difficulty: 3, hint: "The clock must still be 'ticking'.", explanation: "Long-half-life isotopes like uranium suit very old samples; carbon-14 would be long gone." },
+    ],
+  },
+
+  // ───────────────────────── 4. The Four Fundamental Forces ─────────────────────────
+  {
+    slug: "the-four-fundamental-forces",
+    title: "The Four Fundamental Forces",
+    tagline: "Everything that happens, happens through four interactions",
+    estMinutes: 16,
+    xpReward: 190,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Four Forces Run the Universe", sub: "From holding a nucleus together to binding galaxies, every interaction in nature is one of just four." } },
+      { kind: "CONTEXT", title: "The shortlist of nature", content: { markdown: "Having met the particles of the Standard Model, we meet the **forces** between them. Astonishingly, every push, pull, glow, and decay in the cosmos comes down to **four fundamental interactions**, each with its own strength, range, and carrier particle." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "The four fundamental forces, from strongest to weakest:\n\n- **Strong force** — the strongest; binds quarks into protons and neutrons and holds the nucleus together against electric repulsion. Very short range (nuclear size). Carrier: **gluon**.\n- **Electromagnetism** — acts between electric charges; governs light, chemistry, electronics, and all of everyday solidity. Infinite range, but attraction and repulsion. Carrier: **photon**.\n- **Weak force** — responsible for certain radioactive decays and for the reactions that let stars fuse. Extremely short range. Carriers: **W and Z bosons**.\n- **Gravity** — by far the weakest, but always attractive and infinite in range, so it dominates at astronomical scales: planets, stars, galaxies. Carrier (theorized): the **graviton**, not yet detected.\n\nA paradox: gravity rules the universe at large yet is fantastically feeble — a tiny magnet lifts a paperclip against the pull of the entire Earth. It dominates only because it's always attractive and never cancels, while electric charges mostly balance out.\n\n**Unification** is a grand goal of physics. Electromagnetism and the weak force have been merged into one **electroweak** force. Theories aim to unite the strong force too, and ultimately gravity — a 'theory of everything' — but gravity stubbornly resists, the great unsolved problem of fundamental physics." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Holding the nucleus", problem: "What overcomes the electric repulsion of protons in a nucleus?", steps: ["Protons repel electromagnetically.", "The strong force is stronger at short range."], answer: "The strong force." },
+        { title: "Weakest yet dominant", problem: "How can gravity rule the cosmos while being the weakest force?", steps: ["Gravity is always attractive and never cancels.", "Charges mostly balance out at large scale."], answer: "It accumulates over huge masses." },
+        { title: "Force carriers", problem: "Which particle carries the electromagnetic force?", steps: ["EM acts between charges.", "Its carrier is the photon."], answer: "The photon." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Strong, electromagnetic, weak, gravity — strongest to weakest." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Match forces to their roles and carriers." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: the quest for unification", content: { markdown: "Physicists suspect the four forces are facets of one. At the highest energies of the early universe they may have been unified, splitting apart as the cosmos cooled. The electroweak unification (Glashow, Salam, Weinberg) was confirmed when the W and Z bosons were found exactly as predicted. Grand Unified Theories aim to fold in the strong force, and string theory and others seek to include gravity. Success would be the deepest simplification in the history of science — but nature is guarding the secret well." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Four fundamental forces: strong, electromagnetic, weak, and gravity.", "Strong force binds nuclei (gluons); electromagnetism acts on charge (photons).", "The weak force drives some radioactive decays (W and Z bosons).", "Gravity is weakest but infinite-range and always attractive, so it dominates the cosmos.", "Electromagnetism and the weak force are unified (electroweak); fuller unification is unsolved."], formulas: [{ label: "Forces, strongest to weakest", tex: "\\text{strong} > \\text{EM} > \\text{weak} > \\text{gravity}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Which force holds protons and neutrons together in the nucleus?", options: ["gravity", "the strong force", "the weak force", "friction"], answer: 1, difficulty: 2, explanation: "The strong force binds nucleons, overcoming electric repulsion at short range." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Which is the weakest of the four fundamental forces?", options: ["strong", "electromagnetism", "weak", "gravity"], answer: 3, difficulty: 2, explanation: "Gravity is by far the weakest, though infinite in range and always attractive." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "The electromagnetic force is carried by the photon.", answer: true, difficulty: 3, explanation: "Photons mediate electromagnetism." },
+      { scope: "PRACTICE", kind: "MATCHING", prompt: "Match each force to its carrier particle.", options: { left: ["Electromagnetism", "Strong force", "Weak force", "Gravity (theorized)"], right: ["Photon", "Gluon", "W and Z bosons", "Graviton"] }, answer: ["Photon", "Gluon", "W and Z bosons", "Graviton"], difficulty: 3, explanation: "Photon (EM), gluon (strong), W/Z (weak), graviton (gravity, not yet detected)." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Gravity dominates on astronomical scales despite being weakest because it is:", options: ["the fastest", "always attractive and never cancels", "carried by photons", "short-ranged"], answer: 1, difficulty: 3, hint: "Charges balance; mass doesn't.", explanation: "Gravity always adds up over huge masses, while electric charges largely cancel." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Electromagnetism and the weak force have been unified into a single electroweak force.", answer: true, difficulty: 4, hint: "Glashow, Salam, Weinberg.", explanation: "The electroweak theory unified them, confirmed by the discovery of the W and Z bosons." },
+    ],
+  },
 ];

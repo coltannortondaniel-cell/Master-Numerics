@@ -74,4 +74,69 @@ export const thermodynamicsLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "MCQ", prompt: "The far-future state of maximum entropy is called the:", options: ["Big Bang", "heat death", "singularity", "main sequence"], answer: 1, hint: "Energy fully spread out.", explanation: "Maximum-entropy equilibrium is the heat death." },
     ],
   },
+
+  // ───────────────────────── 3. The Laws of Thermodynamics ─────────────────────────
+  {
+    slug: "the-laws-of-thermodynamics",
+    title: "The Laws of Thermodynamics",
+    tagline: "Four rules that govern energy and heat",
+    estMinutes: 16,
+    xpReward: 180,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "You Can't Win, and You Can't Break Even", sub: "Four deceptively simple laws rule every engine, star, and living cell — and forbid the free lunch forever." } },
+      { kind: "CONTEXT", title: "The rulebook of energy", content: { markdown: "The million-degree gas between galaxies, a car engine, your own metabolism — all obey the same handful of laws. Having met entropy and the second law, we now lay out the **full set**, the foundation of all thermal physics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "The four laws of thermodynamics:\n\n**Zeroth law.** If two systems are each in thermal equilibrium with a third, they're in equilibrium with each other. This is what makes **temperature** a meaningful, measurable quantity — it's why a thermometer works.\n\n**First law (conservation of energy).** Energy is conserved; you can change a system's internal energy by adding **heat** $Q$ or doing **work** $W$ on it:\n\n$$\\Delta U = Q - W.$$\n\nYou can't create energy from nothing — *'you can't win.'*\n\n**Second law (entropy).** The total entropy of an isolated system never decreases; heat flows spontaneously hot → cold; no process is perfectly efficient — *'you can't break even.'* This law gives time its arrow.\n\n**Third law.** As temperature approaches **absolute zero**, entropy approaches a minimum, and absolute zero itself can never be fully reached — *'you can't get out of the game.'*\n\nTogether they bound what any machine, chemical reaction, or living thing can do. They are among the most universal laws in science — Einstein expected them to be the one part of physics never overturned." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "First law bookkeeping", problem: "Heat $Q$ is added to a gas while it does work $W$. What is the change in internal energy?", steps: ["Energy is conserved.", "$\\Delta U = Q - W$."], answer: "$\\Delta U = Q - W$." },
+        { title: "Why thermometers work", problem: "Which law guarantees temperature is well-defined?", steps: ["Equilibrium is transitive.", "That's the zeroth law."], answer: "The zeroth law." },
+        { title: "No perfect cold", problem: "Can anything reach absolute zero?", steps: ["Entropy approaches a minimum there.", "The third law forbids fully reaching it."], answer: "No — absolute zero is unreachable." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Zeroth: temperature. First: energy. Second: entropy. Third: absolute zero." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Apply the four laws." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: statistical mechanics", content: { markdown: "Why do the laws hold? **Statistical mechanics**, built by Boltzmann, explains them from the behavior of countless particles. Entropy counts the number of microscopic arrangements that look the same large-scale; disordered states have vastly more arrangements, so systems drift toward them simply by probability. Boltzmann's tombstone bears his equation, $S = k \\log W$, linking entropy $S$ to the number of microstates $W$ — heat and disorder, explained by counting." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Zeroth law: makes temperature meaningful (thermometers work).", "First law: energy is conserved, $\\Delta U = Q - W$ ('you can't win').", "Second law: total entropy never decreases ('you can't break even').", "Third law: absolute zero can never be fully reached.", "Statistical mechanics explains the laws by counting microscopic arrangements."], formulas: [{ label: "First law", tex: "\\Delta U = Q - W" }, { label: "Boltzmann entropy", tex: "S = k \\log W" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The first law of thermodynamics is essentially:", options: ["entropy increases", "conservation of energy", "temperature is relative", "absolute zero is reachable"], answer: 1, difficulty: 2, explanation: "It states energy is conserved: $\\Delta U = Q - W$." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Which law makes temperature a well-defined quantity?", options: ["zeroth law", "first law", "second law", "third law"], answer: 0, difficulty: 3, explanation: "The zeroth law (transitive equilibrium) underpins temperature and thermometers." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "The third law says absolute zero can never be completely reached.", answer: true, difficulty: 3, explanation: "Entropy approaches a minimum, but absolute zero is unattainable." },
+      { scope: "PRACTICE", kind: "SYMBOLIC", prompt: "Write the change in internal energy $U$ from heat $Q$ and work done by the system $W$ (first law). (Type like `Q - W`.)", answer: { expr: "Q - W", vars: ["Q", "W"] }, difficulty: 3, hint: "Energy conservation.", explanation: "$\\Delta U = Q - W$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "'You can't win, you can't break even' refers, in order, to the:", options: ["second and third laws", "first and second laws", "zeroth and first laws", "third and first laws"], answer: 1, difficulty: 3, hint: "Energy, then entropy.", explanation: "First law: can't create energy ('win'); second law: can't be perfectly efficient ('break even')." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Statistical mechanics explains entropy by counting microscopic arrangements.", answer: true, difficulty: 4, hint: "Boltzmann's $S = k\\log W$.", explanation: "More arrangements (microstates) means higher entropy; systems drift toward the most probable, disordered states." },
+    ],
+  },
+
+  // ───────────────────────── 4. Heat Engines & Efficiency Limits ─────────────────────────
+  {
+    slug: "heat-engines-and-carnot",
+    title: "Heat Engines & the Carnot Limit",
+    tagline: "Turning heat into work — and the ceiling no engine beats",
+    estMinutes: 16,
+    xpReward: 190,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Every Engine Has a Hard Ceiling", sub: "No matter how clever the design, the temperatures it runs between cap how much heat it can turn into work." } },
+      { kind: "CONTEXT", title: "From steam to stars", content: { markdown: "Heat engines drove the Industrial Revolution and still generate most of our electricity. The second law sets an unbreakable limit on them — discovered by a young engineer studying steam, and as fundamental as any law in physics." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "A **heat engine** takes in heat from a hot reservoir at temperature $T_h$, converts **some** of it into useful work, and dumps the rest into a cold reservoir at $T_c$. It *must* dump some — the second law forbids turning heat entirely into work.\n\nThe **maximum possible efficiency**, achieved only by an ideal (reversible) **Carnot** engine, depends only on the two temperatures (in kelvin):\n\n$$\\eta_{max} = 1 - \\frac{T_c}{T_h}.$$\n\nLessons from this formula:\n\n- A bigger temperature gap (hotter $T_h$ or colder $T_c$) means higher possible efficiency.\n- Perfect efficiency ($\\eta = 1$) would need $T_c = 0$ (absolute zero) — impossible by the third law.\n- Real engines, with friction and irreversibility, always fall **below** the Carnot limit.\n\nThis is why power plants run boilers as hot as materials allow, and why no 'perfect' engine can exist. Run an engine in reverse and you get a **refrigerator** or **heat pump**, using work to move heat from cold to hot — paying the entropy bill with the work input." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Carnot efficiency", problem: "An ideal engine runs between $T_h = 600$ K and $T_c = 300$ K. What is its maximum efficiency?",
+          steps: ["Use $\\eta_{max} = 1 - T_c/T_h$.", "$= 1 - 300/600$.", "$= 1 - 0.5 = 0.5$."], answer: "50% — and a real engine between these temperatures does worse." },
+        { title: "Why dump heat?", problem: "Why can't an engine turn all its input heat into work?", steps: ["The second law forbids it.", "Some heat must go to the cold reservoir."], answer: "Exhaust heat is unavoidable." },
+        { title: "Boosting efficiency", problem: "How do you raise an engine's efficiency ceiling?", steps: ["Increase the temperature gap.", "Raise $T_h$ or lower $T_c$."], answer: "Widen the gap between hot and cold." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "$\\eta_{max} = 1 - T_c/T_h$; perfect efficiency is impossible." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Compute and reason about engine efficiency." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: Carnot's lasting legacy", content: { markdown: "**Sadi Carnot** published his analysis in 1824 and died of cholera at 36, his work nearly forgotten. Yet his idealized engine set the gold standard every real engine is measured against, and his reasoning birthed the second law and the concept of entropy. Remarkably, the Carnot limit depends *only* on temperatures — not on the working substance, design, or fuel. It's a statement about the universe, not about engineering, which is why it has never been beaten." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["A heat engine converts some heat to work and must exhaust the rest to a cold reservoir.", "Maximum (Carnot) efficiency: $\\eta_{max} = 1 - T_c/T_h$ (temperatures in kelvin).", "A larger hot–cold temperature gap allows higher efficiency.", "Perfect efficiency would need $T_c = 0$ — impossible; real engines do worse than Carnot.", "Run in reverse, an engine becomes a refrigerator or heat pump."], formulas: [{ label: "Carnot efficiency", tex: "\\eta_{max} = 1 - \\dfrac{T_c}{T_h}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "A heat engine must:", options: ["turn all heat into work", "exhaust some heat to a cold reservoir", "run at absolute zero", "create energy"], answer: 1, difficulty: 3, explanation: "The second law requires dumping some heat; full conversion is impossible." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "A larger temperature difference between the hot and cold reservoirs allows a higher maximum efficiency.", answer: true, difficulty: 3, explanation: "$\\eta_{max} = 1 - T_c/T_h$ grows as the gap widens." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "100% efficiency is impossible because it would require:", options: ["a faster engine", "the cold reservoir at absolute zero", "more fuel", "a bigger engine"], answer: 1, difficulty: 4, explanation: "$\\eta = 1$ needs $T_c = 0$, forbidden by the third law." },
+      { scope: "PRACTICE", kind: "NUMERIC", prompt: "An ideal engine runs between 800 K and 200 K. What is its maximum efficiency, as a decimal? (Use 1 − Tc/Th.)", answer: { value: 0.75, tolerance: 0.01 }, difficulty: 3, hint: "1 − 200/800.", explanation: "$1 - 200/800 = 1 - 0.25 = 0.75$." },
+      { scope: "PRACTICE", kind: "SYMBOLIC", prompt: "Write the Carnot efficiency in terms of cold and hot temperatures $T_c$ and $T_h$. (Type like `1 - T_c/T_h`.)", answer: { expr: "1 - T_c/T_h", vars: ["T_c", "T_h"] }, difficulty: 4, hint: "One minus the temperature ratio.", explanation: "$\\eta_{max} = 1 - T_c/T_h$." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Running a heat engine in reverse, using work to move heat from cold to hot, gives a:", options: ["perpetual motion machine", "refrigerator or heat pump", "battery", "turbine"], answer: 1, difficulty: 3, hint: "It pumps heat 'uphill'.", explanation: "A refrigerator/heat pump uses work input to move heat from cold to hot." },
+    ],
+  },
 ];
