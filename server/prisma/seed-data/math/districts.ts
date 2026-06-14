@@ -9,6 +9,7 @@ import { engineeringDistrictLessons } from "./engineering-district.js";
 import { stockExchangeLessons } from "./stock-exchange.js";
 import { observatoryBridgeLessons } from "./observatory-bridge.js";
 import { universityCampusLessons } from "./university-campus.js";
+import { researchLabLessons } from "./research-lab.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -125,7 +126,7 @@ export const districts: WorldSeed[] = [
     gradeRange: "Undergrad",
     scaleLabel: "Newton Wing",
     palette: { accent: "#88F7D4", glow: "#3BAE8C" },
-    lessons: [],
+    lessons: researchLabLessons,
   },
   {
     slug: "data-science-tower",
