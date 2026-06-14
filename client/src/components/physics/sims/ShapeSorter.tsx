@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Trophy } from "lucide-react";
 import { SimFrame, SimButton, Readout } from "./SimControls";
 
 /** shape-sorter — name each shape by counting its sides and corners. */
@@ -63,7 +64,7 @@ export function ShapeSorter() {
     <SimFrame>
       {finished ? (
         <div className="py-6 text-center">
-          <p className="text-4xl">🏆</p>
+          <p className="flex justify-center text-star"><Trophy size={36} strokeWidth={2} /></p>
           <p className="mt-2 font-display text-xl font-bold">All sorted!</p>
           <p className="text-neutron/60">You named {score} of {queue.length} shapes.</p>
           <div className="mt-4">

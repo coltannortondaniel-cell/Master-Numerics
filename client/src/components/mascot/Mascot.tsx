@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Hand, Sparkles } from "lucide-react";
 
 export type Mood = "idle" | "happy" | "thinking" | "sad" | "wave" | "celebrate";
 
@@ -116,7 +117,7 @@ export function Mascot({ mood = "idle", size = 120, className = "" }: Props) {
           animate={{ rotate: [0, 20, -10, 20, 0] }}
           transition={{ duration: 1, repeat: Infinity }}
         >
-          👋
+          <Hand size={18} strokeWidth={2} />
         </motion.span>
       )}
       {mood === "celebrate" && (
@@ -125,7 +126,7 @@ export function Mascot({ mood = "idle", size = 120, className = "" }: Props) {
           animate={{ y: [0, -8, 0], opacity: [1, 1, 0.4] }}
           transition={{ duration: 0.7, repeat: Infinity }}
         >
-          ✨
+          <Sparkles size={18} strokeWidth={2} />
         </motion.span>
       )}
     </motion.div>

@@ -55,7 +55,7 @@ const QUESTIONS: Record<Subject, PlacementQ[]> = {
 
 type Step = "intro" | "subject" | "grade" | "quiz" | "done";
 const INTRO: { line: string; mood: Mood }[] = [
-  { line: "Hi there — welcome to Master Numerics! 👋", mood: "wave" },
+  { line: "Hi there — welcome to Master Numerics!", mood: "wave" },
   { line: "I'll be your guide from counting all the way to the calculus of the cosmos.", mood: "happy" },
   { line: "Let's set you up with the perfect starting point. Ready?", mood: "happy" },
 ];
