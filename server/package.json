@@ -10,7 +10,7 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/index.js",
-    "start:prod": "prisma db push --accept-data-loss && npm run db:seed && node dist/index.js",
+    "start:prod": "prisma db push --accept-data-loss && (npm run db:seed || echo '⚠ seed failed — starting server anyway') && node dist/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
