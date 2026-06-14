@@ -10,6 +10,9 @@ import { stockExchangeLessons } from "./stock-exchange.js";
 import { observatoryBridgeLessons } from "./observatory-bridge.js";
 import { universityCampusLessons } from "./university-campus.js";
 import { researchLabLessons } from "./research-lab.js";
+import { dataScienceTowerLessons } from "./data-science-tower.js";
+import { quantumInstituteLessons } from "./quantum-institute.js";
+import { graduateSchoolLessons } from "./graduate-school.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -136,7 +139,7 @@ export const districts: WorldSeed[] = [
     gradeRange: "Undergrad",
     scaleLabel: "Vector Heights",
     palette: { accent: "#B07CFF", glow: "#6B21D6" },
-    lessons: [],
+    lessons: dataScienceTowerLessons,
   },
   {
     slug: "quantum-institute",
@@ -146,7 +149,7 @@ export const districts: WorldSeed[] = [
     gradeRange: "Undergrad",
     scaleLabel: "Flux Hall",
     palette: { accent: "#6CF0FF", glow: "#2BA8B8" },
-    lessons: [],
+    lessons: quantumInstituteLessons,
   },
   {
     slug: "graduate-school",
@@ -156,6 +159,6 @@ export const districts: WorldSeed[] = [
     gradeRange: "Grad",
     scaleLabel: "Old Quad",
     palette: { accent: "#FFD27A", glow: "#9D86C9" },
-    lessons: [],
+    lessons: graduateSchoolLessons,
   },
 ];
