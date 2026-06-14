@@ -50,6 +50,6 @@ jobs:
         working-directory: client
         run: npx tsc --noEmit
 
-      - name: Client build
+      - name: Client build (same command Render runs)
         working-directory: client
-        run: npx vite build
+        run: npm run build
