@@ -72,7 +72,7 @@ export function DailyGoalCard({
         </div>
         <p className="mt-1 text-sm text-fg/65">
           {done ? (
-            <>Goal met — your <span className="font-semibold text-star">{streak}-day streak</span> is safe today! 🔥</>
+            <>Goal met — your <span className="font-semibold text-star">{streak}-day streak</span> is safe today.</>
           ) : (
             <>
               <span className="font-semibold text-accent">{remaining} XP</span> to go.{" "}

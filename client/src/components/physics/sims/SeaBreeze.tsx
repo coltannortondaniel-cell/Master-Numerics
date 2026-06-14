@@ -54,7 +54,7 @@ export function SeaBreeze() {
           sea
         </text>
         <text x={W * 0.75} y={Hh - 18} textAnchor="middle" fontSize="11" fill="#fff">
-          land {time === "day" ? "🔥" : "❄️"}
+          land {time === "day" ? "(warm)" : "(cool)"}
         </text>
         {/* convection arrows */}
         <g stroke={time === "day" ? "#FFD27A" : "#9AB6FF"} strokeWidth={2} fill="none" opacity={0.8}>
@@ -77,8 +77,8 @@ export function SeaBreeze() {
           value={time}
           onChange={setTime}
           options={[
-            { value: "day", label: "☀️ Day" },
-            { value: "night", label: "🌙 Night" },
+            { value: "day", label: "Day" },
+            { value: "night", label: "Night" },
           ]}
         />
       </div>

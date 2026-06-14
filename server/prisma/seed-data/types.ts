@@ -16,7 +16,7 @@ export type QuestionSeed = {
     | string[]
     | string[][]
     | { expr: string; vars?: string[]; tolerance?: number }
-    | { expr: string; domain?: [number, number]; variable?: string; tolerance?: number }
+    | { expr: string; domain?: [number, number]; variable?: string; tolerance?: number; mode?: "draw"; samples?: number }
     | null;
   /** 1 (easiest) → 5 (hardest), relative within the unit. Defaults to 2. */
   difficulty?: number;

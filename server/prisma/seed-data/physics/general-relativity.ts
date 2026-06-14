@@ -73,4 +73,68 @@ export const generalRelativityLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "MCQ", prompt: "A black hole forms when a mass is compressed within its:", options: ["orbital radius", "Schwarzschild radius", "wavelength", "half-life"], answer: 1, hint: "Inside the horizon.", explanation: "Compression within $r_s$ creates a black hole." },
     ],
   },
+
+  // ───────────────────────── 3. The Equivalence Principle ─────────────────────────
+  {
+    slug: "the-equivalence-principle",
+    title: "The Equivalence Principle",
+    tagline: "Einstein's happiest thought",
+    estMinutes: 15,
+    xpReward: 180,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Falling Feels Like Floating", sub: "Einstein realized that a person in free fall feels no gravity at all — the seed that grew into a new theory of gravity." } },
+      { kind: "CONTEXT", title: "The thought behind the theory", content: { markdown: "Before the curved spacetime of black holes comes the simple insight that made it possible. Einstein called it his 'happiest thought': there is no experiment, done in a small sealed box, that can tell **gravity** apart from **acceleration**. From that, all of general relativity unfolds." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "The **equivalence principle**: locally, gravity and acceleration are indistinguishable.\n\n- In a windowless lift accelerating upward in deep space at $9.8\\,\\text{m/s}^2$, you feel pressed to the floor exactly as if standing on Earth.\n- In a lift falling freely, you float — gravity seems to vanish. This is **weightlessness**: astronauts in orbit aren't beyond gravity, they're in continuous free fall.\n\nA deep clue hides here: an object's **inertial mass** (its resistance to acceleration, from $F = ma$) exactly equals its **gravitational mass** (how strongly gravity pulls it). Because they're equal, **all objects fall at the same rate** regardless of mass — Galileo's hammer and feather, confirmed on the airless Moon by Apollo 15.\n\nEinstein's leap: if free fall erases gravity, then gravity isn't a force in the usual sense — it's what motion looks like in **curved spacetime**. Light, too, must bend in gravity, a prediction confirmed in 1919 by starlight deflected near the eclipsed Sun, making Einstein world-famous overnight." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Lift vs. planet", problem: "Can a sealed-box experiment tell gravity from acceleration?", steps: ["Both press you to the floor identically.", "No local experiment distinguishes them."], answer: "No — that is the equivalence principle." },
+        { title: "Why astronauts float", problem: "Are orbiting astronauts beyond Earth's gravity?", steps: ["Gravity is still strong in orbit.", "They are in continuous free fall."], answer: "No — they float because they're freely falling." },
+        { title: "Equal fall rates", problem: "Why do all objects fall at the same rate in a vacuum?", steps: ["Inertial mass equals gravitational mass.", "The mass cancels in the motion."], answer: "Because the two kinds of mass are equal." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Gravity ≈ acceleration; free fall ≈ weightlessness." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Reason with the equivalence principle." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: testing equivalence to extremes", content: { markdown: "The equality of inertial and gravitational mass has been tested to staggering precision — better than one part in a trillion — by experiments from torsion balances to the satellite **MICROSCOPE**. If the tiniest difference were ever found, it would crack open general relativity and hint at new physics. So far, equivalence holds perfectly, and even lunar laser ranging confirms the Earth and Moon 'fall' toward the Sun at the same rate." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Equivalence principle: locally, gravity and acceleration are indistinguishable.", "Free fall feels like weightlessness; orbiting astronauts are in free fall.", "Inertial mass equals gravitational mass, so all objects fall at the same rate.", "Gravity is reinterpreted as motion through curved spacetime.", "Gravity bends light — confirmed in the 1919 eclipse."], formulas: [{ label: "Equal masses", tex: "m_{inertial} = m_{gravitational}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Inside a small sealed box, you cannot tell uniform acceleration apart from gravity.", answer: true, difficulty: 3, explanation: "That indistinguishability is the equivalence principle." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Astronauts on the Space Station float because they are:", options: ["beyond Earth's gravity", "in continuous free fall", "weightless by magnetism", "moving slowly"], answer: 1, difficulty: 3, explanation: "Gravity is strong there; they free-fall around the Earth, so they float." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "All objects fall at the same rate in a vacuum because:", options: ["air helps them", "inertial mass equals gravitational mass", "heavy things resist gravity", "gravity ignores mass entirely"], answer: 1, difficulty: 4, explanation: "The equality of the two masses makes the fall rate independent of mass." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "General relativity predicts that gravity bends the path of light.", answer: true, difficulty: 3, hint: "Confirmed in 1919.", explanation: "Starlight bending near the Sun confirmed the prediction." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "A lift accelerating upward in deep space at 9.8 m/s² would make an occupant feel:", options: ["weightless", "as if standing on Earth", "crushed flat", "nothing"], answer: 1, difficulty: 3, hint: "Equivalence principle.", explanation: "The acceleration mimics Earth's gravity exactly." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Einstein's 'happiest thought' led him to view gravity as:", options: ["a magnetic force", "the curvature of spacetime", "friction", "a kind of light"], answer: 1, difficulty: 3, hint: "Free fall erases gravity.", explanation: "Gravity becomes geometry — motion through curved spacetime." },
+    ],
+  },
+
+  // ───────────────────────── 4. Gravitational Time Dilation & Waves ─────────────────────────
+  {
+    slug: "gravitational-time-dilation",
+    title: "Gravitational Time Dilation & Waves",
+    tagline: "Clocks slow in gravity, and spacetime can ripple",
+    estMinutes: 16,
+    xpReward: 190,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Your Head Ages Faster Than Your Feet", sub: "Time runs slower deeper in a gravitational field — by a sliver on Earth, dramatically near a black hole." } },
+      { kind: "CONTEXT", title: "When spacetime curves and shakes", content: { markdown: "If gravity is curved spacetime, then it must warp **time** as well as space — and a violent rearrangement of mass should send **ripples** through spacetime itself. Both predictions are now confirmed, one in your phone's GPS, the other by detecting colliding black holes." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "**Gravitational time dilation.** Clocks run **slower** where gravity is stronger (deeper in a gravitational well). A clock at sea level ticks slightly slower than one on a mountaintop. The effect is tiny on Earth but real — and near a black hole's horizon, time nearly stops as seen from far away.\n\n**GPS proves it daily.** Satellite clocks run faster (weaker gravity up high) and slower (their orbital speed, special relativity) — net, they gain about $38$ microseconds per day. Uncorrected, GPS would drift kilometers off within hours. Your phone's navigation is a working relativity experiment.\n\n**Gravitational waves.** When massive objects accelerate violently — two black holes spiralling together — they radiate **ripples in spacetime** that stretch and squeeze space as they pass, travelling at the speed of light. In 2015, **LIGO** detected such a wave from two merging black holes a billion light-years away, stretching its 4 km arms by less than the width of a proton. Predicted by Einstein in 1916, confirmed a century later — and opening a brand-new way to observe the universe, by listening instead of looking." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Which clock is slower?", problem: "Compare a clock at sea level with one on a mountaintop.", steps: ["Stronger gravity slows clocks.", "Sea level is deeper in the well."], answer: "The sea-level clock runs slightly slower." },
+        { title: "Why GPS needs relativity", problem: "What happens if GPS ignores relativity?", steps: ["Satellite clocks drift by tens of microseconds/day.", "Position errors grow to kilometers."], answer: "Navigation fails without the correction." },
+        { title: "What LIGO detects", problem: "What are gravitational waves?", steps: ["Accelerating masses ripple spacetime.", "The ripples stretch and squeeze space."], answer: "Ripples in spacetime, travelling at light speed." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Gravity slows time; merging masses ripple spacetime." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Reason about gravitational time and waves." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: multi-messenger astronomy", content: { markdown: "In 2017, LIGO caught gravitational waves from two colliding **neutron stars**, and telescopes worldwide swung to the same patch of sky to catch the light, gamma rays, and X-rays from the same event. For the first time, the universe was observed in both gravitational waves and light at once — **multi-messenger astronomy**. The collision was seen forging gold and platinum, confirming where the heaviest elements come from. A new sense has been added to astronomy." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Clocks run slower where gravity is stronger (gravitational time dilation).", "GPS satellites correct for relativity (~38 microseconds/day) to stay accurate.", "Near a black hole horizon, time nearly stops as seen from afar.", "Accelerating masses emit gravitational waves — ripples in spacetime at light speed.", "LIGO's 2015 detection confirmed Einstein's 1916 prediction and opened gravitational-wave astronomy."], formulas: [{ label: "Ripples at light speed", tex: "v_{gw} = c" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Where do clocks run slowest?", options: ["where gravity is weakest", "where gravity is strongest", "clocks run the same everywhere", "only in space"], answer: 1, difficulty: 3, explanation: "Stronger gravity (deeper in the well) slows time." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "GPS satellites must account for relativistic time effects to stay accurate.", answer: true, difficulty: 3, explanation: "Without correction (~38 microseconds/day), positions drift kilometers off." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Gravitational waves are:", options: ["sound waves in space", "ripples in spacetime from accelerating masses", "light from stars", "magnetic pulses"], answer: 1, difficulty: 3, explanation: "Violently accelerating masses radiate spacetime ripples." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Gravitational waves travel at:", options: ["the speed of sound", "the speed of light", "twice light speed", "any speed"], answer: 1, difficulty: 3, hint: "Same as light.", explanation: "They propagate at the speed of light." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "LIGO first directly detected gravitational waves from two merging black holes in 2015.", answer: true, difficulty: 2, hint: "A century after Einstein predicted them.", explanation: "The 2015 detection confirmed Einstein's 1916 prediction." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Near a black hole's event horizon, a distant observer sees a falling clock:", options: ["speed up", "slow nearly to a stop", "run normally", "run backward"], answer: 1, difficulty: 4, hint: "Extreme gravitational time dilation.", explanation: "Time appears to freeze at the horizon as seen from far away." },
+    ],
+  },
 ];

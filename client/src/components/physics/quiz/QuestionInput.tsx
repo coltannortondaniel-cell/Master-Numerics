@@ -4,6 +4,7 @@ import { Markdown } from "../../ui/Markdown";
 import { MatchingInput } from "./inputs/MatchingInput";
 import { FillBlankInput } from "./inputs/FillBlankInput";
 import { OrderInput } from "./inputs/OrderInput";
+import { DrawGraphInput } from "./inputs/DrawGraphInput";
 
 /** Compact preview plot of the learner's function (target curve is hidden). */
 function MiniPlot({ points, domain }: { points: { x: number; y: number }[]; domain: [number, number] }) {
@@ -184,10 +185,23 @@ export function QuestionInput({ question, value, onChange, result, disabled }: P
     );
   }
 
-  /* ---- GRAPH (function entry, graded locally by sampling) ---- */
+  /* ---- GRAPH (function entry or sketch, graded locally by sampling) ---- */
   if (question.kind === "GRAPH") {
-    const str = typeof value === "string" ? value : "";
     const ans = question.answer as GraphAnswer | undefined;
+    /* ---- GRAPH · draw mode (sketch the curve on a canvas) ---- */
+    if (ans?.mode === "draw") {
+      return (
+        <DrawGraphInput
+          answer={ans}
+          value={typeof value === "string" ? value : undefined}
+          onChange={onChange}
+          disabled={disabled}
+          graded={graded}
+          correct={result?.correct}
+        />
+      );
+    }
+    const str = typeof value === "string" ? value : "";
     const domain = ans?.domain ?? [-5, 5];
     const pts = str.trim() !== "" ? samplePlot(str, domain, 80, ans?.variable ?? "x") : [];
     return (

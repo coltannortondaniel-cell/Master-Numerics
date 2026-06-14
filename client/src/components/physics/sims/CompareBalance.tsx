@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Circle } from "lucide-react";
 import { SimFrame, SimButton, Readout } from "./SimControls";
 
 /** compare-balance — add acorns to each pan; the heavier side tips down. */
@@ -17,7 +18,7 @@ export function CompareBalance() {
     <div className="flex flex-col items-center gap-2">
       <div className="grid h-20 w-24 grid-cols-3 content-end gap-0.5 rounded-b-xl border border-neutron/20 bg-white/5 p-1">
         {Array.from({ length: n }).map((_, i) => (
-          <span key={i} className="text-center text-sm leading-none">🌰</span>
+          <span key={i} className="flex justify-center text-neutron/80"><Circle size={12} fill="currentColor" /></span>
         ))}
       </div>
       <p className="font-mono text-lg font-bold tabular-nums" style={{ color: "#9FB6D4" }}>{n}</p>
@@ -75,7 +76,7 @@ export function CompareBalance() {
         />
       </div>
       {rel === "equal" && (
-        <p className="mt-2 text-center text-sm text-success">⚖️ Balanced! Both sides are equal.</p>
+        <p className="mt-2 text-center text-sm text-success">Balanced! Both sides are equal.</p>
       )}
       <div className="mt-3 flex justify-center">
         <SimButton onClick={() => { setLeft(3); setRight(1); }}>Reset</SimButton>

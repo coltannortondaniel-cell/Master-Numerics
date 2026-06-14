@@ -4,6 +4,7 @@ import axios from "axios";
 import { physicsApi, type ContentApi, type LessonResponse } from "../lib/physics";
 import { ContentApiProvider } from "../lib/contentApi";
 import { parseApiError } from "../lib/api";
+import { useAuth } from "../store/auth";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { LessonViewer } from "../components/physics/LessonViewer";
@@ -41,7 +42,7 @@ export default function Lesson({ api = physicsApi, basePath = "/journey" }: Less
       .then((d) => alive && setData(d))
       .catch((err) => {
         if (!alive) return;
-        if (axios.isAxiosError(err) && err.response?.status === 403) {
+        if (axios.isAxiosError(err) && err.response?.status === 403 && useAuth.getState().paywallEnabled) {
           navigate("/subscribe", { replace: true });
           return;
         }

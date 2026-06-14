@@ -10,7 +10,7 @@ import type {
 } from "../../../lib/physics";
 import { useContentApi } from "../../../lib/contentApi";
 import { parseApiError } from "../../../lib/api";
-import { gradeSymbolic, gradeGraph } from "../../../lib/grader";
+import { gradeSymbolic, gradeGraph, gradeDrawnGraph } from "../../../lib/grader";
 import type { GraphAnswer, SymbolicAnswer } from "../../../lib/physics";
 import { Button } from "../../ui/Button";
 import { Markdown } from "../../ui/Markdown";
@@ -65,10 +65,13 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
 
     // SYMBOLIC / GRAPH are graded locally (sampling) — instant, no network.
     if ((q.kind === "SYMBOLIC" || q.kind === "GRAPH") && q.answer) {
+      const key = q.answer as GraphAnswer;
       const g =
         q.kind === "SYMBOLIC"
           ? gradeSymbolic(String(value), q.answer as SymbolicAnswer)
-          : gradeGraph(String(value), q.answer as GraphAnswer);
+          : key.mode === "draw"
+            ? gradeDrawnGraph(String(value), key)
+            : gradeGraph(String(value), key);
       const r = {
         questionId: q.id,
         correct: g.correct,

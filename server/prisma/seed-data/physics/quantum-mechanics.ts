@@ -74,4 +74,68 @@ export const quantumMechanicsLessons: LessonSeed[] = [
       { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Each element has a unique pattern of spectral lines.", answer: true, hint: "A barcode of light.", explanation: "Distinct energy levels give each element its own spectrum." },
     ],
   },
+
+  // ───────────────────────── 3. The Wavefunction & Probability ─────────────────────────
+  {
+    slug: "the-wavefunction",
+    title: "The Wavefunction & Probability",
+    tagline: "Where reality becomes a cloud of chances",
+    estMinutes: 16,
+    xpReward: 180,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "An Electron Is a Smear of Maybe", sub: "Quantum particles have no single location until measured — only a wave of probability spread through space." } },
+      { kind: "CONTEXT", title: "Reading a neutron star's matter", content: { markdown: "Inside a neutron star, matter is crushed to nuclear density, and only quantum rules describe it. At the heart of those rules is the **wavefunction** — the object that replaced the classical idea of a particle with a definite position and velocity." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "A quantum particle is described by a **wavefunction** $\\psi(x)$. The wavefunction itself isn't directly observable, but its square gives the **probability** of finding the particle at each location:\n\n$$P(x) \\propto |\\psi(x)|^2.$$\n\nKey consequences:\n\n- Before measurement, the particle is in a **superposition** — a blend of possible positions (and states). It has no single value.\n- **Measurement** forces a definite outcome at random, weighted by $|\\psi|^2$ — the wavefunction 'collapses.'\n- Total probability must equal 1: the particle is *somewhere*.\n- The shape of $\\psi$ over time follows the **Schrödinger equation**, the quantum law of motion.\n\nThis is why quantum mechanics is **probabilistic**: it predicts the odds of outcomes, not certainties. Einstein resisted it — 'God does not play dice' — but experiment has sided with the dice every time." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "What does $|\\psi|^2$ mean?", problem: "Interpret the square of the wavefunction.", steps: ["$\\psi$ is a probability amplitude.", "$|\\psi|^2$ is a probability density."], answer: "The likelihood of finding the particle there." },
+        { title: "Superposition", problem: "Where is an electron before measurement?", steps: ["It has no single position.", "It is a weighted blend of possibilities."], answer: "In a superposition of locations." },
+        { title: "Normalization", problem: "Why must the total probability be 1?", steps: ["The particle exists somewhere.", "Summing $|\\psi|^2$ over all space gives 1."], answer: "Probabilities must total 100%." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "$|\\psi|^2$ is probability; measurement collapses superposition." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Reason about wavefunctions and probability." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: entanglement", content: { markdown: "Two particles can share a single wavefunction, so that measuring one instantly fixes the state of the other, no matter how far apart — **entanglement**, what Einstein called 'spooky action at a distance.' It transmits no usable signal faster than light, but it is real and now powers quantum computing and quantum cryptography. The wavefunction, once a bookkeeping device, has become engineering." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["A particle is described by a wavefunction $\\psi$.", "$|\\psi|^2$ gives the probability of finding it at each point.", "Before measurement a particle is in a superposition of possibilities.", "Measurement collapses $\\psi$ to a random outcome weighted by $|\\psi|^2$.", "Quantum mechanics predicts probabilities, not certainties."], formulas: [{ label: "Born rule", tex: "P(x) \\propto |\\psi(x)|^2" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "The square of the wavefunction, $|\\psi|^2$, represents:", options: ["the particle's speed", "the probability of finding the particle there", "the particle's charge", "the particle's mass"], answer: 1, difficulty: 3, explanation: "$|\\psi|^2$ is the probability density." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Before measurement, a quantum particle can be in a superposition of several positions.", answer: true, difficulty: 3, explanation: "Superposition: a blend of possibilities until measured." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Quantum mechanics predicts:", options: ["exact outcomes every time", "the probabilities of outcomes", "nothing measurable", "only classical results"], answer: 1, difficulty: 2, explanation: "It is fundamentally probabilistic." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "When a measurement is made, the wavefunction:", options: ["disappears forever", "collapses to a definite outcome", "doubles", "becomes negative"], answer: 1, difficulty: 3, hint: "One result is selected.", explanation: "Measurement collapses $\\psi$ to a single outcome, weighted by $|\\psi|^2$." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "The total probability of finding a particle somewhere in space must equal 1.", answer: true, difficulty: 2, hint: "The particle exists.", explanation: "Normalization: integrating $|\\psi|^2$ over all space gives 1." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "The equation governing how a wavefunction evolves in time is the:", options: ["Newton equation", "Schrödinger equation", "Maxwell equation", "Einstein equation"], answer: 1, difficulty: 3, hint: "The quantum law of motion.", explanation: "The Schrödinger equation governs the wavefunction's evolution." },
+    ],
+  },
+
+  // ───────────────────────── 4. Tunnelling & Degeneracy Pressure ─────────────────────────
+  {
+    slug: "tunnelling-and-degeneracy",
+    title: "Tunnelling & Degeneracy Pressure",
+    tagline: "The quantum effects that hold up a dead star",
+    estMinutes: 16,
+    xpReward: 180,
+    difficulty: 5,
+    sections: [
+      { kind: "HERO", content: { scene: "sun", headline: "Held Up by a Rule, Not a Fire", sub: "A neutron star resists collapse not with heat or fuel, but with a quantum law about how particles may be packed." } },
+      { kind: "CONTEXT", title: "What holds a neutron star up?", content: { markdown: "A neutron star has burned out — no fusion fights gravity. Yet it doesn't collapse to a point. The reason is purely quantum: **degeneracy pressure**, a consequence of the **Pauli exclusion principle**. And the same quantum strangeness lets the Sun fuse at all, through **tunnelling**." } },
+      { kind: "CONCEPT", title: "The big idea", content: { markdown: "Two deeply quantum effects:\n\n**Quantum tunnelling.** Because a particle is a spread-out wave, it has a small probability of being found *beyond* an energy barrier it classically could never cross. It can 'tunnel' through. This is how protons in the Sun fuse despite their electric repulsion — classically they'd never get close enough; quantum-mechanically a few tunnel through and ignite the star. Tunnelling also drives radioactive alpha decay and the transistors in your phone.\n\n**The Pauli exclusion principle & degeneracy pressure.** Identical fermions (electrons, neutrons) cannot occupy the same quantum state. Crush matter and the particles are forced into ever-higher-energy states — they resist being packed, producing **degeneracy pressure** that needs no heat. This pressure holds up **white dwarfs** (electron degeneracy) and **neutron stars** (neutron degeneracy). Exceed the limit (about 1.4 solar masses for a white dwarf — the **Chandrasekhar limit**) and even this fails: the star collapses to a neutron star or a black hole." } },
+      { kind: "WORKED_EXAMPLES", title: "Worked examples", content: { examples: [
+        { title: "Why the Sun can fuse", problem: "How do repelling protons fuse at the Sun's temperature?", steps: ["Classically they can't overcome repulsion.", "Their wave nature lets a few tunnel through."], answer: "Quantum tunnelling enables fusion." },
+        { title: "No two alike", problem: "What does Pauli exclusion forbid?", steps: ["Identical fermions can't share a state.", "Packing forces higher-energy states."], answer: "Two identical fermions in the same quantum state." },
+        { title: "Holding up a dead star", problem: "What supports a neutron star against gravity?", steps: ["No fusion remains.", "Neutron degeneracy pressure resists compression."], answer: "Quantum degeneracy pressure." },
+      ] } },
+      { kind: "CONCEPT_CHECK", title: "Quick check", content: { intro: "Tunnelling enables fusion; exclusion gives degeneracy pressure." } },
+      { kind: "PRACTICE", title: "Practice problems", content: { intro: "Connect quantum rules to stellar remnants." } },
+      { kind: "DEEPER_DIVE", title: "Deeper dive: the Chandrasekhar limit", content: { markdown: "At nineteen, on a ship to England, **Subrahmanyan Chandrasekhar** calculated that electron degeneracy pressure can support a white dwarf only up to about **1.4 solar masses**. Beyond it, gravity wins. The establishment mocked him for years; he was right, and won the Nobel Prize. Above his limit, stars collapse to neutron stars — held by neutron degeneracy — and above a further limit, to black holes, where no known pressure can stop the fall." } },
+      { kind: "SUMMARY", title: "Summary", content: { takeaways: ["Quantum tunnelling lets particles pass barriers they classically couldn't — enabling stellar fusion.", "The Pauli exclusion principle forbids identical fermions sharing a quantum state.", "Degeneracy pressure (needing no heat) supports white dwarfs and neutron stars.", "The Chandrasekhar limit (~1.4 solar masses) caps a white dwarf's mass.", "Beyond these limits, collapse continues to a neutron star or black hole."], formulas: [{ label: "Chandrasekhar limit", tex: "M_{max} \\approx 1.4\\, M_{\\odot}" }] } },
+    ],
+    questions: [
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "Quantum tunnelling allows a particle to:", options: ["move faster than light", "pass through a barrier it classically couldn't cross", "gain mass", "stop existing"], answer: 1, difficulty: 3, explanation: "Its wave nature gives a probability of being found beyond the barrier." },
+      { scope: "CONCEPT_CHECK", kind: "TRUE_FALSE", prompt: "Two identical electrons cannot occupy the same quantum state.", answer: true, difficulty: 3, explanation: "The Pauli exclusion principle forbids it." },
+      { scope: "CONCEPT_CHECK", kind: "MCQ", prompt: "A neutron star is held up against gravity by:", options: ["nuclear fusion", "neutron degeneracy pressure", "magnetism", "radiation pressure"], answer: 1, difficulty: 3, explanation: "Degeneracy pressure from packed neutrons, a quantum effect needing no heat." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Quantum tunnelling is essential to the Sun because it lets protons:", options: ["cool down", "fuse despite their electric repulsion", "escape the Sun", "become photons"], answer: 1, difficulty: 3, hint: "Classically they couldn't get close enough.", explanation: "A few protons tunnel through the repulsion barrier, igniting fusion." },
+      { scope: "PRACTICE", kind: "TRUE_FALSE", prompt: "Degeneracy pressure requires the star to stay hot.", answer: false, difficulty: 3, hint: "It comes from the exclusion principle, not heat.", explanation: "Degeneracy pressure is purely quantum and persists even in a cold, burnt-out star." },
+      { scope: "PRACTICE", kind: "MCQ", prompt: "Above the Chandrasekhar limit (~1.4 solar masses), a white dwarf:", options: ["becomes stable forever", "collapses further (to a neutron star or black hole)", "turns into the Sun", "loses all gravity"], answer: 1, difficulty: 4, hint: "Electron degeneracy pressure is no longer enough.", explanation: "Gravity overwhelms degeneracy pressure, driving collapse." },
+    ],
+  },
 ];

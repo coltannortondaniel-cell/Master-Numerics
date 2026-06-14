@@ -105,7 +105,7 @@ const fmtTime = (sec: number) => {
 };
 
 export default function Dashboard() {
-  const { user, subscription, logout, refreshEntitlement } = useAuth();
+  const { user, subscription, paywallEnabled, logout, refreshEntitlement } = useAuth();
   const [params] = useSearchParams();
   const [billingLoading, setBillingLoading] = useState(false);
   const [error, setError] = useState("");
@@ -133,7 +133,7 @@ export default function Dashboard() {
   }, [setCoins, setTotalXp, setDaily]);
 
   if (!user) return null;
-  const entitled = hasEntitlement(user, subscription);
+  const entitled = hasEntitlement(user, subscription, paywallEnabled);
   const trialActive = new Date(user.trialEndsAt).getTime() > Date.now();
   const prog = summary ? rankProgress(summary.xp) : null;
   const goalDone = summary ? summary.challenges.daily.filter((c) => c.progress >= c.goal).length : 0;
@@ -208,7 +208,7 @@ export default function Dashboard() {
           />
         )}
 
-        {trialActive && !subscription && <TrialCountdown endsAt={user.trialEndsAt} />}
+        {paywallEnabled && trialActive && !subscription && <TrialCountdown endsAt={user.trialEndsAt} />}
 
         {subscription && (
           <div className="glass px-5 py-4 flex items-center justify-between gap-4 flex-wrap">

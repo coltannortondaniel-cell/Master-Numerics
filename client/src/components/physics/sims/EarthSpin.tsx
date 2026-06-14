@@ -78,8 +78,8 @@ export function EarthSpin() {
           <g transform={`translate(${ex} ${ey})`}>
             <circle r={5} fill={isDay ? "#9FB6D4" : "#6CF0FF"} stroke="#0A0B14" strokeWidth={1.5} />
           </g>
-          <text x={ex} y={ey - 10} textAnchor="middle" fontSize="12">
-            {isDay ? "☀️" : "🌙"}
+          <text x={ex} y={ey - 10} textAnchor="middle" fontSize="9" fill="#9FB6D4">
+            {isDay ? "DAY" : "NIGHT"}
           </text>
         </svg>
       </div>

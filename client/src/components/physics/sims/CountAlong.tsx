@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Circle } from "lucide-react";
 import { SimFrame, SimButton } from "./SimControls";
 
 /** count-along — tap each acorn once; the last number you say is how many. */
@@ -26,7 +27,7 @@ export function CountAlong() {
         <p className="font-display text-6xl font-bold tabular-nums" style={{ color: done ? "#2D7DFF" : "#9FB6D4" }}>
           {count}
         </p>
-        {done && <p className="font-display font-semibold text-success">That's {total} acorns! 🎉</p>}
+        {done && <p className="font-display font-semibold text-success">That's {total} in all!</p>}
       </div>
 
       <div className="flex flex-wrap justify-center gap-3">
@@ -37,15 +38,15 @@ export function CountAlong() {
             <button
               key={i}
               onClick={() => tap(i)}
-              className="relative grid h-14 w-14 place-items-center rounded-full text-3xl transition-all"
+              className="relative grid h-14 w-14 place-items-center rounded-full transition-all"
               style={{
                 background: counted ? "rgba(45,125,255,0.15)" : "rgba(255,255,255,0.05)",
                 border: counted ? "1.5px solid #2D7DFF" : "1px solid rgba(255,255,255,0.12)",
                 transform: counted ? "scale(1.05)" : "scale(1)",
               }}
-              aria-label={counted ? `Acorn ${pos + 1}, counted` : "Acorn, not counted"}
+              aria-label={counted ? `Item ${pos + 1}, counted` : "Item, not counted"}
             >
-              🌰
+              <Circle size={26} fill="currentColor" className={counted ? "text-accent" : "text-neutron/70"} />
               {counted && (
                 <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-success text-[0.7rem] font-bold text-space">
                   {pos + 1}

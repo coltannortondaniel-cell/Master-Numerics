@@ -2,6 +2,9 @@ import type { WorldSeed } from "./types.js";
 import { moonLessons } from "./moon.js";
 import { earthSurfaceLessons } from "./earth-surface.js";
 import { atmosphereLessons } from "./atmosphere.js";
+import { forcesMachinesLessons } from "./physics/forces-machines.js";
+import { lightSoundWavesLessons } from "./physics/light-sound-waves.js";
+import { heatThermalLessons } from "./physics/heat-thermal.js";
 import { kinematicsLessons } from "./physics/kinematics.js";
 import { dynamicsLessons } from "./physics/dynamics.js";
 import { energyLessons } from "./physics/energy.js";
@@ -56,6 +59,39 @@ export const worlds: WorldSeed[] = [
     scaleLabel: "1×10⁵ m",
     palette: { accent: "#4FB6FF", glow: "#1E6FB8" },
     lessons: atmosphereLessons,
+  },
+  {
+    slug: "low-earth-orbit",
+    name: "Low Earth Orbit",
+    subtitle: "Forces & Simple Machines",
+    description:
+      "Four hundred kilometers up, the Space Station circles the Earth every 90 minutes. In near-weightlessness — where friction nearly vanishes — the true rules of force show themselves: pushes and pulls, simple machines, work and power, and the energy that ties it all together.",
+    gradeRange: "5–6",
+    scaleLabel: "4×10⁵ m",
+    palette: { accent: "#5AA9FF", glow: "#2A6FB8" },
+    lessons: forcesMachinesLessons,
+  },
+  {
+    slug: "space-telescope",
+    name: "The Space Telescope",
+    subtitle: "Light, Sound & Waves",
+    description:
+      "A great mirror, parked above the blur of the atmosphere, drinking in starlight. Here you'll learn the physics that telescopes are built on: how waves carry energy, how sound and light travel, and how the full electromagnetic spectrum reveals an invisible universe.",
+    gradeRange: "6–7",
+    scaleLabel: "6×10⁵ m",
+    palette: { accent: "#C0A9FF", glow: "#6E5AB8" },
+    lessons: lightSoundWavesLessons,
+  },
+  {
+    slug: "the-sunlit-side",
+    name: "The Sunlit Side",
+    subtitle: "Heat & Thermal Energy",
+    description:
+      "A spacecraft's Sun-facing skin bakes while its shadow side freezes hundreds of degrees colder. Master the physics of heat: temperature and thermal energy, the three ways heat travels, the states of matter, and why no machine is ever perfectly efficient.",
+    gradeRange: "7–8",
+    scaleLabel: "1×10⁶ m",
+    palette: { accent: "#FFB060", glow: "#C2702A" },
+    lessons: heatThermalLessons,
   },
   {
     slug: "earth-moon-system",

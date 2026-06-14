@@ -1,19 +1,39 @@
 import { useState } from "react";
+import { Circle, Square, Triangle, Star, Moon, Sun, Heart, Diamond, Hexagon, Target } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { SimFrame, SimButton, Readout } from "./SimControls";
 
-/** pattern-maker — find the repeating unit and fill the missing piece. */
+/** pattern-maker — find the repeating unit and fill the missing piece.
+ *  Tokens are shapes (not colors) so the puzzles work for color-blind learners. */
 interface Puzzle {
   seq: string[]; // includes "?" for the missing slot (always last)
   answer: string;
   choices: string[];
 }
 
+const GLYPHS: Record<string, LucideIcon> = {
+  circle: Circle,
+  square: Square,
+  triangle: Triangle,
+  star: Star,
+  moon: Moon,
+  sun: Sun,
+  heart: Heart,
+  diamond: Diamond,
+  hexagon: Hexagon,
+};
+
+function Glyph({ name, size = 28 }: { name: string; size?: number }) {
+  const Icon = GLYPHS[name];
+  return Icon ? <Icon size={size} strokeWidth={2} /> : <span>{name}</span>;
+}
+
 const PUZZLES: Puzzle[] = [
-  { seq: ["🔴", "🔵", "🔴", "🔵", "🔴", "?"], answer: "🔵", choices: ["🔴", "🔵", "🟢"] },
-  { seq: ["🔺", "⬛", "🔺", "⬛", "?"], answer: "🔺", choices: ["⬛", "🔺", "⭕"] },
-  { seq: ["🍎", "🍎", "🍌", "🍎", "🍎", "?"], answer: "🍌", choices: ["🍎", "🍌", "🍇"] },
-  { seq: ["⭐", "🌙", "🌙", "⭐", "🌙", "🌙", "?"], answer: "⭐", choices: ["⭐", "🌙", "☀️"] },
-  { seq: ["🟩", "🟦", "🟪", "🟩", "🟦", "?"], answer: "🟪", choices: ["🟩", "🟦", "🟪"] },
+  { seq: ["circle", "square", "circle", "square", "circle", "?"], answer: "square", choices: ["circle", "square", "triangle"] },
+  { seq: ["triangle", "square", "triangle", "square", "?"], answer: "triangle", choices: ["square", "triangle", "circle"] },
+  { seq: ["heart", "heart", "diamond", "heart", "heart", "?"], answer: "diamond", choices: ["heart", "diamond", "hexagon"] },
+  { seq: ["star", "moon", "moon", "star", "moon", "moon", "?"], answer: "star", choices: ["star", "moon", "sun"] },
+  { seq: ["circle", "triangle", "hexagon", "circle", "triangle", "?"], answer: "hexagon", choices: ["circle", "triangle", "hexagon"] },
 ];
 
 export function PatternMaker() {
@@ -44,7 +64,7 @@ export function PatternMaker() {
     return (
       <SimFrame>
         <div className="py-6 text-center">
-          <p className="text-4xl">🎯</p>
+          <p className="flex justify-center text-accent"><Target size={40} strokeWidth={2} /></p>
           <p className="mt-2 font-display text-xl font-bold">Pattern master!</p>
           <p className="text-neutron/60">You solved {score} of {PUZZLES.length}.</p>
           <div className="mt-4">
@@ -60,7 +80,7 @@ export function PatternMaker() {
       <p className="mb-3 text-center font-mono text-xs uppercase tracking-widest text-neutron/45">
         What comes next?
       </p>
-      <div className="flex flex-wrap items-center justify-center gap-2 text-4xl">
+      <div className="flex flex-wrap items-center justify-center gap-2">
         {p.seq.map((c, i) => (
           <span
             key={i}
@@ -68,17 +88,18 @@ export function PatternMaker() {
               c === "?" ? "border-2 border-dashed border-cosmic/60 text-cosmic" : "bg-white/5"
             }`}
           >
-            {c === "?" ? (picked ?? "?") : c}
+            {c === "?" ? (picked ? <Glyph name={picked} /> : <span className="text-2xl">?</span>) : <Glyph name={c} />}
           </span>
         ))}
       </div>
 
-      <div className="mt-5 flex justify-center gap-3 text-3xl">
+      <div className="mt-5 flex justify-center gap-3">
         {p.choices.map((c) => (
           <button
             key={c}
             onClick={() => pick(c)}
             disabled={!!picked}
+            aria-label={c}
             className={`grid h-16 w-16 place-items-center rounded-xl border transition-all ${
               picked && c === p.answer
                 ? "border-success bg-success/15"
@@ -87,7 +108,7 @@ export function PatternMaker() {
                   : "border-neutron/15 hover:border-cosmic hover:bg-white/5"
             }`}
           >
-            {c}
+            <Glyph name={c} size={32} />
           </button>
         ))}
       </div>
