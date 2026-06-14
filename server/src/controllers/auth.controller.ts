@@ -32,6 +32,7 @@ const publicUser = (u: {
   role: string;
   xp: number;
   coins: number;
+  dailyGoalXp: number;
   trialEndsAt: Date;
   createdAt: Date;
 }) => ({
@@ -42,6 +43,7 @@ const publicUser = (u: {
   role: u.role,
   xp: u.xp,
   coins: u.coins,
+  dailyGoalXp: u.dailyGoalXp,
   trialEndsAt: u.trialEndsAt,
   createdAt: u.createdAt,
 });

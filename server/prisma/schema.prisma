@@ -61,6 +61,8 @@ model User {
   xp                  Int                  @default(0)
   coins               Int                  @default(0)
   avatarColor         String               @default("#6B21D6")
+  // Daily XP target driving the daily goal ring + streak (Casual→Intense).
+  dailyGoalXp         Int                  @default(50)
 
   subscription        Subscription?
   refreshTokens       RefreshToken[]

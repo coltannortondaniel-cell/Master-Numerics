@@ -7,6 +7,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 export const dashboardRouter = Router();
 dashboardRouter.use(requireAuth);
 dashboardRouter.get("/", asyncHandler(dashboard.summary));
+dashboardRouter.get("/daily", asyncHandler(dashboard.daily));
+dashboardRouter.post("/daily-goal", asyncHandler(dashboard.setDailyGoal));
 dashboardRouter.post("/challenges/claim", asyncHandler(dashboard.claim));
 
 export const notificationsRouter = Router();

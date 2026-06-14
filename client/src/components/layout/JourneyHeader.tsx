@@ -1,7 +1,10 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../store/auth";
 import { useXp } from "../../store/xp";
 import { rankForXp } from "../../lib/rank";
+import { dashboardApi } from "../../lib/dashboard";
+import { StreakBadge } from "../gamification/DailyGoal";
 import { Coins, Settings as SettingsIcon } from "lucide-react";
 import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
@@ -17,9 +20,23 @@ export function JourneyHeader({ back }: Props) {
   const { user, logout } = useAuth();
   const liveXp = useXp((s) => s.totalXp);
   const liveCoins = useXp((s) => s.coins);
+  const streak = useXp((s) => s.streak);
+  const setDaily = useXp((s) => s.setDaily);
   const xp = liveXp ?? user?.xp ?? 0;
   const coins = liveCoins ?? user?.coins ?? 0;
   const rank = rankForXp(xp);
+
+  // Keep the streak flame fresh (cheap endpoint).
+  useEffect(() => {
+    let alive = true;
+    dashboardApi
+      .daily()
+      .then((d) => alive && setDaily(d))
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [setDaily]);
 
   return (
     <header className="relative z-20 flex items-center justify-between gap-4 px-4 sm:px-6 py-3 border-b border-neutron/10 backdrop-blur-sm">
@@ -46,6 +63,7 @@ export function JourneyHeader({ back }: Props) {
       </div>
 
       <div className="flex items-center gap-3 sm:gap-5">
+        {streak != null && <StreakBadge streak={streak} />}
         <div className="flex items-center gap-1.5 rounded-full bg-white/5 px-3 py-1.5" title="NumCoins">
           <Coins size={15} className="text-solar" strokeWidth={1.75} />
           <span className="font-mono text-sm font-semibold tabular-nums text-neutron/90">

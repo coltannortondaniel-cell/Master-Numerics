@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { Moon, Sun, Eye, Type, Sparkles, Volume2, VolumeX, Keyboard } from "lucide-react";
+import { Moon, Sun, Eye, Type, Sparkles, Volume2, VolumeX, Keyboard, Target } from "lucide-react";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import {
@@ -7,6 +7,9 @@ import {
   type TextSize,
   type Theme,
 } from "../store/settings";
+import { useAuth } from "../store/auth";
+import { useXp } from "../store/xp";
+import { dashboardApi, DAILY_GOALS } from "../lib/dashboard";
 
 /* ---- Small, self-contained controls (sharp, on-brand) ---- */
 
@@ -143,6 +146,15 @@ function Slider({
 
 export default function Settings() {
   const s = useSettings();
+  const goalFromXp = useXp((x) => x.dailyGoalXp);
+  const user = useAuth((a) => a.user);
+  const setGoalXp = useXp((x) => x.setGoalXp);
+  const goal = goalFromXp ?? user?.dailyGoalXp ?? 50;
+
+  function chooseGoal(xp: number) {
+    setGoalXp(xp);
+    void dashboardApi.setGoal(xp).catch(() => {});
+  }
 
   return (
     <div className="relative min-h-screen">
@@ -155,6 +167,32 @@ export default function Settings() {
         </div>
 
         <div className="flex flex-col gap-5">
+          <Section title="Daily goal">
+            <Row
+              icon={<Target size={20} />}
+              title="Daily XP goal"
+              desc="How much you aim to learn each day — drives your streak."
+            >
+              <div className="grid grid-cols-2 gap-2">
+                {DAILY_GOALS.map((g) => {
+                  const active = g.xp === goal;
+                  return (
+                    <button
+                      key={g.xp}
+                      onClick={() => chooseGoal(g.xp)}
+                      className={`rounded-lg border px-3 py-2 text-left text-sm transition-all ${
+                        active ? "border-accent bg-accent/10" : "border-line/12 hover:border-line/30"
+                      }`}
+                    >
+                      <span className="block font-semibold">{g.label}</span>
+                      <span className="block text-xs text-fg/50">{g.xp} XP · ~{g.minutes} min</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </Row>
+          </Section>
+
           <Section title="Appearance">
             <Row
               icon={s.theme === "light" ? <Sun size={20} /> : <Moon size={20} />}

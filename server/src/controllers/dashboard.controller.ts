@@ -19,6 +19,16 @@ async function computeStreak(userId: string): Promise<number> {
   return streak;
 }
 
+async function todayXp(userId: string): Promise<number> {
+  const start = new Date();
+  start.setUTCHours(0, 0, 0, 0);
+  const agg = await prisma.xpEvent.aggregate({
+    where: { userId, createdAt: { gte: start } },
+    _sum: { amount: true },
+  });
+  return agg._sum.amount ?? 0;
+}
+
 async function continueFor(userId: string, subject: "PHYSICS" | "MATH") {
   const started = await prisma.userProgress.findFirst({
     where: { userId, status: "STARTED", lesson: { world: { subject } } },
@@ -39,14 +49,15 @@ export async function summary(req: Request, res: Response): Promise<void> {
   if (!req.auth) throw unauthorized();
   const userId = req.auth.sub;
 
-  const [user, progressAgg, mastered, timeAgg, challenges, streak, contPhysics, contMath, friendships] =
+  const [user, progressAgg, mastered, timeAgg, challenges, streak, todayEarned, contPhysics, contMath, friendships] =
     await Promise.all([
-      prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { username: true, xp: true, coins: true } }),
+      prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { username: true, xp: true, coins: true, dailyGoalXp: true } }),
       prisma.userProgress.findMany({ where: { userId, status: { in: ["COMPLETED", "MASTERED"] } }, select: { bestScore: true } }),
       prisma.userProgress.count({ where: { userId, status: "MASTERED" } }),
       prisma.userProgress.aggregate({ where: { userId }, _sum: { timeSpentSec: true } }),
       listChallenges(userId),
       computeStreak(userId),
+      todayXp(userId),
       continueFor(userId, "PHYSICS"),
       continueFor(userId, "MATH"),
       prisma.friendship.findMany({
@@ -93,6 +104,8 @@ export async function summary(req: Request, res: Response): Promise<void> {
     xp: user.xp,
     coins: user.coins,
     streak,
+    dailyGoalXp: user.dailyGoalXp,
+    todayXp: todayEarned,
     stats: {
       lessonsCompleted: progressAgg.length,
       lessonsMastered: mastered,
@@ -104,6 +117,29 @@ export async function summary(req: Request, res: Response): Promise<void> {
     activity,
     unreadNotifications: unread,
   });
+}
+
+/** GET /api/dashboard/daily — lightweight streak + daily-goal status for the header. */
+export async function daily(req: Request, res: Response): Promise<void> {
+  if (!req.auth) throw unauthorized();
+  const userId = req.auth.sub;
+  const [streak, earned, user] = await Promise.all([
+    computeStreak(userId),
+    todayXp(userId),
+    prisma.user.findUniqueOrThrow({ where: { id: userId }, select: { dailyGoalXp: true } }),
+  ]);
+  res.json({ streak, todayXp: earned, dailyGoalXp: user.dailyGoalXp });
+}
+
+const ALLOWED_GOALS = [20, 50, 100, 150];
+const goalSchema = z.object({ goalXp: z.number().int().refine((n) => ALLOWED_GOALS.includes(n)) });
+
+/** POST /api/dashboard/daily-goal { goalXp } — set the daily XP target. */
+export async function setDailyGoal(req: Request, res: Response): Promise<void> {
+  if (!req.auth) throw unauthorized();
+  const { goalXp } = goalSchema.parse(req.body);
+  await prisma.user.update({ where: { id: req.auth.sub }, data: { dailyGoalXp: goalXp } });
+  res.json({ ok: true, dailyGoalXp: goalXp });
 }
 
 const claimSchema = z.object({ key: z.string().min(1) });

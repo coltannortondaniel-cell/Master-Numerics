@@ -12,6 +12,7 @@ import { Logo } from "../components/ui/Logo";
 import { Button } from "../components/ui/Button";
 import { RankIcon } from "../components/ui/RankIcon";
 import { NotificationBell } from "../components/layout/NotificationBell";
+import { DailyGoalCard } from "../components/gamification/DailyGoal";
 
 const QUICK = [
   { to: "/calculator", Icon: Calculator, label: "Calculator" },
@@ -112,6 +113,7 @@ export default function Dashboard() {
   const [claiming, setClaiming] = useState(false);
   const setCoins = useXp((s) => s.setCoins);
   const setTotalXp = useXp((s) => s.setTotalXp);
+  const setDaily = useXp((s) => s.setDaily);
   const pushToast = useXp((s) => s.push);
 
   useEffect(() => {
@@ -125,9 +127,10 @@ export default function Dashboard() {
         setSummary(d);
         setCoins(d.coins);
         setTotalXp(d.xp);
+        setDaily({ streak: d.streak, todayXp: d.todayXp, dailyGoalXp: d.dailyGoalXp });
       })
       .catch(() => {});
-  }, [setCoins, setTotalXp]);
+  }, [setCoins, setTotalXp, setDaily]);
 
   if (!user) return null;
   const entitled = hasEntitlement(user, subscription);
@@ -188,28 +191,22 @@ export default function Dashboard() {
       </header>
 
       <main className="relative z-10 mx-auto max-w-3xl px-6 py-12 flex flex-col gap-6">
-        {/* Welcome + daily goal ring */}
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <h1 className="font-display text-3xl font-bold">Welcome back, {user.username}.</h1>
-            {summary && (
-              <p className="mt-1 flex items-center gap-1.5 text-neutron/55">
-                <Flame size={15} className="text-solar" strokeWidth={1.75} />
-                {summary.streak}-day streak · {goalDone}/3 daily challenges done
-              </p>
-            )}
-          </div>
-          {summary && (
-            <div className="relative grid h-16 w-16 shrink-0 place-items-center">
-              <svg className="absolute inset-0 -rotate-90" viewBox="0 0 36 36">
-                <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="3" />
-                <circle cx="18" cy="18" r="16" fill="none" stroke="#22D3A0" strokeWidth="3" strokeLinecap="round"
-                  strokeDasharray={2 * Math.PI * 16} strokeDashoffset={2 * Math.PI * 16 * (1 - goalDone / 3)} />
-              </svg>
-              <span className="font-mono text-sm font-bold">{goalDone}/3</span>
-            </div>
-          )}
+        {/* Welcome */}
+        <div>
+          <h1 className="font-display text-3xl font-bold">Welcome back, {user.username}.</h1>
+          <p className="mt-1 text-neutron/55">
+            {goalDone > 0 ? `${goalDone}/3 daily challenges done.` : "Let's keep the momentum going."}
+          </p>
         </div>
+
+        {/* Daily goal + streak (headline gamification) */}
+        {summary && (
+          <DailyGoalCard
+            todayXp={summary.todayXp}
+            goalXp={summary.dailyGoalXp}
+            streak={summary.streak}
+          />
+        )}
 
         {trialActive && !subscription && <TrialCountdown endsAt={user.trialEndsAt} />}
 

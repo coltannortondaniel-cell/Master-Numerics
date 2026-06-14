@@ -11,6 +11,7 @@ export interface User {
   createdAt: string;
   xp: number;
   coins: number;
+  dailyGoalXp: number;
 }
 
 export interface Subscription {
