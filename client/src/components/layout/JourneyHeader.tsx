@@ -5,6 +5,7 @@ import { useXp } from "../../store/xp";
 import { rankForXp } from "../../lib/rank";
 import { dashboardApi } from "../../lib/dashboard";
 import { StreakBadge } from "../gamification/DailyGoal";
+import { WorldSwitch } from "../world/WorldSwitch";
 import { Coins, Settings as SettingsIcon } from "lucide-react";
 import { Logo } from "../ui/Logo";
 import { Button } from "../ui/Button";
@@ -60,6 +61,7 @@ export function JourneyHeader({ back }: Props) {
         <div className="hidden sm:block">
           <Logo />
         </div>
+        <WorldSwitch />
       </div>
 
       <div className="flex items-center gap-3 sm:gap-5">
