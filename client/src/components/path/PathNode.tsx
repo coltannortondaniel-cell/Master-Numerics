@@ -27,7 +27,10 @@ const MUTED = "rgba(244,246,251,0.14)";
  * the "current" pulse communicate done / current / locked / coming-soon.
  */
 export function PathNode({ name, gradeRange, mastery, stars, state, badge, onClick }: Props) {
-  const interactive = state === "done" || state === "current";
+  // "locked" worlds (ahead of the learner) are still tappable to preview their
+  // lessons — the lock styling stays as a progression cue, but no charted world
+  // is ever a dead end. Only "soon" (genuinely empty) nodes are inert.
+  const interactive = state !== "soon";
 
   const disc = (() => {
     switch (state) {
