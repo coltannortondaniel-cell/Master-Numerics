@@ -9,6 +9,7 @@ import { momentumLessons } from "./physics/momentum.js";
 import { rotationLessons } from "./physics/rotation.js";
 import { gravitationLessons } from "./physics/gravitation.js";
 import { oscillationsLessons } from "./physics/oscillations.js";
+import { electromagnetismLessons } from "./physics/electromagnetism.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -122,12 +123,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "clusters-nebulae",
     name: "Star Clusters & Nebulae",
-    subtitle: "Stellar nurseries",
-    description: "Where stars are born: emission nebulae, open clusters, and the HR diagram come alive.",
+    subtitle: "Electricity & Magnetism",
+    description: "The force lighting up ionized nebular gas. Electric charge and Coulomb's law, electric fields, and circuits with Ohm's law — the second great force of classical physics.",
     gradeRange: "11–12",
     scaleLabel: "1×10¹⁷ m",
     palette: { accent: "#B07CFF", glow: "#6E3FC2" },
-    lessons: [],
+    lessons: electromagnetismLessons,
   },
   {
     slug: "supernovae",
