@@ -7,6 +7,7 @@ import { dynamicsLessons } from "./physics/dynamics.js";
 import { energyLessons } from "./physics/energy.js";
 import { momentumLessons } from "./physics/momentum.js";
 import { rotationLessons } from "./physics/rotation.js";
+import { gravitationLessons } from "./physics/gravitation.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -100,12 +101,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "the-sun",
     name: "The Sun",
-    subtitle: "Inside a living star",
-    description: "Dive into nuclear fusion, the electromagnetic spectrum, and the engine that powers everything you have ever eaten.",
-    gradeRange: "10–11",
+    subtitle: "Classical Mechanics · Gravitation & Circular Motion",
+    description: "The Sun's grip on the planets. Uniform circular motion and centripetal acceleration, Newton's law of universal gravitation, and orbits with Kepler's laws — the physics that governs everything that turns and orbits.",
+    gradeRange: "11–12",
     scaleLabel: "1.4×10⁹ m",
     palette: { accent: "#FFB800", glow: "#C77F00" },
-    lessons: [],
+    lessons: gravitationLessons,
   },
   {
     slug: "binary-stars",

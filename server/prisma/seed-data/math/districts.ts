@@ -3,6 +3,7 @@ import { kindergartenParkLessons } from "./kindergarten-park.js";
 import { elementarySchoolStLessons } from "./elementary-school-st.js";
 import { theBakeryLessons } from "./the-bakery.js";
 import { theMarketLessons } from "./the-market.js";
+import { cityHallPlazaLessons } from "./city-hall-plaza.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -59,7 +60,7 @@ export const districts: WorldSeed[] = [
     gradeRange: "6–7",
     scaleLabel: "1 Plaza Way",
     palette: { accent: "#7FB3FF", glow: "#3D6FC9" },
-    lessons: [],
+    lessons: cityHallPlazaLessons,
   },
   {
     slug: "architects-quarter",
