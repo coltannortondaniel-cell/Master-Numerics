@@ -37,7 +37,7 @@ export function ShapeSorter() {
   const current = queue[idx];
   const finished = idx >= queue.length;
   const color = useMemo(
-    () => ({ circle: "#1E90FF", triangle: "#FFB800", square: "#22D3A0", rectangle: "#FF6E9C" })[current ?? "circle"],
+    () => ({ circle: "#2D7DFF", triangle: "#9FB6D4", square: "#2D7DFF", rectangle: "#FF6E9C" })[current ?? "circle"],
     [current]
   );
 
@@ -98,7 +98,7 @@ export function ShapeSorter() {
             <Readout
               items={[
                 { label: "Shape", value: `${idx + 1} of ${queue.length}` },
-                { label: "Correct", value: String(score), color: "#22D3A0" },
+                { label: "Correct", value: String(score), color: "#2D7DFF" },
               ]}
             />
           </div>

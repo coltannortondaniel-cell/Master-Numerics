@@ -20,7 +20,7 @@ export function CompareBalance() {
           <span key={i} className="text-center text-sm leading-none">🌰</span>
         ))}
       </div>
-      <p className="font-mono text-lg font-bold tabular-nums" style={{ color: "#FFB800" }}>{n}</p>
+      <p className="font-mono text-lg font-bold tabular-nums" style={{ color: "#9FB6D4" }}>{n}</p>
       <div className="flex gap-1">
         <button
           className="h-7 w-7 rounded bg-white/10 font-bold hover:bg-white/20"
@@ -68,7 +68,7 @@ export function CompareBalance() {
             {
               label: "Compare",
               value: rel === "equal" ? "Equal" : rel === "left" ? "Left has more" : "Right has more",
-              color: rel === "equal" ? "#22D3A0" : "#FFB800",
+              color: rel === "equal" ? "#2D7DFF" : "#9FB6D4",
             },
             { label: "Right", value: String(right) },
           ]}

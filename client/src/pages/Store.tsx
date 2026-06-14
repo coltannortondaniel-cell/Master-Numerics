@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { storeApi, type StoreResponse, type Crate, type CrateResult } from "../lib/store";
 import { parseApiError } from "../lib/api";
-import { Coins, Gift } from "lucide-react";
+import { Coins, Gift, Shirt, Palette, BadgeCheck } from "lucide-react";
 import { RARITY_META, type Rarity } from "../lib/rarity";
 import { CosmeticTypeIcon } from "../components/ui/CosmeticTypeIcon";
 import { useXp } from "../store/xp";
@@ -10,6 +10,13 @@ import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { CrateOpener } from "../components/store/CrateOpener";
 import { Button } from "../components/ui/Button";
+
+/** Featured cosmetics grouped into the brief's shop categories. */
+const STORE_GROUPS = [
+  { label: "Mascot & avatar", Icon: Shirt, types: ["OUTFIT", "HAT", "PET"] },
+  { label: "Themes & path skins", Icon: Palette, types: ["BACKGROUND", "AURA"] },
+  { label: "Profile flair", Icon: BadgeCheck, types: ["TITLE", "BADGE"] },
+];
 
 function OddsBar({ odds }: { odds: Partial<Record<Rarity, number>> }) {
   const total = Object.values(odds).reduce((s, w) => s + (w ?? 0), 0) || 1;
@@ -87,17 +94,17 @@ export default function Store() {
 
   return (
     <div className="relative min-h-screen">
-      <CosmicBackground palette={{ accent: "#B07CFF", glow: "#FFB800" }} />
+      <CosmicBackground palette={{ accent: "#2D7DFF", glow: "#2D7DFF" }} />
       <JourneyHeader back={{ to: "/dashboard", label: "Dashboard" }} />
       <main className="relative z-10 mx-auto max-w-3xl px-4 sm:px-6 py-10">
         <div className="mb-6 flex items-end justify-between">
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.3em] text-[#C9B6FF]">Cosmetics</p>
+            <p className="font-mono text-xs uppercase tracking-[0.3em] text-nebula">Cosmetics</p>
             <h1 className="mt-2 font-display text-3xl sm:text-4xl font-bold">The Store</h1>
           </div>
           <div className="glass px-4 py-2 text-right">
-            <p className="text-[0.7rem] uppercase tracking-widest text-neutron/45">Balance</p>
-            <p className="flex items-center justify-end gap-1.5 font-mono text-xl font-bold text-solar">
+            <p className="text-[0.7rem] uppercase tracking-widest text-fg/45">Balance</p>
+            <p className="flex items-center justify-end gap-1.5 font-mono text-xl font-bold text-star">
               <Coins size={18} strokeWidth={1.75} /> {coins.toLocaleString()}
             </p>
           </div>
@@ -120,15 +127,15 @@ export default function Store() {
                 return (
                   <div key={crate.key} className="glass flex flex-col p-5">
                     <div className="mb-3 flex items-center gap-3">
-                      <Gift size={34} strokeWidth={1.4} style={{ color: "#C9B6FF" }} />
+                      <Gift size={34} strokeWidth={1.4} className="text-accent" />
                       <div>
                         <h3 className="font-display font-bold">{crate.name}</h3>
-                        <p className="flex items-center gap-1 font-mono text-sm text-solar">
+                        <p className="flex items-center gap-1 font-mono text-sm text-star">
                           <Coins size={13} strokeWidth={1.75} /> {crate.cost}
                         </p>
                       </div>
                     </div>
-                    <p className="mb-3 flex-1 text-sm text-neutron/55">{crate.blurb}</p>
+                    <p className="mb-3 flex-1 text-sm text-fg/55">{crate.blurb}</p>
                     <div className="mb-3">
                       <OddsBar odds={crate.odds} />
                     </div>
@@ -140,33 +147,44 @@ export default function Store() {
               })}
             </div>
 
-            {/* Featured cosmetics */}
-            <h2 className="mt-10 mb-4 font-display text-xl font-bold">Featured items</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {data.featured.map((c) => {
-                const m = RARITY_META[c.rarity];
-                return (
-                  <div key={c.key} className="glass flex flex-col items-center p-4 text-center" style={{ borderTop: `2px solid ${m.color}` }}>
-                    <CosmeticTypeIcon type={c.type} size={26} strokeWidth={1.5} style={{ color: m.color }} />
-                    <p className="mt-1 text-sm font-semibold">{c.name}</p>
-                    <p className="text-[0.7rem] font-semibold" style={{ color: m.color }}>{m.label}</p>
-                    <div className="mt-3 w-full">
-                      {c.owned ? (
-                        <span className="block rounded-lg bg-white/5 py-2 text-sm text-neutron/50">Owned</span>
-                      ) : (
-                        <button
-                          onClick={() => buy(c.key)}
-                          disabled={busy || coins < c.coinPrice}
-                          className="flex w-full items-center justify-center gap-1 rounded-lg bg-cosmic py-2 text-sm font-semibold text-neutron hover:brightness-110 disabled:opacity-40"
-                        >
-                          <Coins size={13} strokeWidth={1.75} /> {c.coinPrice}
-                        </button>
-                      )}
-                    </div>
+            {/* Featured cosmetics, grouped by category */}
+            {STORE_GROUPS.map((group) => {
+              const items = data.featured.filter((c) => group.types.includes(c.type));
+              if (items.length === 0) return null;
+              return (
+                <section key={group.label} className="mt-10">
+                  <div className="mb-4 flex items-center gap-2">
+                    <group.Icon size={18} strokeWidth={1.75} className="text-accent" />
+                    <h2 className="font-display text-xl font-bold">{group.label}</h2>
                   </div>
-                );
-              })}
-            </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {items.map((c) => {
+                      const m = RARITY_META[c.rarity];
+                      return (
+                        <div key={c.key} className="glass flex flex-col items-center p-4 text-center" style={{ borderTop: `2px solid ${m.color}` }}>
+                          <CosmeticTypeIcon type={c.type} size={26} strokeWidth={1.5} style={{ color: m.color }} />
+                          <p className="mt-1 text-sm font-semibold">{c.name}</p>
+                          <p className="text-[0.7rem] font-semibold" style={{ color: m.color }}>{m.label}</p>
+                          <div className="mt-3 w-full">
+                            {c.owned ? (
+                              <span className="block rounded-lg bg-line/5 py-2 text-sm text-fg/50">Owned</span>
+                            ) : (
+                              <button
+                                onClick={() => buy(c.key)}
+                                disabled={busy || coins < c.coinPrice}
+                                className="flex w-full items-center justify-center gap-1 rounded-lg bg-accent py-2 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-40"
+                              >
+                                <Coins size={13} strokeWidth={1.75} /> {c.coinPrice}
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </section>
+              );
+            })}
           </>
         )}
       </main>

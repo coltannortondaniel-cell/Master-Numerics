@@ -109,7 +109,7 @@ export function PatternMaker() {
         <Readout
           items={[
             { label: "Puzzle", value: `${idx + 1} of ${PUZZLES.length}` },
-            { label: "Solved", value: String(score), color: "#22D3A0" },
+            { label: "Solved", value: String(score), color: "#2D7DFF" },
           ]}
         />
       </div>

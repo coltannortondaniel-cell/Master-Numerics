@@ -79,8 +79,8 @@ export function EnergyBars() {
     return { x, y: groundY - bh, w: 38, h: bh, color };
   };
   const uBar = bar(U, 150, "#7FB3FF");
-  const kBar = bar(K, 205, "#FFB800");
-  const eBar = bar(E, 260, "#22D3A0");
+  const kBar = bar(K, 205, "#9FB6D4");
+  const eBar = bar(E, 260, "#2D7DFF");
 
   return (
     <SimFrame>
@@ -97,8 +97,8 @@ export function EnergyBars() {
         ))}
         {/* bar labels */}
         <text x={uBar.x + 19} y={groundY + 14} fontSize="9" textAnchor="middle" fill="#7FB3FF">PE</text>
-        <text x={kBar.x + 19} y={groundY + 14} fontSize="9" textAnchor="middle" fill="#FFB800">KE</text>
-        <text x={eBar.x + 19} y={groundY + 14} fontSize="9" textAnchor="middle" fill="#22D3A0">Total</text>
+        <text x={kBar.x + 19} y={groundY + 14} fontSize="9" textAnchor="middle" fill="#9FB6D4">KE</text>
+        <text x={eBar.x + 19} y={groundY + 14} fontSize="9" textAnchor="middle" fill="#2D7DFF">Total</text>
       </svg>
 
       <div className="mt-4">
@@ -114,8 +114,8 @@ export function EnergyBars() {
             { label: "Height", value: `${h.toFixed(2)} m` },
             { label: "Speed", value: `${v.current.toFixed(2)} m/s` },
             { label: "PE = mgh", value: `${U.toFixed(1)} J`, color: "#7FB3FF" },
-            { label: "KE = ½mv²", value: `${K.toFixed(1)} J`, color: "#FFB800" },
-            { label: "Total E", value: `${E.toFixed(1)} J`, color: "#22D3A0" },
+            { label: "KE = ½mv²", value: `${K.toFixed(1)} J`, color: "#9FB6D4" },
+            { label: "Total E", value: `${E.toFixed(1)} J`, color: "#2D7DFF" },
           ]}
         />
       </div>

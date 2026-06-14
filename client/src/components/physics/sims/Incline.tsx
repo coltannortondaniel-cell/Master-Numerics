@@ -89,7 +89,7 @@ export function Incline() {
         <text x={x0 + 26} y={y0 - 6} fontSize="11" fill="#7FB3FF">θ = {angle}°</text>
         {/* block */}
         <g transform={`translate(${bx} ${by}) rotate(${-angle})`}>
-          <rect x={-12} y={-22} width="24" height="18" rx="3" fill="#FFB800" stroke="#0A0B14" strokeWidth="1.5" />
+          <rect x={-12} y={-22} width="24" height="18" rx="3" fill="#9FB6D4" stroke="#0A0B14" strokeWidth="1.5" />
         </g>
         {/* force arrows from block center */}
         {(() => {
@@ -111,12 +111,12 @@ export function Incline() {
               <defs>
                 {["g", "n", "f"].map((k) => (
                   <marker key={k} id={`ar-${k}`} markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-                    <path d="M0 0 L6 3 L0 6 Z" fill={k === "g" ? "#FF4757" : k === "n" ? "#22D3A0" : "#7FB3FF"} />
+                    <path d="M0 0 L6 3 L0 6 Z" fill={k === "g" ? "#FF4757" : k === "n" ? "#2D7DFF" : "#7FB3FF"} />
                   </marker>
                 ))}
               </defs>
               {arrow(gv, "#FF4757", "g")}
-              {arrow(nv, "#22D3A0", "n")}
+              {arrow(nv, "#2D7DFF", "n")}
               {arrow(fr, "#7FB3FF", "f")}
             </g>
           );
@@ -135,11 +135,11 @@ export function Incline() {
         <Readout
           items={[
             { label: "Along ramp mg·sinθ", value: `${along.toFixed(1)} N`, color: "#FF4757" },
-            { label: "Normal mg·cosθ", value: `${normal.toFixed(1)} N`, color: "#22D3A0" },
+            { label: "Normal mg·cosθ", value: `${normal.toFixed(1)} N`, color: "#2D7DFF" },
             { label: "Friction (max)", value: `${maxFriction.toFixed(1)} N`, color: "#7FB3FF" },
-            { label: "Slides?", value: slides ? "Yes" : "No", color: slides ? "#FFB800" : "#9CA3AF" },
+            { label: "Slides?", value: slides ? "Yes" : "No", color: slides ? "#9FB6D4" : "#9CA3AF" },
             { label: "Net force", value: `${netForce.toFixed(1)} N` },
-            { label: "Acceleration", value: `${accel.toFixed(2)} m/s²`, color: "#FFB800" },
+            { label: "Acceleration", value: `${accel.toFixed(2)} m/s²`, color: "#9FB6D4" },
           ]}
         />
       </div>

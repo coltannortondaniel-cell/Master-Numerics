@@ -109,7 +109,7 @@ export function Collision() {
         </g>
         {/* cart 2 */}
         <g>
-          <rect x={px(x2.current) - r2} y={trackY - r2 + 7} width={r2 * 2} height={r2 * 2} rx="3" fill="#FFB800" stroke="#0A0B14" strokeWidth="1.5" />
+          <rect x={px(x2.current) - r2} y={trackY - r2 + 7} width={r2 * 2} height={r2 * 2} rx="3" fill="#9FB6D4" stroke="#0A0B14" strokeWidth="1.5" />
           <text x={px(x2.current)} y={trackY + 11} fontSize="9" textAnchor="middle" fill="#0A0B14" fontWeight="bold">{m2}</text>
         </g>
       </svg>
@@ -135,10 +135,10 @@ export function Collision() {
       <div className="mt-3">
         <Readout
           items={[
-            { label: "Momentum before", value: `${pBefore.toFixed(1)} kg·m/s`, color: "#22D3A0" },
-            { label: "Momentum now", value: `${pAfter.toFixed(1)} kg·m/s`, color: "#22D3A0" },
+            { label: "Momentum before", value: `${pBefore.toFixed(1)} kg·m/s`, color: "#2D7DFF" },
+            { label: "Momentum now", value: `${pAfter.toFixed(1)} kg·m/s`, color: "#2D7DFF" },
             { label: "Cart 1 v", value: `${cv1.current.toFixed(2)} m/s`, color: "#7FB3FF" },
-            { label: "Cart 2 v", value: `${cv2.current.toFixed(2)} m/s`, color: "#FFB800" },
+            { label: "Cart 2 v", value: `${cv2.current.toFixed(2)} m/s`, color: "#9FB6D4" },
           ]}
         />
       </div>

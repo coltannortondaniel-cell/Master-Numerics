@@ -61,7 +61,7 @@ export function SkyScatter() {
       <div className="mt-3">
         <Readout
           items={[
-            { label: "Air to cross", value: `${pathLen.toFixed(1)}× `, color: "#FFB800" },
+            { label: "Air to cross", value: `${pathLen.toFixed(1)}× `, color: "#9FB6D4" },
             { label: "Sky", value: elev > 25 ? "Blue" : elev > 12 ? "Orange" : "Deep red", color: horizon },
             { label: "Time feel", value: elev > 60 ? "Midday" : elev > 20 ? "Afternoon" : "Sunset" },
           ]}

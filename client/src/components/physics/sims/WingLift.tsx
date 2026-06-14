@@ -38,7 +38,7 @@ export function WingLift() {
           <path d="M-60 0 C -40 -14, 40 -10, 60 0 C 40 6, -40 6, -60 0 Z" fill="#F0F4FF" />
         </g>
         {/* lift arrow */}
-        <g transform={`translate(${W / 2} 90)`} stroke="#22D3A0" strokeWidth={3} fill="none">
+        <g transform={`translate(${W / 2} 90)`} stroke="#2D7DFF" strokeWidth={3} fill="none">
           <line x1={0} y1={0} x2={0} y2={-liftArrow} />
           <path d={`M-5 ${-liftArrow + 6} L0 ${-liftArrow} L5 ${-liftArrow + 6}`} />
         </g>
@@ -56,9 +56,9 @@ export function WingLift() {
       <div className="mt-3">
         <Readout
           items={[
-            { label: "Lift", value: `${Math.round(lift)} N`, color: stalled ? "#FF4757" : "#22D3A0" },
+            { label: "Lift", value: `${Math.round(lift)} N`, color: stalled ? "#FF4757" : "#2D7DFF" },
             { label: "Lift coeff.", value: cl.toFixed(2) },
-            { label: "Status", value: stalled ? "Stalled" : "Flying", color: stalled ? "#FF4757" : "#22D3A0" },
+            { label: "Status", value: stalled ? "Stalled" : "Flying", color: stalled ? "#FF4757" : "#2D7DFF" },
           ]}
         />
       </div>

@@ -98,7 +98,7 @@ export function ForcePush() {
       <div className="mt-3">
         <Readout
           items={[
-            { label: "Acceleration", value: `${a.toFixed(2)} m/s²`, color: "#FFB800" },
+            { label: "Acceleration", value: `${a.toFixed(2)} m/s²`, color: "#9FB6D4" },
             { label: "Speed", value: `${v.toFixed(1)} m/s` },
             { label: "Distance", value: `${x.toFixed(1)} m` },
           ]}

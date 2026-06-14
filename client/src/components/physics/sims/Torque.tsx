@@ -55,10 +55,10 @@ export function Torque() {
         <rect x={w1x - size(m1) / 2} y={w1y - size(m1)} width={size(m1)} height={size(m1)} rx="2" fill="#7FB3FF" stroke="#0A0B14" strokeWidth="1.2" />
         <text x={w1x} y={w1y - size(m1) - 3} fontSize="9" textAnchor="middle" fill="#7FB3FF">{m1}kg</text>
         {/* right weight */}
-        <rect x={w2x - size(m2) / 2} y={w2y - size(m2)} width={size(m2)} height={size(m2)} rx="2" fill="#FFB800" stroke="#0A0B14" strokeWidth="1.2" />
-        <text x={w2x} y={w2y - size(m2) - 3} fontSize="9" textAnchor="middle" fill="#FFB800">{m2}kg</text>
+        <rect x={w2x - size(m2) / 2} y={w2y - size(m2)} width={size(m2)} height={size(m2)} rx="2" fill="#9FB6D4" stroke="#0A0B14" strokeWidth="1.2" />
+        <text x={w2x} y={w2y - size(m2) - 3} fontSize="9" textAnchor="middle" fill="#9FB6D4">{m2}kg</text>
         {/* status */}
-        <text x={cx} y={20} fontSize="12" textAnchor="middle" fill={balanced ? "#22D3A0" : "#FF8C42"} fontWeight="bold">
+        <text x={cx} y={20} fontSize="12" textAnchor="middle" fill={balanced ? "#2D7DFF" : "#FF8C42"} fontWeight="bold">
           {balanced ? "Balanced" : net > 0 ? "Tips left" : "Tips right"}
         </text>
       </svg>
@@ -73,8 +73,8 @@ export function Torque() {
         <Readout
           items={[
             { label: "Left torque r·F", value: `${t1.toFixed(1)} N·m`, color: "#7FB3FF" },
-            { label: "Right torque r·F", value: `${t2.toFixed(1)} N·m`, color: "#FFB800" },
-            { label: "Net torque", value: `${net.toFixed(1)} N·m`, color: balanced ? "#22D3A0" : "#FF8C42" },
+            { label: "Right torque r·F", value: `${t2.toFixed(1)} N·m`, color: "#9FB6D4" },
+            { label: "Net torque", value: `${net.toFixed(1)} N·m`, color: balanced ? "#2D7DFF" : "#FF8C42" },
           ]}
         />
       </div>

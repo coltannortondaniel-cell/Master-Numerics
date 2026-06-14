@@ -49,7 +49,7 @@ export function EarthSpin() {
           <defs>
             <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#FFF6D8" />
-              <stop offset="100%" stopColor="#FFB800" />
+              <stop offset="100%" stopColor="#9FB6D4" />
             </radialGradient>
             <clipPath id="planet">
               <circle r={r} />
@@ -64,8 +64,8 @@ export function EarthSpin() {
             <rect x={0} y={-r} width={r} height={2 * r} fill={mode === "earth" ? "#2E86DE" : "#9aa0ad"} />
             {mode === "earth" && (
               <>
-                <ellipse cx={-r * 0.3} cy={-r * 0.2} rx={r * 0.35} ry={r * 0.22} fill="#22D3A0" opacity={0.7} />
-                <ellipse cx={r * 0.35} cy={r * 0.3} rx={r * 0.3} ry={r * 0.25} fill="#22D3A0" opacity={0.7} />
+                <ellipse cx={-r * 0.3} cy={-r * 0.2} rx={r * 0.35} ry={r * 0.22} fill="#2D7DFF" opacity={0.7} />
+                <ellipse cx={r * 0.35} cy={r * 0.3} rx={r * 0.3} ry={r * 0.25} fill="#2D7DFF" opacity={0.7} />
               </>
             )}
             {/* night shading */}
@@ -76,7 +76,7 @@ export function EarthSpin() {
           <line x1={0} y1={-r} x2={0} y2={r} stroke="rgba(0,0,0,0.5)" strokeWidth={1} />
           {/* Explorer */}
           <g transform={`translate(${ex} ${ey})`}>
-            <circle r={5} fill={isDay ? "#FFB800" : "#6CF0FF"} stroke="#0A0B14" strokeWidth={1.5} />
+            <circle r={5} fill={isDay ? "#9FB6D4" : "#6CF0FF"} stroke="#0A0B14" strokeWidth={1.5} />
           </g>
           <text x={ex} y={ey - 10} textAnchor="middle" fontSize="12">
             {isDay ? "☀️" : "🌙"}
@@ -97,7 +97,7 @@ export function EarthSpin() {
         <SliderControl label="Spin speed" value={speed} min={0.2} max={6} step={0.1} unit="×" onChange={setSpeed} format={(v) => v.toFixed(1)} />
         <Readout
           items={[
-            { label: "Explorer", value: isDay ? "Daytime" : "Night", color: isDay ? "#FFB800" : "#6CF0FF" },
+            { label: "Explorer", value: isDay ? "Daytime" : "Night", color: isDay ? "#9FB6D4" : "#6CF0FF" },
             { label: "Local time", value: `${String(hh).padStart(2, "0")}:${String(mm).padStart(2, "0")}` },
             { label: "Day length", value: mode === "earth" ? "24 hours" : "~29.5 days" },
           ]}

@@ -25,9 +25,9 @@ export function GravityDrop() {
   const start = useRef(0);
 
   const lanes: Lane[] = [
-    { key: "earth", label: "Earth", g: G_EARTH, color: "#22D3A0" },
+    { key: "earth", label: "Earth", g: G_EARTH, color: "#2D7DFF" },
     { key: "moon", label: "Moon", g: G_MOON, color: "#C9CED6" },
-    { key: "custom", label: "Your planet", g: customG, color: "#FFB800" },
+    { key: "custom", label: "Your planet", g: customG, color: "#9FB6D4" },
   ];
 
   function drop() {
@@ -84,8 +84,8 @@ export function GravityDrop() {
                   className="absolute left-1/2 h-5 w-5 -translate-x-1/2 rounded-full"
                   style={{
                     top: `calc(${frac * 100}% - ${frac * 20}px + 6px)`,
-                    background: `radial-gradient(circle at 35% 30%, #fff, ${l.color})`,
-                    boxShadow: `0 0 12px ${l.color}`,
+                    background: l.color,
+                    border: "2px solid #fff",
                     transition: landed ? "none" : undefined,
                   }}
                 />
@@ -129,7 +129,7 @@ export function GravityDrop() {
             {
               label: "Your fall",
               value: `${Math.sqrt((2 * FALL_HEIGHT_M) / customG).toFixed(2)} s`,
-              color: "#FFB800",
+              color: "#9FB6D4",
             },
           ]}
         />

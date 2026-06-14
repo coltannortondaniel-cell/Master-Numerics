@@ -45,9 +45,9 @@ export function SeaBreeze() {
         {/* sky */}
         <rect x={0} y={0} width={W} height={Hh} fill={time === "day" ? "#1e6fb8" : "#0b1733"} />
         {/* sun / moon */}
-        <circle cx={time === "day" ? W * 0.2 : W * 0.8} cy={28} r={14} fill={time === "day" ? "#FFB800" : "#C9CED6"} />
+        <circle cx={time === "day" ? W * 0.2 : W * 0.8} cy={28} r={14} fill={time === "day" ? "#9FB6D4" : "#C9CED6"} />
         {/* sea (left) */}
-        <rect x={0} y={Hh - 46} width={W / 2} height={46} fill="#1E90FF" />
+        <rect x={0} y={Hh - 46} width={W / 2} height={46} fill="#2D7DFF" />
         {/* land (right) */}
         <rect x={W / 2} y={Hh - 52} width={W / 2} height={52} fill={time === "day" ? "#8a6d3b" : "#4a3a22"} />
         <text x={W * 0.25} y={Hh - 16} textAnchor="middle" fontSize="11" fill="#fff">
@@ -85,7 +85,7 @@ export function SeaBreeze() {
       <div className="mt-3">
         <Readout
           items={[
-            { label: "Warmer surface", value: time === "day" ? "Land" : "Sea", color: "#FFB800" },
+            { label: "Warmer surface", value: time === "day" ? "Land" : "Sea", color: "#9FB6D4" },
             { label: "Air rises over", value: time === "day" ? "Land" : "Sea" },
             { label: "Surface wind", value: time === "day" ? "Sea → Land" : "Land → Sea", color: "#4FB6FF" },
           ]}

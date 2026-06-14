@@ -74,7 +74,7 @@ export function NumberLine() {
               key={i}
               d={`M ${x(from)} ${yLine} Q ${mid} ${yLine - 30} ${x(to)} ${yLine}`}
               fill="none"
-              stroke={op === "add" ? "#22D3A0" : "#FF8C42"}
+              stroke={op === "add" ? "#2D7DFF" : "#FF8C42"}
               strokeWidth="2"
               markerEnd="url(#nl-arrow)"
             />
@@ -82,7 +82,7 @@ export function NumberLine() {
         })}
         <defs>
           <marker id="nl-arrow" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto">
-            <path d="M0 0 L6 3 L0 6 Z" fill={op === "add" ? "#22D3A0" : "#FF8C42"} />
+            <path d="M0 0 L6 3 L0 6 Z" fill={op === "add" ? "#2D7DFF" : "#FF8C42"} />
           </marker>
         </defs>
 
@@ -90,9 +90,9 @@ export function NumberLine() {
         <circle cx={x(start)} cy={yLine} r="4" fill="#7FB3FF" />
         {/* current position marker */}
         <g transform={`translate(${x(current)} ${yLine})`}>
-          <circle r="6" fill="#FFB800" stroke="#0A0B14" strokeWidth="1.5" />
+          <circle r="6" fill="#9FB6D4" stroke="#0A0B14" strokeWidth="1.5" />
         </g>
-        <text x={x(current)} y={yLine - 14} fontSize="11" textAnchor="middle" fill="#FFB800" fontWeight="bold">
+        <text x={x(current)} y={yLine - 14} fontSize="11" textAnchor="middle" fill="#9FB6D4" fontWeight="bold">
           {current}
         </text>
       </svg>

@@ -8,8 +8,8 @@ import { SimFrame, SliderControl, SimButton, Readout } from "./SimControls";
 function Magnet({ flipped }: { flipped: boolean }) {
   const left = flipped ? "S" : "N";
   const right = flipped ? "N" : "S";
-  const leftColor = flipped ? "#1E90FF" : "#FF4757";
-  const rightColor = flipped ? "#FF4757" : "#1E90FF";
+  const leftColor = flipped ? "#2D7DFF" : "#FF4757";
+  const rightColor = flipped ? "#FF4757" : "#2D7DFF";
   return (
     <div className="flex h-12 w-24 overflow-hidden rounded shadow-lg">
       <div className="grid flex-1 place-items-center font-display font-bold text-white" style={{ background: leftColor }}>
@@ -49,7 +49,7 @@ export function MagnetPoles() {
         </div>
         {/* Interaction arrows in the gap */}
         <div className="absolute" style={{ left: `calc(6rem + ${distance * 5}px + 1.5rem)` }}>
-          <span className="text-2xl" style={{ color: attract ? "#22D3A0" : "#FF4757" }}>
+          <span className="text-2xl" style={{ color: attract ? "#2D7DFF" : "#FF4757" }}>
             {attract ? "→ ←" : "← →"}
           </span>
         </div>
@@ -76,8 +76,8 @@ export function MagnetPoles() {
         <Readout
           items={[
             { label: "Facing poles", value: `S ↔ ${rightMagnetLeftPole}` },
-            { label: "Result", value: attract ? "Attract" : "Repel", color: attract ? "#22D3A0" : "#FF4757" },
-            { label: "Relative force", value: `${force.toFixed(1)}×`, color: "#FFB800" },
+            { label: "Result", value: attract ? "Attract" : "Repel", color: attract ? "#2D7DFF" : "#FF4757" },
+            { label: "Relative force", value: `${force.toFixed(1)}×`, color: "#9FB6D4" },
           ]}
         />
       </div>

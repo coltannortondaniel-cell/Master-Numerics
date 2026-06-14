@@ -73,7 +73,7 @@ function SpaceView({ p, size = 200 }: { p: number; size?: number }) {
       <defs>
         <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
           <stop offset="0%" stopColor="#FFF6D8" />
-          <stop offset="60%" stopColor="#FFB800" />
+          <stop offset="60%" stopColor="#9FB6D4" />
           <stop offset="100%" stopColor="#C77F00" />
         </radialGradient>
       </defs>
@@ -88,7 +88,7 @@ function SpaceView({ p, size = 200 }: { p: number; size?: number }) {
           y1={dy}
           x2={-size * 0.1}
           y2={dy}
-          stroke="#FFB80055"
+          stroke="#9FB6D455"
           strokeWidth={1.5}
           strokeDasharray="3 5"
         />
@@ -96,7 +96,7 @@ function SpaceView({ p, size = 200 }: { p: number; size?: number }) {
       {/* Orbit */}
       <circle r={R} fill="none" stroke="rgba(240,244,255,0.14)" strokeWidth={1} strokeDasharray="4 5" />
       {/* Earth */}
-      <circle r={size * 0.06} fill="#1E90FF" />
+      <circle r={size * 0.06} fill="#2D7DFF" />
       {/* Earth→Moon line */}
       <line x1={0} y1={0} x2={mx} y2={my} stroke="rgba(240,244,255,0.12)" strokeWidth={1} />
       {/* Moon: left (Sun-facing) half lit */}
