@@ -69,11 +69,28 @@ app.use("/api/admin", adminRouter);
 
 // Serve the built client in a single-service production deploy. The SPA
 // fallback returns index.html for any non-API/non-socket route.
+//
+// Caching strategy: Vite fingerprints every asset (e.g. index-BUjM36KL.js), so
+// those are safe to cache forever. But index.html must NEVER be cached, or a
+// browser/proxy keeps serving an old shell that points at stale JS — the
+// classic "deployed but the site won't update" bug. So we send no-cache for
+// HTML and immutable for hashed assets.
 const clientDist = env.CLIENT_DIST || path.resolve(process.cwd(), "..", "client", "dist");
 if (fs.existsSync(clientDist)) {
-  app.use(express.static(clientDist));
+  app.use(
+    express.static(clientDist, {
+      setHeaders(res, filePath) {
+        if (filePath.endsWith(".html")) {
+          res.setHeader("Cache-Control", "no-cache, must-revalidate");
+        } else if (filePath.includes(`${path.sep}assets${path.sep}`)) {
+          res.setHeader("Cache-Control", "public, max-age=31536000, immutable");
+        }
+      },
+    })
+  );
   app.get("*", (req, res, next) => {
     if (req.path.startsWith("/api") || req.path.startsWith("/socket.io")) return next();
+    res.setHeader("Cache-Control", "no-cache, must-revalidate");
     res.sendFile(path.join(clientDist, "index.html"));
   });
   console.log(`✓ Serving client from ${clientDist}`);
