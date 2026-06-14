@@ -7,11 +7,24 @@ import { achievements } from "./seed-data/achievements.js";
 
 const prisma = new PrismaClient();
 
-async function seedSubject(subject: Subject, list: WorldSeed[]) {
+async function syncSubject(subject: Subject, list: WorldSeed[]) {
   for (const [wi, w] of list.entries()) {
-    const world = await prisma.world.create({
-      data: {
+    // Upsert the world by slug — updates metadata, creates if new. The row's id
+    // is preserved, so user progress (keyed by lessonId) is never touched.
+    const world = await prisma.world.upsert({
+      where: { slug: w.slug },
+      create: {
         slug: w.slug,
+        subject,
+        name: w.name,
+        subtitle: w.subtitle,
+        description: w.description,
+        orderIndex: wi + 1,
+        gradeRange: w.gradeRange,
+        scaleLabel: w.scaleLabel,
+        palette: w.palette,
+      },
+      update: {
         subject,
         name: w.name,
         subtitle: w.subtitle,
@@ -24,8 +37,9 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
     });
 
     for (const [li, l] of w.lessons.entries()) {
-      const lesson = await prisma.lesson.create({
-        data: {
+      const lesson = await prisma.lesson.upsert({
+        where: { slug: l.slug },
+        create: {
           worldId: world.id,
           slug: l.slug,
           title: l.title,
@@ -37,8 +51,23 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
           requiresMathSlug: l.requiresMath ?? null,
           published: true,
         },
+        update: {
+          worldId: world.id,
+          title: l.title,
+          tagline: l.tagline,
+          orderIndex: li + 1,
+          xpReward: l.xpReward,
+          estMinutes: l.estMinutes,
+          difficulty: l.difficulty ?? 2,
+          requiresMathSlug: l.requiresMath ?? null,
+          published: true,
+        },
       });
 
+      // Replace this lesson's sections + questions. These carry no per-user
+      // data (progress/attempts/XP reference the lesson, not its questions), so
+      // rebuilding them refreshes content without affecting learners.
+      await prisma.lessonSection.deleteMany({ where: { lessonId: lesson.id } });
       await prisma.lessonSection.createMany({
         data: l.sections.map((s, si) => ({
           lessonId: lesson.id,
@@ -51,6 +80,7 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
 
       let cc = 0;
       let pr = 0;
+      await prisma.quizQuestion.deleteMany({ where: { lessonId: lesson.id } });
       await prisma.quizQuestion.createMany({
         data: l.questions.map((q) => ({
           lessonId: lesson.id,
@@ -74,25 +104,27 @@ async function seedSubject(subject: Subject, list: WorldSeed[]) {
 async function main() {
   console.log("🌌 Seeding Master Numerics…");
 
-  // Skip on redeploys so we never wipe user progress (deleting worlds cascades
-  // to lessons → user progress). Set FORCE_RESEED=1 to rebuild content.
-  const existing = await prisma.world.count();
-  if (existing > 0 && !process.env.FORCE_RESEED) {
-    console.log(`↩ Content already seeded (${existing} worlds). Skipping. Set FORCE_RESEED=1 to rebuild.`);
-    return;
+  // FORCE_RESEED=1 does a clean rebuild from scratch (wipes content + the user
+  // progress that cascades from it). Otherwise we run a NON-DESTRUCTIVE sync:
+  // worlds and lessons are upserted by slug, so new content drops appear on
+  // every deploy while existing user progress is preserved.
+  if (process.env.FORCE_RESEED) {
+    console.log("⚠ FORCE_RESEED set — rebuilding content from scratch.");
+    await prisma.world.deleteMany({});
+  } else {
+    console.log("↻ Syncing content (non-destructive upsert; progress preserved).");
   }
 
-  // Rebuild content tables from scratch (cascades to lessons etc.)
-  await prisma.world.deleteMany({});
-
   console.log("— Physics Journey —");
-  await seedSubject("PHYSICS", worlds);
+  await syncSubject("PHYSICS", worlds);
   console.log("— Math City —");
-  await seedSubject("MATH", districts);
+  await syncSubject("MATH", districts);
 
   console.log("— Cosmetics & Achievements —");
-  await prisma.cosmetic.deleteMany({});
+  // Add any new cosmetics/achievements without removing existing ones (which
+  // users may already own / have earned).
   await prisma.cosmetic.createMany({
+    skipDuplicates: true,
     data: cosmetics.map((c) => ({
       key: c.key,
       name: c.name,
@@ -102,8 +134,7 @@ async function main() {
       coinPrice: c.coinPrice ?? 0,
     })),
   });
-  await prisma.achievement.deleteMany({});
-  await prisma.achievement.createMany({ data: achievements });
+  await prisma.achievement.createMany({ skipDuplicates: true, data: achievements });
   console.log(`  ✓ ${cosmetics.length} cosmetics, ${achievements.length} achievements`);
 
   console.log("✨ Seed complete.");
