@@ -162,6 +162,7 @@ export interface LessonSummary {
   orderIndex: number;
   xpReward: number;
   estMinutes: number;
+  difficulty?: number;
   status: ProgressStatus | null;
   bestScore: number | null;
 }

@@ -7,6 +7,7 @@ import { parseApiError } from "../lib/api";
 import { CosmicBackground } from "../components/physics/CosmicBackground";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { StatusChip } from "../components/physics/StatusChip";
+import { Difficulty } from "../components/ui/Difficulty";
 import { Button } from "../components/ui/Button";
 
 function LessonRow({
@@ -48,6 +49,7 @@ function LessonRow({
             <StatusChip status={lesson.status} />
             <span className="font-mono text-[0.7rem] text-neutron/40">~{lesson.estMinutes} min</span>
             <span className="font-mono text-[0.7rem] text-solar/70">+{lesson.xpReward} XP</span>
+            {lesson.difficulty != null && <Difficulty level={lesson.difficulty} />}
             {lesson.bestScore != null && (
               <span className="font-mono text-[0.7rem] text-neutron/40">best {lesson.bestScore}%</span>
             )}

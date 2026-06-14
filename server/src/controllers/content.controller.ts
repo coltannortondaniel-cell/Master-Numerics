@@ -191,6 +191,7 @@ export function makeContentController(subject: Subject) {
           orderIndex: l.orderIndex,
           xpReward: l.xpReward,
           estMinutes: l.estMinutes,
+          difficulty: l.difficulty,
           status: p?.status ?? null,
           bestScore: p?.bestScore ?? null,
         };
