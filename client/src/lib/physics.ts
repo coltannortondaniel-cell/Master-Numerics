@@ -32,6 +32,10 @@ export interface GraphAnswer {
   domain?: [number, number];
   variable?: string;
   tolerance?: number;
+  /** "draw" renders a sketch-the-curve canvas instead of a function textbox. */
+  mode?: "draw";
+  /** Number of draggable nodes for draw mode (default 9). */
+  samples?: number;
 }
 
 /** MATCHING options carry the prompts (left) and a shuffled pool (right). */

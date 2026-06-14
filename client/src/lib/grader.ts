@@ -106,6 +106,53 @@ export function gradeGraph(input: string, key: GraphAnswer): LocalGrade {
   return { correct: true, feedback: "Correct — your curve matches the target." };
 }
 
+/**
+ * Drawn graph: the learner sketches a curve by dragging nodes, producing a set
+ * of (x, y) samples. We grade by comparing each drawn y to the target function
+ * at that x, with a generous tolerance (it's a sketch, not an equation). The
+ * drawn value arrives JSON-encoded as { xs: number[]; ys: number[] }.
+ */
+export function gradeDrawnGraph(value: string, key: GraphAnswer): LocalGrade {
+  let parsed: { xs?: number[]; ys?: number[] };
+  try {
+    parsed = JSON.parse(value);
+  } catch {
+    return { correct: false, feedback: "Sketch the curve first by dragging the points." };
+  }
+  const xs = parsed.xs ?? [];
+  const ys = parsed.ys ?? [];
+  if (xs.length === 0 || xs.length !== ys.length) {
+    return { correct: false, feedback: "Drag the points to draw the curve." };
+  }
+
+  const variable = key.variable ?? "x";
+  let fKey: (s: Record<string, number>) => number;
+  try {
+    fKey = compile(key.expr);
+  } catch {
+    return { correct: false, feedback: "I couldn't evaluate the target curve." };
+  }
+
+  const targets = xs.map((x) => fKey({ [variable]: x }));
+  const finite = targets.filter((t) => Number.isFinite(t));
+  if (finite.length === 0) return { correct: false, feedback: "I couldn't check that curve." };
+  const span = Math.max(1, Math.max(...finite) - Math.min(...finite));
+  // Generous by default (it's a freehand sketch): within 15% of the target's span.
+  const tol = (key.tolerance ?? 0.15) * span;
+
+  let ok = 0;
+  let n = 0;
+  for (let i = 0; i < xs.length; i++) {
+    const t = targets[i];
+    if (!Number.isFinite(t)) continue;
+    n++;
+    if (Math.abs(ys[i] - t) <= tol) ok++;
+  }
+  if (n === 0) return { correct: false, feedback: "I couldn't check that curve." };
+  if (ok / n >= 0.8) return { correct: true, feedback: "Nicely sketched — your curve matches the target shape." };
+  return { correct: false, feedback: `Not quite — aim for the shape of $y = ${key.expr}$.` };
+}
+
 /** Plot points for a function over a domain, for live previews. Returns NaN
  *  where the function is undefined so callers can break the polyline. */
 export function samplePlot(expr: string, domain: [number, number], n = 80, variable = "x"): { x: number; y: number }[] {
