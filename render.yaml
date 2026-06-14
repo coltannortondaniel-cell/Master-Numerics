@@ -24,7 +24,7 @@ services:
     runtime: node
     plan: free
     region: oregon
-    branch: claude/zealous-mayer-6qrsqn
+    branch: main
     healthCheckPath: /api/health
     buildCommand: npm run build
     # db push + idempotent seed run on boot (start:prod), then the server starts.
