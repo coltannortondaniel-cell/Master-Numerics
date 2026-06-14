@@ -4,6 +4,7 @@ import { elementarySchoolStLessons } from "./elementary-school-st.js";
 import { theBakeryLessons } from "./the-bakery.js";
 import { theMarketLessons } from "./the-market.js";
 import { cityHallPlazaLessons } from "./city-hall-plaza.js";
+import { architectsQuarterLessons } from "./architects-quarter.js";
 
 /**
  * The City of Numbers — 14 districts, each a branch of mathematics discovered in
@@ -70,7 +71,7 @@ export const districts: WorldSeed[] = [
     gradeRange: "7–8",
     scaleLabel: "Blueprint Blvd",
     palette: { accent: "#5AD1E6", glow: "#2A6FA3" },
-    lessons: [],
+    lessons: architectsQuarterLessons,
   },
   {
     slug: "stock-exchange",
