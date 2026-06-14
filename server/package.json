@@ -16,7 +16,8 @@
     "prisma:deploy": "prisma migrate deploy",
     "prisma:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
-    "db:insert-questions": "tsx prisma/insert-new-questions.ts"
+    "db:insert-questions": "tsx prisma/insert-new-questions.ts",
+    "content:validate": "tsx prisma/validate-content.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.18.0",
