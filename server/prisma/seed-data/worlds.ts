@@ -8,6 +8,7 @@ import { energyLessons } from "./physics/energy.js";
 import { momentumLessons } from "./physics/momentum.js";
 import { rotationLessons } from "./physics/rotation.js";
 import { gravitationLessons } from "./physics/gravitation.js";
+import { oscillationsLessons } from "./physics/oscillations.js";
 
 /**
  * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
@@ -111,12 +112,12 @@ export const worlds: WorldSeed[] = [
   {
     slug: "binary-stars",
     name: "Binary Star Systems",
-    subtitle: "Stars that orbit stars",
-    description: "Two suns locked in orbit — center of mass, Doppler wobbles, and how we weigh the stars.",
-    gradeRange: "11",
+    subtitle: "Classical Mechanics · Oscillations & Waves",
+    description: "Periodic motion, from a star's orbital wobble to a wave crossing light-years. Simple harmonic motion, springs and pendulums, and travelling waves & sound — the rhythm behind all of physics.",
+    gradeRange: "11–12",
     scaleLabel: "1×10¹² m",
     palette: { accent: "#FF6E9C", glow: "#B83A66" },
-    lessons: [],
+    lessons: oscillationsLessons,
   },
   {
     slug: "clusters-nebulae",
