@@ -1,12 +1,23 @@
 import "dotenv/config";
 import { z } from "zod";
 
+// A syntactically valid Postgres URL used only when DATABASE_URL is missing or
+// empty (e.g. an expired free database). It lets the server boot and serve the
+// client; DB-backed routes error until a real URL is set, instead of the whole
+// service crash-looping and Render keeping the previous (old) build live.
+const DB_PLACEHOLDER = "postgresql://unconfigured:unconfigured@localhost:5432/unconfigured";
+
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   PORT: z.coerce.number().default(4000),
   // Same-origin in production; defaults to Render's URL when present.
   CLIENT_ORIGIN: z.string().url().default(process.env.RENDER_EXTERNAL_URL ?? "http://localhost:5173"),
-  DATABASE_URL: z.string().min(1),
+  // Tolerant on purpose: never fail the whole boot just because the DB is
+  // unconfigured. Falls back to an inert placeholder (see above).
+  DATABASE_URL: z
+    .string()
+    .optional()
+    .transform((v) => (v && v.trim().length > 0 ? v : DB_PLACEHOLDER)),
   REDIS_URL: z.string().min(1).default("redis://localhost:6379"),
   JWT_ACCESS_SECRET: z.string().min(32, "JWT_ACCESS_SECRET must be at least 32 chars"),
   JWT_REFRESH_SECRET: z.string().min(32, "JWT_REFRESH_SECRET must be at least 32 chars"),
@@ -37,4 +48,10 @@ if (!parsed.success) {
 }
 
 export const env = parsed.data;
+// Keep process.env in sync so Prisma's env("DATABASE_URL") resolves to the same
+// value (placeholder included) and PrismaClient can construct without throwing.
+process.env.DATABASE_URL = env.DATABASE_URL;
+if (env.DATABASE_URL === DB_PLACEHOLDER) {
+  console.warn("⚠ DATABASE_URL is not configured — starting with an inert placeholder. Database features will not work until it is set.");
+}
 export const isProd = env.NODE_ENV === "production";
