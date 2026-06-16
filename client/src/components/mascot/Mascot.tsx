@@ -65,7 +65,7 @@ export function Mascot({ mood = "idle", size = 120, className = "" }: Props) {
           x="50"
           y="58"
           textAnchor="middle"
-          fontFamily="Cinzel, serif"
+          fontFamily="Fraunces, serif"
           fontWeight="700"
           fontSize="20"
           fill="rgb(var(--c-accent) / 0.25)"

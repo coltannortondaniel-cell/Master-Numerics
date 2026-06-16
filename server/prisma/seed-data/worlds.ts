@@ -1,246 +1,179 @@
 import type { WorldSeed } from "./types.js";
-import { moonLessons } from "./moon.js";
-import { earthSurfaceLessons } from "./earth-surface.js";
-import { atmosphereLessons } from "./atmosphere.js";
-import { forcesMachinesLessons } from "./physics/forces-machines.js";
-import { lightSoundWavesLessons } from "./physics/light-sound-waves.js";
-import { heatThermalLessons } from "./physics/heat-thermal.js";
 import { kinematicsLessons } from "./physics/kinematics.js";
 import { dynamicsLessons } from "./physics/dynamics.js";
 import { energyLessons } from "./physics/energy.js";
 import { momentumLessons } from "./physics/momentum.js";
-import { rotationLessons } from "./physics/rotation.js";
 import { gravitationLessons } from "./physics/gravitation.js";
+import { rotationLessons } from "./physics/rotation.js";
 import { oscillationsLessons } from "./physics/oscillations.js";
-import { electromagnetismLessons } from "./physics/electromagnetism.js";
-import { modernPhysicsLessons } from "./physics/modern-physics.js";
-import { quantumMechanicsLessons } from "./physics/quantum-mechanics.js";
-import { generalRelativityLessons } from "./physics/general-relativity.js";
-import { astrophysicsLessons } from "./physics/astrophysics.js";
+import { fluidsLessons } from "./physics/fluids.js";
 import { thermodynamicsLessons } from "./physics/thermodynamics.js";
-import { nuclearParticleLessons } from "./physics/nuclear-particle.js";
-import { cosmologyLessons } from "./physics/cosmology.js";
+import { electrostaticsLessons } from "./physics/electrostatics.js";
+import { circuitsLessons } from "./physics/circuits.js";
+import { magnetismLessons } from "./physics/magnetism.js";
+import { opticsLessons } from "./physics/optics.js";
+import { modernPhysicsLessons } from "./physics/modern-physics.js";
 
 /**
- * The full 18-world cosmic scale. Worlds 1–3 ship with complete lesson
- * content in Phase 2; the rest are charted on the map and populated in
- * later content drops.
+ * The Physics pathway — a cosmic journey that travels DEEPER into space as the
+ * student advances: from near-Earth motion out to stars, nebulae, and the
+ * violent modern-physics frontier. The 14 worlds are the 14 academic units of a
+ * complete algebra/intro-calculus physics sequence (Kinematics → Modern), in
+ * pedagogical order; each owns one accent hue. Array order = path order.
  */
 export const worlds: WorldSeed[] = [
-  {
-    slug: "the-moon",
-    name: "The Moon",
-    subtitle: "Where the journey begins",
-    description:
-      "A silent, silver world a quarter of a million miles away. Here you will meet gravity, learn why the Moon shines without burning, and watch its face change night after night.",
-    gradeRange: "K–2",
-    scaleLabel: "3×10⁶ m",
-    palette: { accent: "#C9CED6", glow: "#8E97A8" },
-    lessons: moonLessons,
-  },
-  {
-    slug: "earths-surface",
-    name: "Earth's Surface",
-    subtitle: "The world beneath your feet",
-    description:
-      "Home. The only world with playgrounds, oceans, and fridge magnets. Discover the everyday physics hiding in falling apples, slamming doors, and the spin that gives us morning.",
-    gradeRange: "K–2",
-    scaleLabel: "1.3×10⁷ m",
-    palette: { accent: "#22D3A0", glow: "#0E8C6B" },
-    lessons: earthSurfaceLessons,
-  },
-  {
-    slug: "earths-atmosphere",
-    name: "Earth's Atmosphere",
-    subtitle: "The ocean of air",
-    description:
-      "Climb above the clouds into the thin blue shell that keeps us alive. Feel the weight of air, ride the winds, learn why the sky is blue, and find out what holds an airplane up.",
-    gradeRange: "3–4",
-    scaleLabel: "1×10⁵ m",
-    palette: { accent: "#4FB6FF", glow: "#1E6FB8" },
-    lessons: atmosphereLessons,
-  },
-  {
-    slug: "low-earth-orbit",
-    name: "Low Earth Orbit",
-    subtitle: "Forces & Simple Machines",
-    description:
-      "Four hundred kilometers up, the Space Station circles the Earth every 90 minutes. In near-weightlessness — where friction nearly vanishes — the true rules of force show themselves: pushes and pulls, simple machines, work and power, and the energy that ties it all together.",
-    gradeRange: "5–6",
-    scaleLabel: "4×10⁵ m",
-    palette: { accent: "#5AA9FF", glow: "#2A6FB8" },
-    lessons: forcesMachinesLessons,
-  },
-  {
-    slug: "space-telescope",
-    name: "The Space Telescope",
-    subtitle: "Light, Sound & Waves",
-    description:
-      "A great mirror, parked above the blur of the atmosphere, drinking in starlight. Here you'll learn the physics that telescopes are built on: how waves carry energy, how sound and light travel, and how the full electromagnetic spectrum reveals an invisible universe.",
-    gradeRange: "6–7",
-    scaleLabel: "6×10⁵ m",
-    palette: { accent: "#C0A9FF", glow: "#6E5AB8" },
-    lessons: lightSoundWavesLessons,
-  },
-  {
-    slug: "the-sunlit-side",
-    name: "The Sunlit Side",
-    subtitle: "Heat & Thermal Energy",
-    description:
-      "A spacecraft's Sun-facing skin bakes while its shadow side freezes hundreds of degrees colder. Master the physics of heat: temperature and thermal energy, the three ways heat travels, the states of matter, and why no machine is ever perfectly efficient.",
-    gradeRange: "7–8",
-    scaleLabel: "1×10⁶ m",
-    palette: { accent: "#FFB060", glow: "#C2702A" },
-    lessons: heatThermalLessons,
-  },
   {
     slug: "earth-moon-system",
     name: "The Earth–Moon System",
     subtitle: "Classical Mechanics · Kinematics",
-    description: "The physics of motion. Position and displacement, velocity and acceleration, the kinematic equations, and free fall & projectiles — taught with the calculus definitions surfaced.",
+    description:
+      "The journey begins in near-Earth space. Position and displacement, velocity and acceleration, the kinematic equations, free fall, projectiles, and relative motion — the language of how things move.",
     gradeRange: "9–11",
     scaleLabel: "4×10⁸ m",
-    palette: { accent: "#7FB3FF", glow: "#3D6FC9" },
+    palette: { accent: "#6FB1FC", glow: "#3D6FC9" },
     lessons: kinematicsLessons,
   },
   {
     slug: "inner-solar-system",
     name: "The Inner Solar System",
     subtitle: "Classical Mechanics · Newton's Laws & Dynamics",
-    description: "Why things move the way they do. Newton's three laws, force and mass, friction, and inclined planes — the workhorse toolkit of all of mechanics, taught with free-body diagrams and worked examples.",
+    description:
+      "Why things move the way they do. Newton's three laws, forces and free-body diagrams, friction, tension and the normal force, inclined planes, and connected systems.",
     gradeRange: "9–11",
     scaleLabel: "5×10¹¹ m",
-    palette: { accent: "#FF8C42", glow: "#C25A1E" },
+    palette: { accent: "#F2994A", glow: "#C2701F" },
     lessons: dynamicsLessons,
   },
   {
     slug: "outer-solar-system",
     name: "The Outer Solar System",
     subtitle: "Classical Mechanics · Work, Energy & Power",
-    description: "The currency of physics: energy. Work as force through a distance, kinetic and potential energy, the conservation of mechanical energy, and power — the rate energy is transferred.",
+    description:
+      "The currency of physics: energy. Work, kinetic energy and the work–energy theorem, gravitational and elastic potential energy, conservation of mechanical energy, and power.",
     gradeRange: "10–12",
     scaleLabel: "5×10¹² m",
-    palette: { accent: "#5AD1E6", glow: "#2A8FA3" },
+    palette: { accent: "#56CC8B", glow: "#2E9460" },
     lessons: energyLessons,
   },
   {
     slug: "oort-cloud",
     name: "The Oort Cloud",
     subtitle: "Classical Mechanics · Momentum & Collisions",
-    description: "Mass in motion and what it takes to change it. Momentum and impulse, conservation of momentum, inelastic and elastic collisions, and the center of mass — the tools for analysing any collision.",
-    gradeRange: "11–12",
+    description:
+      "Mass in motion and what it takes to change it. Impulse, conservation of momentum, elastic and inelastic collisions, the center of mass, and collisions in two dimensions.",
+    gradeRange: "10–12",
     scaleLabel: "1×10¹⁵ m",
-    palette: { accent: "#9AA7FF", glow: "#5662B8" },
+    palette: { accent: "#4FD1C5", glow: "#279488" },
     lessons: momentumLessons,
+  },
+  {
+    slug: "the-sun",
+    name: "The Sun",
+    subtitle: "Classical Mechanics · Circular Motion & Gravitation",
+    description:
+      "The Sun's grip on the planets. Uniform circular motion and centripetal force, banked curves, Newton's law of universal gravitation, orbital motion, and Kepler's laws.",
+    gradeRange: "11–12",
+    scaleLabel: "1.4×10⁹ m",
+    palette: { accent: "#B79CED", glow: "#6E52B8" },
+    lessons: gravitationLessons,
   },
   {
     slug: "interstellar-space",
     name: "Interstellar Space",
     subtitle: "Classical Mechanics · Rotational Motion",
-    description: "How things spin. Angular kinematics, torque, moment of inertia and τ = Iα, rotational kinetic energy & rolling, and angular momentum with its conservation.",
+    description:
+      "How things spin. Angular kinematics, torque, moment of inertia and τ = Iα, rotational kinetic energy and rolling, and angular momentum with its conservation.",
     gradeRange: "11–12",
     scaleLabel: "1×10¹⁶ m",
-    palette: { accent: "#3E4C8C", glow: "#27305C" },
+    palette: { accent: "#E0A458", glow: "#A8702A" },
     lessons: rotationLessons,
-  },
-  {
-    slug: "the-sun",
-    name: "The Sun",
-    subtitle: "Classical Mechanics · Gravitation & Circular Motion",
-    description: "The Sun's grip on the planets. Uniform circular motion and centripetal acceleration, Newton's law of universal gravitation, and orbits with Kepler's laws — the physics that governs everything that turns and orbits.",
-    gradeRange: "11–12",
-    scaleLabel: "1.4×10⁹ m",
-    palette: { accent: "#FFB800", glow: "#C77F00" },
-    lessons: gravitationLessons,
   },
   {
     slug: "binary-stars",
     name: "Binary Star Systems",
-    subtitle: "Classical Mechanics · Oscillations & Waves",
-    description: "Periodic motion, from a star's orbital wobble to a wave crossing light-years. Simple harmonic motion, springs and pendulums, and travelling waves & sound — the rhythm behind all of physics.",
+    subtitle: "Oscillations & Waves",
+    description:
+      "Periodic motion, from a star's orbital wobble to a wave crossing light-years. Simple harmonic motion, springs and pendulums, energy in SHM, wave properties, interference and standing waves, sound, and the Doppler effect.",
     gradeRange: "11–12",
     scaleLabel: "1×10¹² m",
-    palette: { accent: "#FF6E9C", glow: "#B83A66" },
+    palette: { accent: "#62B6CB", glow: "#2E7E92" },
     lessons: oscillationsLessons,
   },
   {
-    slug: "clusters-nebulae",
-    name: "Star Clusters & Nebulae",
-    subtitle: "Electricity & Magnetism",
-    description: "The force lighting up ionized nebular gas. Electric charge and Coulomb's law, electric fields, and circuits with Ohm's law — the second great force of classical physics.",
+    slug: "stellar-nebulae",
+    name: "Stellar Nebulae",
+    subtitle: "Fluids",
+    description:
+      "Vast clouds of gas and dust between the stars. Density and pressure, pressure with depth, Pascal's and Archimedes' principles (buoyancy), the continuity equation, and Bernoulli's equation.",
     gradeRange: "11–12",
     scaleLabel: "1×10¹⁷ m",
-    palette: { accent: "#B07CFF", glow: "#6E3FC2" },
-    lessons: electromagnetismLessons,
+    palette: { accent: "#4A90D9", glow: "#2A5C95" },
+    lessons: fluidsLessons,
+  },
+  {
+    slug: "galaxy-clusters",
+    name: "Galaxy Clusters",
+    subtitle: "Thermodynamics",
+    description:
+      "The physics of heat and disorder, ruling the million-degree gas between galaxies. Temperature and thermal expansion, heat and the gas laws, kinetic theory, the laws of thermodynamics, heat engines, and entropy.",
+    gradeRange: "11–12",
+    scaleLabel: "1×10²³ m",
+    palette: { accent: "#EF6F53", glow: "#B23E27" },
+    lessons: thermodynamicsLessons,
+  },
+  {
+    slug: "plasma-fields",
+    name: "The Plasma Fields",
+    subtitle: "Electrostatics & Electric Fields",
+    description:
+      "Ionized gas threaded with electric force. Electric charge and Coulomb's law, the electric field, electric potential and potential energy, conductors, and capacitance.",
+    gradeRange: "11–12",
+    scaleLabel: "1×10¹⁸ m",
+    palette: { accent: "#F2C94C", glow: "#B8941F" },
+    lessons: electrostaticsLessons,
+  },
+  {
+    slug: "stellar-currents",
+    name: "Stellar Currents",
+    subtitle: "Electric Circuits",
+    description:
+      "Charge on the move. Current, resistance and Ohm's law, series and parallel resistors, EMF and power dissipation, Kirchhoff's rules, and RC circuits.",
+    gradeRange: "11–12",
+    scaleLabel: "1×10¹⁹ m",
+    palette: { accent: "#5BD17A", glow: "#2E9450" },
+    lessons: circuitsLessons,
+  },
+  {
+    slug: "magnetar",
+    name: "The Magnetar",
+    subtitle: "Magnetism & Electromagnetism",
+    description:
+      "A dead star with the strongest magnetic field in the universe. Magnetic fields and the force on moving charges and currents, fields from currents, electromagnetic induction, and Faraday's and Lenz's laws.",
+    gradeRange: "11–12",
+    scaleLabel: "2×10⁴ m",
+    palette: { accent: "#9B8BF4", glow: "#5A4CB8" },
+    lessons: magnetismLessons,
+  },
+  {
+    slug: "distant-starlight",
+    name: "Distant Starlight",
+    subtitle: "Waves & Optics",
+    description:
+      "Light that has crossed the cosmos to reach us. Electromagnetic waves, reflection and refraction (Snell's law), mirrors and lenses, interference and diffraction, and polarization.",
+    gradeRange: "11–12",
+    scaleLabel: "1×10²² m",
+    palette: { accent: "#F178B6", glow: "#B83E80" },
+    lessons: opticsLessons,
   },
   {
     slug: "supernovae",
     name: "Supernovae",
     subtitle: "Modern Physics",
-    description: "Where classical physics breaks down. Special relativity and E = mc², photons and the photoelectric effect, and the quantum nature of light and matter — the physics that explodes a star.",
+    description:
+      "Where classical physics breaks down — the violent frontier. Special relativity and E = mc², the photon and the photoelectric effect, wave–particle duality, the Bohr model and atomic spectra, and the nucleus, radioactivity, and nuclear energy.",
     gradeRange: "12–Undergrad",
     scaleLabel: "1×10¹³ m",
-    palette: { accent: "#FF5A3C", glow: "#C22E14" },
+    palette: { accent: "#7DE0E6", glow: "#2E9AA3" },
     lessons: modernPhysicsLessons,
-  },
-  {
-    slug: "neutron-stars",
-    name: "Neutron Stars & Pulsars",
-    subtitle: "Quantum Mechanics",
-    description: "The physics of the very small — and of the quantum degeneracy pressure that holds a neutron star up. Wave-particle duality, the wavefunction, and the quantization of energy.",
-    gradeRange: "12–Undergrad",
-    scaleLabel: "1×10⁴ m",
-    palette: { accent: "#6CF0FF", glow: "#2BA8B8" },
-    lessons: quantumMechanicsLessons,
-  },
-  {
-    slug: "black-holes",
-    name: "Black Holes",
-    subtitle: "General Relativity",
-    description: "Gravity as the curvature of spacetime. The equivalence principle, curved spacetime, and black holes with the Schwarzschild radius and event horizon.",
-    gradeRange: "Undergrad",
-    scaleLabel: "3×10⁴ m",
-    palette: { accent: "#8B5CF6", glow: "#4C1D95" },
-    lessons: generalRelativityLessons,
-  },
-  {
-    slug: "milky-way",
-    name: "The Milky Way",
-    subtitle: "Astrophysics",
-    description: "Reading the lives of stars from their light. Luminosity and blackbody radiation, and stellar life cycles across the Hertzsprung-Russell diagram.",
-    gradeRange: "Undergrad",
-    scaleLabel: "1×10²¹ m",
-    palette: { accent: "#E6D8FF", glow: "#9D86C9" },
-    lessons: astrophysicsLessons,
-  },
-  {
-    slug: "galaxy-clusters",
-    name: "Galaxy Clusters",
-    subtitle: "Thermodynamics & Statistical Mechanics",
-    description: "The physics of heat and disorder, ruling the million-degree gas between galaxies. Temperature, heat and the gas laws, and entropy with the second law and the arrow of time.",
-    gradeRange: "Grad",
-    scaleLabel: "1×10²³ m",
-    palette: { accent: "#FFD27A", glow: "#C2913A" },
-    lessons: thermodynamicsLessons,
-  },
-  {
-    slug: "observable-universe",
-    name: "The Observable Universe",
-    subtitle: "Nuclear & Particle Physics",
-    description: "The building blocks of everything we can see. The nucleus and radioactivity, and the fundamental particles of the Standard Model — matter cut to its smallest pieces.",
-    gradeRange: "Grad",
-    scaleLabel: "8.8×10²⁶ m",
-    palette: { accent: "#88F7D4", glow: "#3BAE8C" },
-    lessons: nuclearParticleLessons,
-  },
-  {
-    slug: "cosmology",
-    name: "Cosmology & The Big Bang",
-    subtitle: "Cosmology & The Big Bang",
-    description: "The origin and fate of everything. The expanding universe and Hubble's law, the Big Bang and its evidence, and the dark sector that makes up 95% of the cosmos — the final destination of the journey.",
-    gradeRange: "Grad",
-    scaleLabel: "13.8 Gyr",
-    palette: { accent: "#FF9EDB", glow: "#C2569C" },
-    lessons: cosmologyLessons,
   },
 ];

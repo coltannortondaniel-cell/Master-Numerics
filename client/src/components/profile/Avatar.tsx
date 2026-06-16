@@ -77,7 +77,7 @@ function PetMark({ pet }: { pet: string }) {
       );
     case "pet-floating-pi":
       return (
-        <text x="80" y="88" textAnchor="middle" fontFamily="'Cormorant Garamond', serif" fontStyle="italic" fontSize="18" fill={GOLD}>
+        <text x="80" y="88" textAnchor="middle" fontFamily="Fraunces, serif" fontStyle="italic" fontSize="18" fill={GOLD}>
           π
         </text>
       );

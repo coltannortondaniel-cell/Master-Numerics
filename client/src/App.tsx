@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Subscribe from "./pages/Subscribe";
 import NotFound from "./pages/NotFound";
 import { WarpProvider } from "./components/physics/WarpTransition";
+import { GravityField } from "./components/physics/GravityField";
 import { XpToaster } from "./components/ui/XpToaster";
 import { mathApi } from "./lib/physics";
 // Initializes display/accessibility prefs (theme, motion, contrast) on import.
@@ -60,8 +61,8 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* Subtle, ever-present star-field behind every screen (per design brief). */}
-      <div className="starfield" aria-hidden />
+      {/* Ambient n-body gravity field behind every screen (reduced-motion safe). */}
+      <GravityField />
       <WarpProvider>
         <Suspense fallback={<RouteFallback />}>
         <Routes>

@@ -32,6 +32,14 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
   // is ever a dead end. Only "soon" (genuinely empty) nodes are inert.
   const interactive = state !== "soon";
 
+  // Screen-reader-friendly, color-independent state description.
+  const stateLabel =
+    state === "done" ? "completed" :
+    state === "current" ? "current, in progress" :
+    state === "soon" ? "coming soon" : "locked";
+  const starLabel = state === "done" || state === "current" ? `, ${stars} of 3 stars` : "";
+  const ariaLabel = `${name}${gradeRange ? `, ${gradeRange}` : ""}, ${stateLabel}${starLabel}`;
+
   const disc = (() => {
     switch (state) {
       case "done":
@@ -63,6 +71,11 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
 
   return (
     <div className="flex flex-col items-center gap-2">
+      {state === "current" && (
+        <span className="rounded-full bg-accent px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white">
+          You are here
+        </span>
+      )}
       <StarRating count={state === "soon" || state === "locked" ? 0 : stars} />
 
       <div className="relative">
@@ -79,7 +92,8 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
           type="button"
           onClick={interactive ? onClick : undefined}
           disabled={!interactive}
-          aria-label={`${name}${state === "locked" ? " (locked)" : state === "soon" ? " (coming soon)" : ""}`}
+          data-path-node
+          aria-label={ariaLabel}
           className={`relative rounded-full transition-transform ${
             interactive ? "hover:scale-105 active:scale-95 cursor-pointer" : "cursor-default"
           }`}

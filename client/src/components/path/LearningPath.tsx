@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, type KeyboardEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Atom, Sigma, ArrowRight } from "lucide-react";
@@ -74,6 +74,23 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
     });
   }, [worlds]);
 
+  const olRef = useRef<HTMLOListElement>(null);
+  const currentIdx = Math.max(0, nodes.findIndex((n) => n.state === "current"));
+  const curName = nodes[currentIdx]?.world.name ?? "";
+
+  // Up/Down arrows roving-focus between path nodes (WCAG keyboard operability).
+  function onPathKeyDown(e: KeyboardEvent<HTMLOListElement>) {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    const btns = Array.from(
+      olRef.current?.querySelectorAll<HTMLButtonElement>("button[data-path-node]:not([disabled])") ?? []
+    );
+    const idx = btns.indexOf(document.activeElement as HTMLButtonElement);
+    if (idx === -1) return;
+    e.preventDefault();
+    const next = e.key === "ArrowDown" ? Math.min(idx + 1, btns.length - 1) : Math.max(idx - 1, 0);
+    btns[next]?.focus();
+  }
+
   const heading = subject === "physics" ? "Physics Journey" : "Math City";
   const blurb =
     subject === "physics"
@@ -82,6 +99,17 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
 
   return (
     <div className="mx-auto max-w-2xl">
+      <a
+        href="#current-unit"
+        className="sr-only rounded bg-accent px-3 py-2 text-sm font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+      >
+        Skip to your current unit
+      </a>
+      {/* Polite announcement of where the learner is on the path. */}
+      <p className="sr-only" role="status" aria-live="polite">
+        {`${heading}: unit ${currentIdx + 1} of ${nodes.length}, current unit ${curName}.`}
+      </p>
+
       {/* Header: subject toggle + continue CTA */}
       <div className="mb-8 flex flex-col items-center gap-4 text-center">
         <SubjectToggle subject={subject} />
@@ -107,10 +135,16 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
           aria-hidden
           className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 border-l-2 border-dashed border-line/12"
         />
-        <ol className="relative flex flex-col items-center gap-12">
+        <ol
+          ref={olRef}
+          onKeyDown={onPathKeyDown}
+          aria-label={`${heading} units, in order`}
+          className="relative flex flex-col items-center gap-12"
+        >
           {nodes.map(({ world, mastery, stars, state }, i) => (
             <motion.li
               key={world.slug}
+              id={state === "current" ? "current-unit" : undefined}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-40px" }}
