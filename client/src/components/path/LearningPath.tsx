@@ -1,7 +1,7 @@
 import { useMemo, useRef, type KeyboardEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Atom, Sigma, ArrowRight } from "lucide-react";
+import { Atom, Sigma, ArrowRight, Flag } from "lucide-react";
 import type { WorldSummary, ContinueTarget } from "../../lib/physics";
 import { PathNode, type NodeState } from "./PathNode";
 
@@ -13,12 +13,12 @@ interface Props {
   subject: "physics" | "math";
 }
 
-/** Stars from a mastery fraction: >0 → 1, ≥60% → 2, 100% → 3. */
-function starsFor(mastery: number): number {
-  if (mastery >= 1) return 3;
-  if (mastery >= 0.6) return 2;
-  if (mastery > 0) return 1;
-  return 0;
+/** Stars from a practice best-score once the lesson is done. */
+function starsForScore(done: boolean, score: number | null): number {
+  if (!done) return 0;
+  if (score != null && score >= 90) return 3;
+  if (score != null && score >= 70) return 2;
+  return 1;
 }
 
 function SubjectToggle({ subject }: { subject: "physics" | "math" }) {
@@ -48,41 +48,62 @@ function SubjectToggle({ subject }: { subject: "physics" | "math" }) {
   );
 }
 
+/** Larger end-of-unit milestone that visually gates the next biome. */
+function Checkpoint({ name, accent, complete, onClick }: { name: string; accent: string; complete: boolean; onClick: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-2 pt-1">
+      <button
+        type="button"
+        onClick={onClick}
+        data-path-node
+        aria-label={`${name} checkpoint, ${complete ? "region cleared" : "not yet complete"}`}
+        className="grid h-16 w-16 place-items-center rounded-2xl border-2 transition-transform hover:scale-105 active:scale-95"
+        style={{ borderColor: accent, background: complete ? accent : "transparent", color: complete ? "#ffffff" : accent }}
+      >
+        <Flag size={26} strokeWidth={2.4} />
+      </button>
+      <p className="font-display text-xs font-semibold text-fg/70">
+        {complete ? "Region cleared" : "Region checkpoint"}
+      </p>
+    </div>
+  );
+}
+
 export function LearningPath({ worlds, continueTarget, basePath, subject }: Props) {
   const navigate = useNavigate();
 
-  const nodes = useMemo(() => {
+  // Flatten into biomes of lesson nodes. The first not-yet-completed lesson
+  // (globally, in order) is "current"; everything after it is locked.
+  const biomes = useMemo(() => {
     const sorted = [...worlds].sort((a, b) => a.orderIndex - b.orderIndex);
-    // The "current" unit is the first populated one that isn't fully complete.
-    const currentIndex = sorted.findIndex(
-      (w) => w.lessonCount > 0 && w.completedCount < w.lessonCount
-    );
-    const curIdx = currentIndex === -1 ? sorted.length - 1 : currentIndex;
-
-    return sorted.map((w, i) => {
-      const mastery = w.lessonCount > 0 ? w.completedCount / w.lessonCount : 0;
-      const fullyDone = w.lessonCount > 0 && w.completedCount >= w.lessonCount;
-      // Unlock in order: units before the current one are done; the current one
-      // is active; everything after is locked (unless it already has progress).
-      let state: NodeState;
-      if (w.lessonCount === 0) state = "soon";
-      else if (fullyDone) state = "done";
-      else if (i === curIdx) state = "current";
-      else if (i < curIdx || w.completedCount > 0) state = "done";
-      else state = "locked";
-      return { world: w, mastery, stars: starsFor(mastery), state };
+    let foundCurrent = false;
+    return sorted.map((w) => {
+      const lessons = w.lessons.map((l) => {
+        const done = l.status === "COMPLETED" || l.status === "MASTERED";
+        let state: NodeState;
+        if (done) state = "done";
+        else if (!foundCurrent) {
+          state = "current";
+          foundCurrent = true;
+        } else state = "locked";
+        const mastery = done ? 1 : l.status === "STARTED" ? 0.12 : 0;
+        return { ...l, state, mastery, stars: starsForScore(done, l.bestScore) };
+      });
+      const total = w.lessons.length;
+      const doneCount = w.lessons.filter((l) => l.status === "COMPLETED" || l.status === "MASTERED").length;
+      return { world: w, lessons, total, doneCount, unitComplete: total > 0 && doneCount === total };
     });
   }, [worlds]);
 
-  const olRef = useRef<HTMLOListElement>(null);
-  const currentIdx = Math.max(0, nodes.findIndex((n) => n.state === "current"));
-  const curName = nodes[currentIdx]?.world.name ?? "";
+  const currentBiomeIdx = Math.max(0, biomes.findIndex((b) => b.lessons.some((l) => l.state === "current")));
+  const curName = biomes[currentBiomeIdx]?.world.name ?? "";
 
-  // Up/Down arrows roving-focus between path nodes (WCAG keyboard operability).
-  function onPathKeyDown(e: KeyboardEvent<HTMLOListElement>) {
+  const pathRef = useRef<HTMLDivElement>(null);
+  // Up/Down arrows roving-focus between every node + checkpoint (WCAG).
+  function onPathKeyDown(e: KeyboardEvent<HTMLDivElement>) {
     if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
     const btns = Array.from(
-      olRef.current?.querySelectorAll<HTMLButtonElement>("button[data-path-node]:not([disabled])") ?? []
+      pathRef.current?.querySelectorAll<HTMLButtonElement>("button[data-path-node]:not([disabled])") ?? []
     );
     const idx = btns.indexOf(document.activeElement as HTMLButtonElement);
     if (idx === -1) return;
@@ -94,7 +115,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
   const heading = subject === "physics" ? "Physics Journey" : "Math City";
   const blurb =
     subject === "physics"
-      ? "From the everyday to the edge of the universe — one unit at a time."
+      ? "A journey deeper into space — one lesson at a time, from near-Earth motion to the violent frontier."
       : "Numbers in the world around you — from counting to the calculus of the city.";
 
   return (
@@ -105,9 +126,8 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
       >
         Skip to your current unit
       </a>
-      {/* Polite announcement of where the learner is on the path. */}
       <p className="sr-only" role="status" aria-live="polite">
-        {`${heading}: unit ${currentIdx + 1} of ${nodes.length}, current unit ${curName}.`}
+        {`${heading}: ${biomes.length} regions, currently in ${curName}.`}
       </p>
 
       {/* Header: subject toggle + continue CTA */}
@@ -128,40 +148,67 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
         )}
       </div>
 
-      {/* The winding path */}
-      <div className="relative py-4">
-        {/* dashed spine behind the nodes */}
-        <div
-          aria-hidden
-          className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 border-l-2 border-dashed border-line/12"
-        />
-        <ol
-          ref={olRef}
-          onKeyDown={onPathKeyDown}
-          aria-label={`${heading} units, in order`}
-          className="relative flex flex-col items-center gap-12"
-        >
-          {nodes.map(({ world, mastery, stars, state }, i) => (
-            <motion.li
-              key={world.slug}
-              id={state === "current" ? "current-unit" : undefined}
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.35, delay: Math.min(i, 6) * 0.04 }}
-            >
-              <PathNode
-                name={world.name}
-                gradeRange={world.gradeRange}
-                mastery={mastery}
-                stars={stars}
-                state={state}
-                badge={String(i + 1)}
-                onClick={() => navigate(`${basePath}/${world.slug}`)}
+      {/* The continuous winding path through every biome */}
+      <div ref={pathRef} onKeyDown={onPathKeyDown}>
+        {biomes.map((b, bi) => (
+          <section
+            key={b.world.slug}
+            id={bi === currentBiomeIdx ? "current-unit" : undefined}
+            aria-label={`${b.world.name} — ${b.world.subtitle}`}
+            className="relative pb-8"
+          >
+            {/* biome header */}
+            <div className="mb-6 flex flex-col items-center gap-1 text-center">
+              <span
+                className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em]"
+                style={{ color: b.world.palette.accent }}
+              >
+                {b.world.subtitle}
+              </span>
+              <h2 className="font-display text-xl font-bold">{b.world.name}</h2>
+              <span className="font-mono text-[0.6rem] uppercase tracking-[0.18em] text-fg/40">
+                {b.world.gradeRange} · {b.doneCount}/{b.total} complete
+              </span>
+            </div>
+
+            {/* dashed spine + lesson nodes + checkpoint */}
+            <div className="relative">
+              <div
+                aria-hidden
+                className="absolute left-1/2 top-0 h-full w-px -translate-x-1/2 border-l-2 border-dashed border-line/12"
               />
-            </motion.li>
-          ))}
-        </ol>
+              <ol className="relative flex flex-col items-center gap-10">
+                {b.lessons.map((l, li) => (
+                  <motion.li
+                    key={l.slug}
+                    initial={{ opacity: 0, y: 14 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: "-40px" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <PathNode
+                      name={l.title}
+                      mastery={l.mastery}
+                      stars={l.stars}
+                      state={l.state}
+                      accent={b.world.palette.accent}
+                      badge={String(li + 1)}
+                      onClick={() => navigate(`${basePath}/${b.world.slug}/${l.slug}`)}
+                    />
+                  </motion.li>
+                ))}
+                <li>
+                  <Checkpoint
+                    name={b.world.name}
+                    accent={b.world.palette.accent}
+                    complete={b.unitComplete}
+                    onClick={() => navigate(`${basePath}/${b.world.slug}`)}
+                  />
+                </li>
+              </ol>
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   );
