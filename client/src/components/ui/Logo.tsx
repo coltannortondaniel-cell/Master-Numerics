@@ -12,7 +12,7 @@ export function Logo({ size = "md", tagline = false }: { size?: "md" | "lg"; tag
           y="54"
           textAnchor="middle"
           dominantBaseline="middle"
-          fontFamily="Cinzel, serif"
+          fontFamily="Fraunces, serif"
           fontWeight="700"
           fontSize="58"
           fill="currentColor"

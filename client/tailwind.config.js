@@ -29,13 +29,14 @@ export default {
         solar: "rgb(var(--c-star) / <alpha-value>)",
       },
       fontFamily: {
-        // Serif titles (matches the wordmark) + clean sans body, per the brief.
+        // Per the redesign brief: characterful variable serif for display, a
+        // clean neutral grotesque for body/UI, IBM Plex Mono for equations.
         // Atkinson Hyperlegible powers the readable-text accessibility option.
-        display: ['"Cormorant Garamond"', "Georgia", "serif"],
-        brand: ["Cinzel", "serif"],
-        body: ["Inter", "sans-serif"],
-        readable: ['"Atkinson Hyperlegible"', "Inter", "sans-serif"],
-        mono: ['"JetBrains Mono"', "monospace"],
+        display: ['"Fraunces"', "Georgia", "serif"],
+        brand: ['"Fraunces"', "serif"],
+        body: ['"Hanken Grotesk"', "sans-serif"],
+        readable: ['"Atkinson Hyperlegible"', '"Hanken Grotesk"', "sans-serif"],
+        mono: ['"IBM Plex Mono"', "monospace"],
       },
       borderRadius: {
         // Sharper corners than the old soft cosmic cards.

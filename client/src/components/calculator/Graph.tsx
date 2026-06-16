@@ -73,7 +73,7 @@ export function Graph({ exprs, scope, view, onView, theme, canvasRef }: Props) {
     const xStep = niceStep(xMax - xMin, 10);
     const yStep = niceStep(yMax - yMin, 8);
     ctx.lineWidth = 1;
-    ctx.font = "11px 'JetBrains Mono', monospace";
+    ctx.font = "11px 'IBM Plex Mono', monospace";
     ctx.fillStyle = colors.text;
 
     ctx.strokeStyle = colors.grid;

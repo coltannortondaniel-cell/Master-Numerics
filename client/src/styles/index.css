@@ -14,16 +14,16 @@
   --c-line: 244 246 251; /* hairline (used with low alpha) */
   --c-fg: 244 246 251; /* primary text */
   --c-muted: 152 162 179; /* secondary text */
-  --c-accent: 45 125 255; /* electric blue */
-  --c-accent-bright: 96 165 255; /* hover / highlight */
-  --c-success: 43 212 160;
+  --c-accent: 91 163 245; /* calm scientific blue #5BA3F5 (brief accent) */
+  --c-accent-bright: 59 130 246; /* hover / highlight #3B82F6 */
+  --c-success: 86 204 139;
   --c-alert: 255 77 94;
   --c-star: 245 184 60; /* earned stars / streak flame */
   --c-shadow: 2 4 10; /* chunky button under-shadow */
 
   /* legacy var names kept for any raw CSS references */
   --space-black: #06070b;
-  --nebula-blue: #2d7dff;
+  --nebula-blue: #5ba3f5;
   --neutron-white: #f4f6fb;
 }
 
