@@ -58,7 +58,9 @@ export default function Lesson({ api = physicsApi, basePath = "/journey" }: Less
   // Tint the ambient gravity background to this biome's accent while here.
   useEffect(() => {
     document.documentElement.style.setProperty("--bg-accent", palette.accent);
-    return () => document.documentElement.style.removeProperty("--bg-accent");
+    return () => {
+      document.documentElement.style.removeProperty("--bg-accent");
+    };
   }, [palette.accent]);
 
   return (
