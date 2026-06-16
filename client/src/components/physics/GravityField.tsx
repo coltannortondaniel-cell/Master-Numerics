@@ -24,11 +24,29 @@ const DAMPING = 0.999;
 const SOFTENING = 12;
 const LINK_DIST = 90;
 
+function parseColor(s: string): [number, number, number] | null {
+  if (!s) return null;
+  const t = s.trim();
+  if (t.startsWith("#")) {
+    const h = t.slice(1);
+    const hex = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    if (hex.length !== 6) return null;
+    const n = parseInt(hex, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+  const m = t.split(/\s+/).map(Number);
+  return m.length === 3 && m.every((x) => Number.isFinite(x)) ? [m[0], m[1], m[2]] : null;
+}
+
 function accentRGB(): [number, number, number] {
   if (typeof window === "undefined") return [91, 163, 245];
-  const v = getComputedStyle(document.documentElement).getPropertyValue("--c-accent").trim();
-  const m = v.split(/\s+/).map(Number);
-  return m.length === 3 && m.every((n) => Number.isFinite(n)) ? [m[0], m[1], m[2]] : [91, 163, 245];
+  const root = getComputedStyle(document.documentElement);
+  // --bg-accent (set per-biome by World/Lesson) overrides the global accent.
+  return (
+    parseColor(root.getPropertyValue("--bg-accent")) ??
+    parseColor(root.getPropertyValue("--c-accent")) ??
+    [91, 163, 245]
+  );
 }
 
 function prefersReducedMotion(): boolean {

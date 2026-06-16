@@ -55,6 +55,12 @@ export default function Lesson({ api = physicsApi, basePath = "/journey" }: Less
 
   const palette = data?.lesson.world.palette ?? { accent: "#6B21D6", glow: "#1E90FF" };
 
+  // Tint the ambient gravity background to this biome's accent while here.
+  useEffect(() => {
+    document.documentElement.style.setProperty("--bg-accent", palette.accent);
+    return () => document.documentElement.style.removeProperty("--bg-accent");
+  }, [palette.accent]);
+
   return (
     <div className="relative min-h-screen">
       <CosmicBackground palette={palette} intensity={0.7} />
