@@ -125,6 +125,15 @@ export interface Question {
 }
 
 /** ─────────────── Endpoint payloads ─────────────── */
+/** A lesson node on the journey path (lesson-level pathway). */
+export interface WorldLessonNode {
+  slug: string;
+  title: string;
+  difficulty?: number;
+  status: ProgressStatus | null;
+  bestScore: number | null;
+}
+
 export interface WorldSummary {
   slug: string;
   name: string;
@@ -135,6 +144,8 @@ export interface WorldSummary {
   palette: Palette;
   lessonCount: number;
   completedCount: number;
+  /** The unit's lessons, in order, with per-lesson progress. */
+  lessons: WorldLessonNode[];
 }
 
 export interface ContinueTarget {

@@ -100,17 +100,20 @@ export function makeContentController(subject: Subject) {
         lessons: {
           where: { published: true },
           orderBy: { orderIndex: "asc" },
-          select: { id: true, slug: true, title: true },
+          select: { id: true, slug: true, title: true, difficulty: true },
         },
       },
     });
 
     const lessonIds = worlds.flatMap((w) => w.lessons.map((l) => l.id));
-    const done = await prisma.userProgress.findMany({
-      where: { userId, status: { in: ["COMPLETED", "MASTERED"] }, lessonId: { in: lessonIds } },
-      select: { lessonId: true },
+    const progress = await prisma.userProgress.findMany({
+      where: { userId, lessonId: { in: lessonIds } },
+      select: { lessonId: true, status: true, bestScore: true },
     });
-    const doneSet = new Set(done.map((p) => p.lessonId));
+    const progByLesson = new Map(progress.map((p) => [p.lessonId, p]));
+    const doneSet = new Set(
+      progress.filter((p) => p.status === "COMPLETED" || p.status === "MASTERED").map((p) => p.lessonId)
+    );
 
     const started = await prisma.userProgress.findFirst({
       where: { userId, status: "STARTED", lesson: { world: { subject } } },
@@ -151,6 +154,16 @@ export function makeContentController(subject: Subject) {
         palette: w.palette,
         lessonCount: w.lessons.length,
         completedCount: w.lessons.filter((l) => doneSet.has(l.id)).length,
+        lessons: w.lessons.map((l) => {
+          const p = progByLesson.get(l.id);
+          return {
+            slug: l.slug,
+            title: l.title,
+            difficulty: l.difficulty,
+            status: p?.status ?? null,
+            bestScore: p?.bestScore ?? null,
+          };
+        }),
       })),
       continue: continueTarget,
     });

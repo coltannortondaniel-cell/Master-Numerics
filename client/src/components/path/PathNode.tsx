@@ -13,26 +13,28 @@ interface Props {
   /** Earned stars 0–3. */
   stars: number;
   state: NodeState;
-  /** A short glyph/index shown inside the node (e.g. unit number). */
+  /** A short glyph/index shown inside the node (e.g. lesson number). */
   badge?: string;
   onClick?: () => void;
+  /** Per-biome accent color (hex). Defaults to the global electric blue. */
+  accent?: string;
 }
 
-const ACCENT = "#2D7DFF";
 const MUTED = "rgba(244,246,251,0.14)";
 
 /**
- * A single unit node on the learning path: a mastery ring around a disc,
- * with a 1–3 star rating above and the unit name below. The disc style and
- * the "current" pulse communicate done / current / locked / coming-soon.
+ * A single node on the learning path: a mastery ring around a disc, a 1–3 star
+ * rating above, and a label below. The disc style and the "current" pulse
+ * communicate done / current / locked / coming-soon, and the node is tinted to
+ * its biome's accent. State is conveyed by icon + shape + text (not color alone).
  */
-export function PathNode({ name, gradeRange, mastery, stars, state, badge, onClick }: Props) {
-  // "locked" worlds (ahead of the learner) are still tappable to preview their
-  // lessons — the lock styling stays as a progression cue, but no charted world
-  // is ever a dead end. Only "soon" (genuinely empty) nodes are inert.
+export function PathNode({ name, gradeRange, mastery, stars, state, badge, onClick, accent = "#2D7DFF" }: Props) {
+  // "locked" nodes (ahead of the learner) are still tappable to preview — no
+  // charted node is ever a dead end. Only "soon" (genuinely empty) nodes are inert.
   const interactive = state !== "soon";
+  const themed = state !== "locked" && state !== "soon";
+  const ringColor = themed ? accent : MUTED;
 
-  // Screen-reader-friendly, color-independent state description.
   const stateLabel =
     state === "done" ? "completed" :
     state === "current" ? "current, in progress" :
@@ -44,13 +46,13 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
     switch (state) {
       case "done":
         return (
-          <div className="flex h-full w-full items-center justify-center rounded-full bg-accent text-white">
+          <div className="flex h-full w-full items-center justify-center rounded-full text-white" style={{ background: accent }}>
             <Check size={30} strokeWidth={3} />
           </div>
         );
       case "current":
         return (
-          <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-accent bg-surface2 text-accent">
+          <div className="flex h-full w-full items-center justify-center rounded-full border-2 bg-surface2" style={{ borderColor: accent, color: accent }}>
             <Play size={26} strokeWidth={2.5} className="ml-0.5" fill="currentColor" />
           </div>
         );
@@ -72,7 +74,10 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
   return (
     <div className="flex flex-col items-center gap-2">
       {state === "current" && (
-        <span className="rounded-full bg-accent px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white">
+        <span
+          className="rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white"
+          style={{ background: accent }}
+        >
           You are here
         </span>
       )}
@@ -83,7 +88,7 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
           <motion.span
             aria-hidden
             className="absolute inset-0 rounded-full"
-            style={{ boxShadow: `0 0 0 3px ${ACCENT}` }}
+            style={{ boxShadow: `0 0 0 3px ${accent}` }}
             animate={{ scale: [1, 1.18, 1], opacity: [0.7, 0, 0.7] }}
             transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
           />
@@ -102,7 +107,7 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
             value={state === "done" ? 1 : mastery}
             size={88}
             stroke={6}
-            color={state === "locked" || state === "soon" ? MUTED : ACCENT}
+            color={ringColor}
             trackColor="rgba(244,246,251,0.08)"
           >
             <div className="absolute inset-[7px]">{disc}</div>
