@@ -122,6 +122,16 @@ export interface Question {
   /** Present only for SYMBOLIC / GRAPH (shown after local grading). */
   explanation?: string;
   hint?: string | null;
+  /** Authored tutor: a progressive hint ladder (gentle → explicit). */
+  hints?: string[] | null;
+  /** Targeted misconception feedback keyed to common wrong answers. */
+  diagnostics?: QuestionDiagnostic[] | null;
+}
+
+export interface QuestionDiagnostic {
+  /** Matched against the student's submission by question kind. */
+  when: number | number[] | boolean | string | { value: number; tolerance?: number } | { expr: string };
+  says: string;
 }
 
 /** ─────────────── Endpoint payloads ─────────────── */

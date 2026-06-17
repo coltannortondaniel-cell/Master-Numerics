@@ -431,6 +431,10 @@ model QuizQuestion {
   difficulty  Int           @default(2)
   hint        String?
   explanation String
+  // Authored tutor: { hints: string[] (progressive ladder),
+  //   diagnostics: { when, says }[] (targeted misconception feedback keyed to
+  //   common wrong answers) }. Optional — the client falls back to `hint`.
+  tutor       Json?
 
   @@index([lessonId, scope])
 }
