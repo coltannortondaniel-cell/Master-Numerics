@@ -105,7 +105,7 @@ export function AnimatedExplainer({ title, beats, beatSeconds = 5 }: Props) {
           <button
             aria-label={playing ? "Pause" : "Play"}
             onClick={() => setPlaying((p) => !p)}
-            className="grid h-9 w-9 place-items-center rounded-full bg-accent text-white"
+            className="grid h-9 w-9 place-items-center rounded-full bg-accent text-on-accent"
           >
             {playing ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
           </button>

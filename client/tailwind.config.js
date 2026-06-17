@@ -12,11 +12,19 @@ export default {
         line: "rgb(var(--c-line) / <alpha-value>)",
         fg: "rgb(var(--c-fg) / <alpha-value>)",
         muted: "rgb(var(--c-muted) / <alpha-value>)",
+        // "accent" is monochrome high-emphasis; "on-accent" is text on it.
         accent: "rgb(var(--c-accent) / <alpha-value>)",
         "accent-bright": "rgb(var(--c-accent-bright) / <alpha-value>)",
-        success: "rgb(var(--c-success) / <alpha-value>)",
-        alert: "rgb(var(--c-alert) / <alpha-value>)",
-        star: "rgb(var(--c-star) / <alpha-value>)",
+        "on-accent": "rgb(var(--c-on-accent) / <alpha-value>)",
+        // ---- The four reserved pop colors (brief §1.2) ----
+        correct: "rgb(var(--c-correct) / <alpha-value>)",
+        wrong: "rgb(var(--c-wrong) / <alpha-value>)",
+        currency: "rgb(var(--c-currency) / <alpha-value>)",
+        premium: "rgb(var(--c-premium) / <alpha-value>)",
+        // legacy aliases for feedback states → pop tokens
+        success: "rgb(var(--c-correct) / <alpha-value>)",
+        alert: "rgb(var(--c-wrong) / <alpha-value>)",
+        star: "rgb(var(--c-currency) / <alpha-value>)",
 
         // ---- Legacy aliases (re-pointed to the new B&W + electric-blue system) ----
         // Existing markup (~100 files) uses these; re-pointing them means the whole
@@ -29,14 +37,15 @@ export default {
         solar: "rgb(var(--c-star) / <alpha-value>)",
       },
       fontFamily: {
-        // Per the redesign brief: characterful variable serif for display, a
-        // clean neutral grotesque for body/UI, IBM Plex Mono for equations.
-        // Atkinson Hyperlegible powers the readable-text accessibility option.
-        display: ['"Fraunces"', "Georgia", "serif"],
-        brand: ['"Fraunces"', "serif"],
-        body: ['"Hanken Grotesk"', "sans-serif"],
+        // Per the redesign brief §1.3: Space Grotesk for display/titles (sharp,
+        // modern, scientific), Hanken Grotesk for body/UI (clean neutral),
+        // JetBrains Mono for equations/numbers/data. Atkinson Hyperlegible
+        // powers the readable-text accessibility option.
+        display: ['"Space Grotesk"', "ui-sans-serif", "system-ui", "sans-serif"],
+        brand: ['"Space Grotesk"', "sans-serif"],
+        body: ['"Hanken Grotesk"', "ui-sans-serif", "system-ui", "sans-serif"],
         readable: ['"Atkinson Hyperlegible"', '"Hanken Grotesk"', "sans-serif"],
-        mono: ['"IBM Plex Mono"', "monospace"],
+        mono: ['"JetBrains Mono"', "ui-monospace", "monospace"],
       },
       borderRadius: {
         // Sharper corners than the old soft cosmic cards.

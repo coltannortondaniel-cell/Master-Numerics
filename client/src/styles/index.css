@@ -8,23 +8,44 @@
    (e.g. text-fg/70). Flip [data-theme] / accessibility data-attrs on <html>.
    ========================================================================== */
 :root {
-  --c-base: 6 7 11; /* deep space black */
-  --c-surface: 14 16 22; /* card surface */
-  --c-surface-2: 21 25 35; /* raised surface */
-  --c-line: 244 246 251; /* hairline (used with low alpha) */
-  --c-fg: 244 246 251; /* primary text */
-  --c-muted: 152 162 179; /* secondary text */
-  --c-accent: 91 163 245; /* calm scientific blue #5BA3F5 (brief accent) */
-  --c-accent-bright: 59 130 246; /* hover / highlight #3B82F6 */
-  --c-success: 86 204 139;
-  --c-alert: 255 77 94;
-  --c-star: 245 184 60; /* earned stars / streak flame */
+  /* ---- Greyscale ramp (the default for ~95% of the UI, per brief §1.1) ---- */
+  --ink-000: 6 7 8; /* #060708 page background */
+  --ink-050: 14 15 18; /* #0E0F12 raised surfaces */
+  --ink-100: 22 24 29; /* #16181D cards, panels */
+  --ink-200: 35 38 49; /* #232631 hover surfaces */
+  --ink-300: 52 56 69; /* #343845 hairline borders */
+  --ink-500: 106 111 126; /* #6A6F7E muted / disabled */
+  --ink-700: 168 173 186; /* #A8ADBA secondary text */
+  --ink-900: 236 238 243; /* #ECEEF3 primary text */
+
+  /* ---- Semantic tokens, monochrome by default ---- */
+  --c-base: var(--ink-000);
+  --c-surface: var(--ink-100);
+  --c-surface-2: var(--ink-200);
+  --c-line: 244 246 251; /* near-white; always used at low alpha for hairlines */
+  --c-fg: var(--ink-900);
+  --c-muted: var(--ink-700);
+  /* "accent" = high-emphasis MONOCHROME (white surfaces / max-emphasis text).
+     Saturated color is reserved for the four pop tokens below. */
+  --c-accent: var(--ink-900);
+  --c-accent-bright: 255 255 255;
+  --c-on-accent: var(--ink-000); /* text/icon on a white accent surface */
+
+  /* ---- Pop colors — the ONLY saturated colors in the app (brief §1.2) ---- */
+  --c-correct: 47 191 113; /* #2FBF71 right answers / completed mastery */
+  --c-wrong: 229 72 77; /* #E5484D wrong answers / errors */
+  --c-currency: 230 180 80; /* #E6B450 coins / XP / rewards / stars */
+  --c-premium: 77 163 255; /* #4DA3FF purchases, upgrade CTA, "you are here" */
+  /* legacy aliases → pop tokens */
+  --c-success: var(--c-correct);
+  --c-alert: var(--c-wrong);
+  --c-star: var(--c-currency);
+
   --c-shadow: 2 4 10; /* chunky button under-shadow */
 
   /* legacy var names kept for any raw CSS references */
-  --space-black: #06070b;
-  --nebula-blue: #5ba3f5;
-  --neutron-white: #f4f6fb;
+  --space-black: #060708;
+  --neutron-white: #eceef3;
 }
 
 /* ---- Light theme ---- */
@@ -35,11 +56,13 @@
   --c-line: 14 18 27;
   --c-fg: 14 18 27;
   --c-muted: 88 98 114;
-  --c-accent: 26 108 240;
-  --c-accent-bright: 12 86 214;
-  --c-success: 12 160 110;
-  --c-alert: 220 50 70;
-  --c-star: 214 148 18;
+  --c-accent: 14 18 27; /* dark monochrome primary on light */
+  --c-accent-bright: 0 0 0;
+  --c-on-accent: 255 255 255;
+  --c-correct: 12 160 110;
+  --c-wrong: 220 50 70;
+  --c-currency: 184 132 14;
+  --c-premium: 26 108 240;
   --c-shadow: 190 198 214;
 }
 
@@ -47,12 +70,12 @@
 [data-contrast="high"] {
   --c-line: 244 246 251;
   --c-muted: 214 222 234;
-  --c-accent: 90 165 255;
+  --c-accent: 255 255 255;
 }
 [data-contrast="high"][data-theme="light"] {
   --c-line: 0 0 0;
   --c-muted: 30 36 46;
-  --c-accent: 10 70 200;
+  --c-accent: 0 0 0;
 }
 
 html,
@@ -140,14 +163,14 @@ body {
 }
 .starfield {
   background-image: radial-gradient(1px 1px at 25px 35px, #ffffff 99%, transparent),
-    radial-gradient(1px 1px at 120px 90px, #cdddff 99%, transparent),
+    radial-gradient(1px 1px at 120px 90px, #c9cdd6 99%, transparent),
     radial-gradient(1.5px 1.5px at 200px 160px, #ffffff 99%, transparent);
   background-size: 260px 260px;
   opacity: 0.28;
   animation: drift-slow 200s linear infinite;
 }
 .starfield::before {
-  background-image: radial-gradient(1px 1px at 60px 140px, #a8c6ff 99%, transparent),
+  background-image: radial-gradient(1px 1px at 60px 140px, #aeb3bf 99%, transparent),
     radial-gradient(1px 1px at 180px 40px, #ffffff 99%, transparent);
   background-size: 340px 340px;
   opacity: 0.2;
@@ -155,7 +178,7 @@ body {
 }
 .starfield::after {
   background-image: radial-gradient(1.5px 1.5px at 90px 220px, #ffffff 99%, transparent),
-    radial-gradient(1px 1px at 240px 110px, #bcd2ff 99%, transparent);
+    radial-gradient(1px 1px at 240px 110px, #c9cdd6 99%, transparent);
   background-size: 420px 420px;
   opacity: 0.16;
   animation: drift-fast 100s linear infinite;

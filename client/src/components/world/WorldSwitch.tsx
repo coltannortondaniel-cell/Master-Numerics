@@ -24,7 +24,7 @@ export function WorldSwitch() {
 
   const seg = (active: boolean) =>
     `flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-      active ? "bg-accent text-white" : "text-fg/55 hover:text-fg"
+      active ? "bg-accent text-on-accent" : "text-fg/55 hover:text-fg"
     }`;
 
   return (
