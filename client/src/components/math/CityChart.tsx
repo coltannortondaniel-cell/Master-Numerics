@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { Link } from "react-router-dom";
 import { Atom, Sigma, ArrowRight, Lock, Check } from "lucide-react";
 import { useReducedMotion } from "framer-motion";
@@ -17,8 +17,6 @@ interface Props {
 
 const PREMIUM = "#4DA3FF";
 const WHITE = "#ECEEF3";
-const W = 680;
-const AMP = 120;
 
 type WorldState = "done" | "current" | "locked";
 
@@ -51,6 +49,16 @@ export function CityChart({ worlds, continueTarget, basePath, subject }: Props) 
   const trackRef = useRef<HTMLDivElement>(null);
   const currentRef = useRef<HTMLButtonElement>(null);
 
+  // Responsive layout width so the climb fits the screen without sideways scroll.
+  const [vw, setVw] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+  useEffect(() => {
+    const onResize = () => setVw(window.innerWidth);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+  const W = Math.min(680, vw - 32);
+  const AMP = Math.min(120, Math.max(28, W / 2 - 96));
+
   // Order, gate, and lay districts out bottom-to-top along a winding street.
   const { nodes, height } = useMemo(() => {
     const sorted = [...worlds].sort((a, b) => a.orderIndex - b.orderIndex);
@@ -75,7 +83,7 @@ export function CityChart({ worlds, continueTarget, basePath, subject }: Props) 
       cursor += tileH + 36;
     }
     return { nodes: items, height: cursor + 40 };
-  }, [worlds]);
+  }, [worlds, W, AMP]);
 
   useEffect(() => {
     currentRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "center" });
@@ -125,7 +133,7 @@ export function CityChart({ worlds, continueTarget, basePath, subject }: Props) 
       </div>
 
       <div ref={trackRef} onKeyDown={onKeyDown}
-        className="relative max-h-[78vh] overflow-auto rounded-2xl border border-line/10 bg-base/30"
+        className="relative max-h-[78vh] overflow-y-auto overflow-x-hidden rounded-2xl border border-line/10 bg-base/30"
         aria-label="City map. Use the up and down arrow keys to move between districts.">
         <div className="relative mx-auto" style={{ width: W, height }}>
           {/* winding street */}
@@ -179,7 +187,7 @@ export function CityChart({ worlds, continueTarget, basePath, subject }: Props) 
                       {w.completedCount}/{w.lessonCount} · {w.gradeRange}
                     </span>
                   </div>
-                  {stars > 0 && <StarRating count={stars} size={13} className="mt-1" />}
+                  {stars > 0 && <StarRating count={stars} size={13} className="mt-1" fillClass="text-fg/85" />}
                   {state === "current" && (
                     <span className="mt-1 rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide"
                       style={{ background: PREMIUM, color: "#04050a" }}>

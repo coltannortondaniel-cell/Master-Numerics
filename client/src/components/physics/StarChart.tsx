@@ -195,7 +195,7 @@ export function StarChart({ worlds, continueTarget, basePath, subject }: Props) 
                   <span className="font-mono text-[0.6rem] uppercase tracking-[0.14em] text-fg/40">
                     {w.gradeRange} · {w.scaleLabel}
                   </span>
-                  {stars > 0 && <StarRating count={stars} size={13} className="mt-0.5" />}
+                  {stars > 0 && <StarRating count={stars} size={13} className="mt-0.5" fillClass="text-fg/85" />}
                   {state === "current" && (
                     <span className="mt-1 rounded-full px-2 py-0.5 text-[0.6rem] font-bold uppercase tracking-wide"
                       style={{ background: PREMIUM, color: "#04050a" }}>
