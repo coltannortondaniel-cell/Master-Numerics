@@ -1,6 +1,7 @@
 import { StarChart } from "../components/physics/StarChart";
 import { CityChart } from "../components/math/CityChart";
-import type { WorldSummary, WorldLessonNode, ProgressStatus } from "../lib/physics";
+import { LessonQuiz } from "../components/physics/quiz/LessonQuiz";
+import type { WorldSummary, WorldLessonNode, ProgressStatus, Question } from "../lib/physics";
 
 /**
  * DEV-ONLY visual story (route gated behind import.meta.env.DEV) used by the
@@ -58,8 +59,32 @@ const math: WorldSummary[] = [
   w("graduate-school", "The Graduate School", "The deep structure", 14, 5, 0),
 ];
 
+const tutorQuestion: Question = {
+  id: "q1", scope: "PRACTICE", orderIndex: 1, kind: "SYMBOLIC",
+  prompt: "A car starts from rest and accelerates at $a$ for a time $t$. Write an expression for its final velocity $v$.",
+  answer: { expr: "a*t" }, difficulty: 3,
+  explanation: "From $v = v_0 + at$ with $v_0 = 0$, the final velocity is $v = at$.",
+  hints: [
+    "Which kinematic equation links velocity, acceleration, and time?",
+    "Start from $v = v_0 + a t$ and use what you know about the start.",
+    "The car starts from rest, so $v_0 = 0$ — only the $a t$ term survives.",
+  ],
+  diagnostics: [
+    { when: { expr: "0.5*a*t^2" }, says: "That's the displacement ($\\tfrac12 a t^2$), not the velocity. Velocity is the rate of change of position — one power of $t$ lower." },
+    { when: { expr: "a/t" }, says: "Check the operation: acceleration builds up velocity over time, so it multiplies $t$ — it isn't divided by it." },
+  ],
+};
+
 export default function Story() {
   const which = new URLSearchParams(window.location.search).get("map") ?? "physics";
+  if (which === "quiz") {
+    return (
+      <div className="relative z-10 mx-auto min-h-screen max-w-xl px-4 py-10">
+        <div className="starfield" />
+        <LessonQuiz slug="demo" scope="PRACTICE" questions={[tutorQuestion]} />
+      </div>
+    );
+  }
   return (
     <div className="relative z-10 min-h-screen px-4 py-10">
       <div className="starfield" />

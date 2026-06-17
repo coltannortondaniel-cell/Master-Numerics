@@ -17,6 +17,38 @@ import { Markdown } from "../../ui/Markdown";
 import { Difficulty } from "../../ui/Difficulty";
 import { Mascot } from "../../mascot/Mascot";
 import { QuestionInput, isAnswered } from "./QuestionInput";
+import type { QuestionDiagnostic } from "../../../lib/physics";
+
+/** Does the student's submission match a diagnostic's `when`, by question kind? */
+function diagnosticMatches(kind: string, when: QuestionDiagnostic["when"], value: unknown): boolean {
+  const norm = (s: unknown) => String(s).trim().toLowerCase();
+  if (typeof when === "number") return Number(value) === when;
+  if (typeof when === "boolean") return value === when;
+  if (Array.isArray(when)) return when.includes(Number(value));
+  if (typeof when === "string") {
+    if (Array.isArray(value)) return value.some((v) => norm(v) === norm(when));
+    return norm(value) === norm(when);
+  }
+  if (when && typeof when === "object" && "value" in when) {
+    const num = parseFloat(String(value));
+    const tol = when.tolerance ?? Math.abs(when.value) * 1e-3 + 1e-9;
+    return Number.isFinite(num) && Math.abs(num - when.value) <= tol;
+  }
+  if (when && typeof when === "object" && "expr" in when) {
+    try {
+      return (kind === "GRAPH" ? gradeGraph : gradeSymbolic)(String(value), { expr: when.expr } as never).correct;
+    } catch {
+      return norm(value) === norm(when.expr);
+    }
+  }
+  return false;
+}
+
+function diagnose(q: Question, value: unknown): string | null {
+  if (!q.diagnostics?.length) return null;
+  for (const d of q.diagnostics) if (diagnosticMatches(q.kind, d.when, value)) return d.says;
+  return null;
+}
 
 interface Props {
   slug: string;
@@ -43,12 +75,15 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
   const [finished, setFinished] = useState(false);
   const [summary, setSummary] = useState<QuizResponse | null>(null);
   const [error, setError] = useState("");
-  const [hintOpen, setHintOpen] = useState(false);
+  const [hintsShown, setHintsShown] = useState(0);
 
   const q = questions[idx];
   const total = questions.length;
   const value = answers[q?.id];
   const isLast = idx === total - 1;
+  // Authored hint ladder (falls back to the single legacy `hint`).
+  const hintList = q?.hints?.length ? q.hints : q?.hint ? [q.hint] : [];
+  const diagnosis = result && !result.correct ? diagnose(q, value) : null;
 
   // Seed ORDER questions with their (shuffled) starting order so any
   // arrangement is submittable.
@@ -56,7 +91,7 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
     if ((q?.kind === "ORDER" || q?.kind === "PROOF") && answers[q.id] === undefined && Array.isArray(q.options)) {
       setAnswers((a) => ({ ...a, [q.id]: q.options as string[] }));
     }
-    setHintOpen(false);
+    setHintsShown(0);
   }, [idx, q]);
 
   async function check() {
@@ -206,16 +241,21 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
         </motion.div>
       </AnimatePresence>
 
-      {/* hint (practice, pre-grade) */}
-      {scope === "PRACTICE" && q.hint && !result && (
-        <div className="mt-4">
-          {hintOpen ? (
-            <p className="flex items-center gap-2 rounded-lg bg-star/10 px-3 py-2 text-sm text-star">
-              <Lightbulb size={14} className="shrink-0" /> {q.hint}
-            </p>
-          ) : (
-            <button onClick={() => setHintOpen(true)} className="text-xs font-semibold text-star/90 hover:text-star">
-              Need a hint?
+      {/* progressive hint ladder (pre-grade) */}
+      {hintList.length > 0 && !result && (
+        <div className="mt-4 space-y-2">
+          {hintList.slice(0, hintsShown).map((h, i) => (
+            <div key={i} className="flex items-start gap-2 rounded-lg border border-line/12 bg-surface2/60 px-3 py-2 text-sm text-fg/80 [&_p]:m-0 [&_p]:inline">
+              <Lightbulb size={14} className="mt-0.5 shrink-0 text-fg/50" />
+              <span><span className="font-semibold text-fg/60">Hint {i + 1}: </span><Markdown>{h}</Markdown></span>
+            </div>
+          ))}
+          {hintsShown < hintList.length && (
+            <button
+              onClick={() => setHintsShown((n) => n + 1)}
+              className="text-xs font-semibold text-fg/60 underline-offset-2 hover:text-fg hover:underline"
+            >
+              {hintsShown === 0 ? "Need a hint?" : `Show another hint (${hintList.length - hintsShown} left)`}
             </button>
           )}
         </div>
@@ -235,7 +275,13 @@ export function LessonQuiz({ slug, scope, intro, questions, onSubmitted }: Props
               {result.correct ? <Check size={18} /> : <X size={18} />}
               {result.correct ? "Correct!" : `Answer: ${result.correctAnswer}`}
             </p>
-            <div className="mt-1 text-sm text-fg/70">
+            {diagnosis && (
+              <div className="mt-2 flex items-start gap-2 rounded-lg border border-line/15 bg-base/40 px-3 py-2 text-sm text-fg/80 [&_p]:m-0 [&_p]:inline">
+                <Mascot mood="thinking" size={28} className="-mt-0.5 shrink-0" />
+                <span><span className="font-semibold text-fg/60">Spotting the slip: </span><Markdown>{diagnosis}</Markdown></span>
+              </div>
+            )}
+            <div className="mt-2 text-sm text-fg/70">
               <Markdown>{result.explanation}</Markdown>
             </div>
           </motion.div>

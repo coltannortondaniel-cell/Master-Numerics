@@ -93,6 +93,7 @@ async function syncSubject(subject: Subject, list: WorldSeed[]) {
           difficulty: q.difficulty ?? 2,
           hint: q.hint ?? null,
           explanation: q.explanation,
+          tutor: q.hints || q.diagnostics ? { hints: q.hints, diagnostics: q.diagnostics } : undefined,
         })),
       });
       console.log(`  ✓ ${world.name} › ${lesson.title}`);

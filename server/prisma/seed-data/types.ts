@@ -22,6 +22,20 @@ export type QuestionSeed = {
   difficulty?: number;
   hint?: string;
   explanation: string;
+  /** Authored tutor — a progressive hint ladder (gentle → explicit). */
+  hints?: string[];
+  /**
+   * Targeted feedback for common wrong answers. `when` is matched against the
+   * student's submission by kind: MCQ → option index (or indices); TRUE_FALSE →
+   * boolean; NUMERIC → { value, tolerance? }; FILL_BLANK/text → string;
+   * SYMBOLIC/GRAPH → { expr }. `says` names the misconception and nudges.
+   */
+  diagnostics?: QuestionDiagnostic[];
+};
+
+export type QuestionDiagnostic = {
+  when: number | number[] | boolean | string | { value: number; tolerance?: number } | { expr: string };
+  says: string;
 };
 
 export type SectionSeed = {

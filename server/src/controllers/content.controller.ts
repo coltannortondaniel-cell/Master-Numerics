@@ -55,7 +55,9 @@ function serializeQuestion(q: {
   answer: unknown;
   explanation: string;
   hint: string | null;
+  tutor?: unknown;
 }) {
+  const tutor = (q.tutor ?? null) as { hints?: string[]; diagnostics?: unknown[] } | null;
   let options = q.options;
   if ((q.kind === "ORDER" || q.kind === "PROOF") && Array.isArray(q.options)) {
     options = shuffle(q.options as string[]);
@@ -72,6 +74,10 @@ function serializeQuestion(q: {
     options,
     difficulty: q.difficulty,
     hint: q.hint,
+    // Authored tutor (safe to ship: hints guide; diagnostics only fire on a
+    // wrong answer and never name the correct key for hidden-answer kinds).
+    hints: tutor?.hints ?? null,
+    diagnostics: tutor?.diagnostics ?? null,
   };
   // SYMBOLIC and GRAPH are graded locally on the client for instant feedback,
   // so they ship the answer expression + explanation. Every other kind keeps
@@ -235,6 +241,7 @@ export function makeContentController(subject: Subject) {
             answer: true,
             explanation: true,
             hint: true,
+            tutor: true,
           },
         },
       },
