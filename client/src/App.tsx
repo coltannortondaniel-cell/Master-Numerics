@@ -38,6 +38,8 @@ const Flashcards = lazy(() => import("./pages/Flashcards"));
 const Formulas = lazy(() => import("./pages/Formulas"));
 const Worksheet = lazy(() => import("./pages/Worksheet"));
 const Settings = lazy(() => import("./pages/Settings"));
+// Dev-only visual story for the screenshot harness; tree-shaken out of prod.
+const Story = import.meta.env.DEV ? lazy(() => import("./pages/_Story")) : () => null;
 const Onboarding = lazy(() => import("./pages/Onboarding"));
 const Admin = lazy(() => import("./pages/Admin"));
 
@@ -86,6 +88,8 @@ export default function App() {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+
+          {import.meta.env.DEV && <Route path="/__story" element={<Story />} />}
 
           <Route
             path="/dashboard"
