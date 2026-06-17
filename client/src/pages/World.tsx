@@ -116,7 +116,7 @@ export default function World({
 
   // Tint the ambient gravity background to this biome's accent while here.
   useEffect(() => {
-    document.documentElement.style.setProperty("--bg-accent", palette.accent);
+    document.documentElement.style.setProperty("--bg-accent", "#ECEEF3");
     return () => {
       document.documentElement.style.removeProperty("--bg-accent");
     };

@@ -28,7 +28,7 @@ const MUTED = "rgba(244,246,251,0.14)";
  * communicate done / current / locked / coming-soon, and the node is tinted to
  * its biome's accent. State is conveyed by icon + shape + text (not color alone).
  */
-export function PathNode({ name, gradeRange, mastery, stars, state, badge, onClick, accent = "#2D7DFF" }: Props) {
+export function PathNode({ name, gradeRange, mastery, stars, state, badge, onClick, accent = "#ECEEF3" }: Props) {
   // "locked" nodes (ahead of the learner) are still tappable to preview — no
   // charted node is ever a dead end. Only "soon" (genuinely empty) nodes are inert.
   const interactive = state !== "soon";
@@ -46,7 +46,7 @@ export function PathNode({ name, gradeRange, mastery, stars, state, badge, onCli
     switch (state) {
       case "done":
         return (
-          <div className="flex h-full w-full items-center justify-center rounded-full text-white" style={{ background: accent }}>
+          <div className="flex h-full w-full items-center justify-center rounded-full text-base" style={{ background: accent }}>
             <Check size={30} strokeWidth={3} />
           </div>
         );

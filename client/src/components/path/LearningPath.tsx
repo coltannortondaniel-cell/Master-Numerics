@@ -35,7 +35,7 @@ function SubjectToggle({ subject }: { subject: "physics" | "math" }) {
             key={it.key}
             to={it.to}
             className={`inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors ${
-              active ? "bg-accent text-white" : "text-fg/60 hover:text-fg"
+              active ? "bg-accent text-on-accent" : "text-fg/60 hover:text-fg"
             }`}
             aria-current={active ? "page" : undefined}
           >
@@ -58,7 +58,7 @@ function Checkpoint({ name, accent, complete, onClick }: { name: string; accent:
         data-path-node
         aria-label={`${name} checkpoint, ${complete ? "region cleared" : "not yet complete"}`}
         className="grid h-16 w-16 place-items-center rounded-2xl border-2 transition-transform hover:scale-105 active:scale-95"
-        style={{ borderColor: accent, background: complete ? accent : "transparent", color: complete ? "#ffffff" : accent }}
+        style={{ borderColor: accent, background: complete ? accent : "transparent", color: complete ? "#060708" : accent }}
       >
         <Flag size={26} strokeWidth={2.4} />
       </button>
@@ -122,7 +122,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
     <div className="mx-auto max-w-2xl">
       <a
         href="#current-unit"
-        className="sr-only rounded bg-accent px-3 py-2 text-sm font-semibold text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
+        className="sr-only rounded bg-accent px-3 py-2 text-sm font-semibold text-on-accent focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50"
       >
         Skip to your current unit
       </a>
@@ -140,7 +140,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
         {continueTarget && (
           <Link
             to={`${basePath}/${continueTarget.worldSlug}/${continueTarget.lessonSlug}`}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-glow transition-transform hover:scale-[1.02] active:scale-95"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-on-accent shadow-glow transition-transform hover:scale-[1.02] active:scale-95"
           >
             Continue · {continueTarget.title}
             <ArrowRight size={16} className="transition-transform group-hover:translate-x-0.5" />
@@ -159,10 +159,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
           >
             {/* biome header */}
             <div className="mb-6 flex flex-col items-center gap-1 text-center">
-              <span
-                className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em]"
-                style={{ color: b.world.palette.accent }}
-              >
+              <span className="font-mono text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-fg/50">
                 {b.world.subtitle}
               </span>
               <h2 className="font-display text-xl font-bold">{b.world.name}</h2>
@@ -191,7 +188,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
                       mastery={l.mastery}
                       stars={l.stars}
                       state={l.state}
-                      accent={b.world.palette.accent}
+                      accent={l.state === "current" ? "#4DA3FF" : "#ECEEF3"}
                       badge={String(li + 1)}
                       onClick={() => navigate(`${basePath}/${b.world.slug}/${l.slug}`)}
                     />
@@ -200,7 +197,7 @@ export function LearningPath({ worlds, continueTarget, basePath, subject }: Prop
                 <li>
                   <Checkpoint
                     name={b.world.name}
-                    accent={b.world.palette.accent}
+                    accent="#ECEEF3"
                     complete={b.unitComplete}
                     onClick={() => navigate(`${basePath}/${b.world.slug}`)}
                   />

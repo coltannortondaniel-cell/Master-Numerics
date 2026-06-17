@@ -42,7 +42,7 @@ export default function Worksheet() {
           <button onClick={load} className="flex items-center gap-1.5 rounded-lg border border-line/15 px-3 py-1.5 text-sm hover:border-line/40">
             <RefreshCw size={15} /> Regenerate
           </button>
-          <button onClick={() => window.print()} className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-white hover:brightness-110">
+          <button onClick={() => window.print()} className="flex items-center gap-1.5 rounded-lg bg-accent px-3 py-1.5 text-sm font-semibold text-on-accent hover:brightness-110">
             <Printer size={15} /> Print / Save PDF
           </button>
         </div>

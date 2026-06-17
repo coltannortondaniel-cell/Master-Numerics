@@ -1,53 +1,39 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Ambient, behind-everything n-body gravity field on a single <canvas>.
+ * Ambient, behind-everything deep-space field on a single <canvas> (brief §2).
  *
- * Different-sized dots genuinely attract each other (softened Newtonian gravity),
- * fall into orbits, swing past, and slingshot — but the system is deliberately
- * slow and calm (low G + velocity clamp + damping). It evokes "scaling objects,
- * deeper into space" without ever competing with foreground content.
+ * Three parallax layers create depth: a FAR layer of tiny, dim, slow specks; a
+ * MID layer of small drifting dust; and a NEAR layer of larger, brighter dots
+ * that genuinely attract one another (softened Newtonian gravity) — falling into
+ * slow orbits and slingshots, speed-clamped + damped so the motion stays calm.
+ * Everything is greyscale (ink-500 → white) over near-black, with a faint
+ * vignette. It never competes with foreground content.
  *
  * Accessibility: under prefers-reduced-motion (or the in-app data-motion="reduced"
  * toggle) it renders a single static frame and never animates.
+ * Performance: one canvas + rAF, paused when the tab is hidden; particle counts
+ * are capped on mobile; the O(n²) attraction runs on the small NEAR layer only.
  */
 
 interface P {
-  x: number; y: number; vx: number; vy: number; r: number; m: number;
+  x: number; y: number; vx: number; vy: number; r: number; m: number; lum: number;
 }
 
-// Tunables — chosen so orbits stay graceful (see brief §2).
+interface Layer {
+  ps: P[];
+  alpha: number; // overall layer opacity
+  gravity: boolean; // near layer only
+  links: boolean; // constellation links (near only)
+}
+
+// NEAR-layer gravity tunables — chosen so orbits stay graceful (brief §2).
 const G = 0.06;
 const DT = 0.9;
 const MAX_SPEED = 0.6;
 const DAMPING = 0.999;
 const SOFTENING = 12;
 const LINK_DIST = 90;
-
-function parseColor(s: string): [number, number, number] | null {
-  if (!s) return null;
-  const t = s.trim();
-  if (t.startsWith("#")) {
-    const h = t.slice(1);
-    const hex = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
-    if (hex.length !== 6) return null;
-    const n = parseInt(hex, 16);
-    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  }
-  const m = t.split(/\s+/).map(Number);
-  return m.length === 3 && m.every((x) => Number.isFinite(x)) ? [m[0], m[1], m[2]] : null;
-}
-
-function accentRGB(): [number, number, number] {
-  if (typeof window === "undefined") return [91, 163, 245];
-  const root = getComputedStyle(document.documentElement);
-  // --bg-accent (set per-biome by World/Lesson) overrides the global accent.
-  return (
-    parseColor(root.getPropertyValue("--bg-accent")) ??
-    parseColor(root.getPropertyValue("--c-accent")) ??
-    [91, 163, 245]
-  );
-}
 
 function prefersReducedMotion(): boolean {
   if (typeof window === "undefined") return true;
@@ -67,26 +53,43 @@ export function GravityField() {
 
     let raf = 0;
     let W = 0, H = 0, dpr = 1;
-    let particles: P[] = [];
+    let layers: Layer[] = [];
     let running = false;
 
-    function count(): number {
-      return window.innerWidth < 768 ? 45 : 120;
+    const mobile = () => window.innerWidth < 768;
+
+    // [count, rMin, rMax, driftMax, lumMin, lumMax, alpha]
+    function configs(): Array<{ n: number; rMin: number; rMax: number; drift: number; lumMin: number; lumMax: number; alpha: number; gravity: boolean; links: boolean }> {
+      const m = mobile();
+      return [
+        // FAR: tiny, dim, slow, plentiful — pure parallax drift
+        { n: m ? 40 : 90, rMin: 0.4, rMax: 1.0, drift: 0.04, lumMin: 120, lumMax: 160, alpha: 0.5, gravity: false, links: false },
+        // MID: small dust, a touch faster/brighter
+        { n: m ? 22 : 50, rMin: 0.9, rMax: 1.7, drift: 0.1, lumMin: 165, lumMax: 200, alpha: 0.55, gravity: false, links: false },
+        // NEAR: larger, bright, gravitating bodies + constellation links
+        { n: m ? 12 : 24, rMin: 1.8, rMax: 4.0, drift: 0.18, lumMin: 205, lumMax: 255, alpha: 0.6, gravity: true, links: true },
+      ];
     }
 
     function spawn() {
-      const n = count();
-      particles = Array.from({ length: n }, () => {
-        const r = 1 + Math.random() * 3; // 1–4 px
-        return {
-          x: Math.random() * W,
-          y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.2,
-          vy: (Math.random() - 0.5) * 0.2,
-          r,
-          m: r * r, // mass ∝ radius² → bigger dots pull harder
-        };
-      });
+      layers = configs().map((c) => ({
+        alpha: c.alpha,
+        gravity: c.gravity,
+        links: c.links,
+        ps: Array.from({ length: c.n }, () => {
+          const r = c.rMin + Math.random() * (c.rMax - c.rMin);
+          const t = (r - c.rMin) / Math.max(0.001, c.rMax - c.rMin);
+          return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            vx: (Math.random() - 0.5) * c.drift,
+            vy: (Math.random() - 0.5) * c.drift,
+            r,
+            m: r * r, // mass ∝ radius² → bigger dots pull harder
+            lum: Math.round(c.lumMin + t * (c.lumMax - c.lumMin)),
+          };
+        }),
+      }));
     }
 
     function resize() {
@@ -101,122 +104,97 @@ export function GravityField() {
       spawn();
     }
 
-    function step() {
-      const n = particles.length;
-      // pairwise softened gravity (O(n²); fine at n≤120)
+    function gravitate(ps: P[]) {
+      const n = ps.length;
       for (let i = 0; i < n; i++) {
-        const a = particles[i];
+        const a = ps[i];
         for (let j = i + 1; j < n; j++) {
-          const b = particles[j];
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
+          const b = ps[j];
+          const dx = b.x - a.x, dy = b.y - a.y;
           const r2 = dx * dx + dy * dy + SOFTENING * SOFTENING;
           const inv = 1 / Math.sqrt(r2);
           const f = (G * a.m * b.m) / r2;
-          const fx = f * dx * inv;
-          const fy = f * dy * inv;
-          a.vx += (fx / a.m) * DT;
-          a.vy += (fy / a.m) * DT;
-          b.vx -= (fx / b.m) * DT;
-          b.vy -= (fy / b.m) * DT;
+          const fx = f * dx * inv, fy = f * dy * inv;
+          a.vx += (fx / a.m) * DT; a.vy += (fy / a.m) * DT;
+          b.vx -= (fx / b.m) * DT; b.vy -= (fy / b.m) * DT;
         }
       }
-      for (let i = 0; i < n; i++) {
-        const p = particles[i];
-        p.vx *= DAMPING;
-        p.vy *= DAMPING;
-        const sp = Math.hypot(p.vx, p.vy);
-        if (sp > MAX_SPEED) {
-          p.vx = (p.vx / sp) * MAX_SPEED;
-          p.vy = (p.vy / sp) * MAX_SPEED;
+    }
+
+    function integrate(ps: P[], clamp: boolean) {
+      for (let i = 0; i < ps.length; i++) {
+        const p = ps[i];
+        if (clamp) {
+          p.vx *= DAMPING; p.vy *= DAMPING;
+          const sp = Math.hypot(p.vx, p.vy);
+          if (sp > MAX_SPEED) { p.vx = (p.vx / sp) * MAX_SPEED; p.vy = (p.vy / sp) * MAX_SPEED; }
         }
-        p.x += p.vx * DT;
-        p.y += p.vy * DT;
+        p.x += p.vx * DT; p.y += p.vy * DT;
         // soft wrap-around so the field never empties
         if (p.x < -5) p.x = W + 5; else if (p.x > W + 5) p.x = -5;
         if (p.y < -5) p.y = H + 5; else if (p.y > H + 5) p.y = -5;
       }
     }
 
+    function step() {
+      for (const layer of layers) {
+        if (layer.gravity) gravitate(layer.ps);
+        integrate(layer.ps, layer.gravity);
+      }
+    }
+
     function draw() {
-      const [cr, cg, cb] = accentRGB();
       ctx!.clearRect(0, 0, W, H);
-      const n = particles.length;
-      // faint constellation links between close particles
-      ctx!.lineWidth = 1;
-      for (let i = 0; i < n; i++) {
-        const a = particles[i];
-        for (let j = i + 1; j < n; j++) {
-          const b = particles[j];
-          const dx = b.x - a.x, dy = b.y - a.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 < LINK_DIST * LINK_DIST) {
-            const o = (1 - Math.sqrt(d2) / LINK_DIST) * 0.12;
-            ctx!.strokeStyle = `rgba(${cr},${cg},${cb},${o.toFixed(3)})`;
-            ctx!.beginPath();
-            ctx!.moveTo(a.x, a.y);
-            ctx!.lineTo(b.x, b.y);
-            ctx!.stroke();
+      for (const layer of layers) {
+        const ps = layer.ps;
+        if (layer.links) {
+          ctx!.lineWidth = 1;
+          for (let i = 0; i < ps.length; i++) {
+            const a = ps[i];
+            for (let j = i + 1; j < ps.length; j++) {
+              const b = ps[j];
+              const dx = b.x - a.x, dy = b.y - a.y;
+              const d2 = dx * dx + dy * dy;
+              if (d2 < LINK_DIST * LINK_DIST) {
+                const o = (1 - Math.sqrt(d2) / LINK_DIST) * 0.1 * layer.alpha;
+                ctx!.strokeStyle = `rgba(210,214,222,${o.toFixed(3)})`;
+                ctx!.beginPath();
+                ctx!.moveTo(a.x, a.y); ctx!.lineTo(b.x, b.y); ctx!.stroke();
+              }
+            }
           }
         }
+        for (let i = 0; i < ps.length; i++) {
+          const p = ps[i];
+          ctx!.fillStyle = `rgba(${p.lum},${p.lum},${p.lum},${layer.alpha.toFixed(3)})`;
+          ctx!.beginPath();
+          ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx!.fill();
+        }
       }
-      // dots — bigger = brighter
-      for (let i = 0; i < n; i++) {
-        const p = particles[i];
-        const o = 0.25 + (p.r / 4) * 0.35;
-        ctx!.fillStyle = `rgba(${cr},${cg},${cb},${o.toFixed(3)})`;
-        ctx!.beginPath();
-        ctx!.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx!.fill();
-      }
+      // faint vignette — darkens the edges so content reads clearly
+      const g = ctx!.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.35, W / 2, H / 2, Math.max(W, H) * 0.75);
+      g.addColorStop(0, "rgba(6,7,8,0)");
+      g.addColorStop(1, "rgba(6,7,8,0.55)");
+      ctx!.fillStyle = g;
+      ctx!.fillRect(0, 0, W, H);
     }
 
-    function loop() {
-      step();
-      draw();
-      raf = requestAnimationFrame(loop);
-    }
-
-    function start() {
-      if (running) return;
-      running = true;
-      raf = requestAnimationFrame(loop);
-    }
-    function stop() {
-      running = false;
-      if (raf) cancelAnimationFrame(raf);
-      raf = 0;
-    }
-
-    function staticFrame() {
-      // Settle a little, then draw one frame — no ongoing animation.
-      for (let i = 0; i < 140; i++) step();
-      draw();
-    }
+    function loop() { step(); draw(); raf = requestAnimationFrame(loop); }
+    function start() { if (running) return; running = true; raf = requestAnimationFrame(loop); }
+    function stop() { running = false; if (raf) cancelAnimationFrame(raf); raf = 0; }
+    function staticFrame() { for (let i = 0; i < 140; i++) step(); draw(); }
 
     resize();
+    if (prefersReducedMotion()) staticFrame(); else start();
 
-    if (prefersReducedMotion()) {
-      staticFrame();
-    } else {
-      start();
-    }
-
-    const onResize = () => {
-      resize();
-      if (prefersReducedMotion()) staticFrame();
-    };
+    const onResize = () => { resize(); if (prefersReducedMotion()) staticFrame(); };
     const onVisibility = () => {
       if (prefersReducedMotion()) return;
-      if (document.hidden) stop();
-      else start();
+      if (document.hidden) stop(); else start();
     };
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const onMotionChange = () => {
-      stop();
-      if (prefersReducedMotion()) staticFrame();
-      else start();
-    };
+    const onMotionChange = () => { stop(); if (prefersReducedMotion()) staticFrame(); else start(); };
 
     window.addEventListener("resize", onResize);
     document.addEventListener("visibilitychange", onVisibility);
@@ -230,11 +208,5 @@ export function GravityField() {
     };
   }, []);
 
-  return (
-    <canvas
-      ref={ref}
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-0"
-    />
-  );
+  return <canvas ref={ref} aria-hidden className="pointer-events-none fixed inset-0 z-0" />;
 }

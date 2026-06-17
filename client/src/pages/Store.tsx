@@ -172,7 +172,7 @@ export default function Store() {
                               <button
                                 onClick={() => buy(c.key)}
                                 disabled={busy || coins < c.coinPrice}
-                                className="flex w-full items-center justify-center gap-1 rounded-lg bg-accent py-2 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-40"
+                                className="flex w-full items-center justify-center gap-1 rounded-lg bg-premium py-2 text-sm font-semibold text-white hover:brightness-110 disabled:opacity-40"
                               >
                                 <Coins size={13} strokeWidth={1.75} /> {c.coinPrice}
                               </button>
