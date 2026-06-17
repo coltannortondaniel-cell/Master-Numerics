@@ -6,7 +6,7 @@ import { parseApiError } from "../lib/api";
 import { useAuth } from "../store/auth";
 import { JourneyHeader } from "../components/layout/JourneyHeader";
 import { AppShell } from "../components/layout/AppNav";
-import { LearningPath } from "../components/path/LearningPath";
+import { CityChart } from "../components/math/CityChart";
 import { Button } from "../components/ui/Button";
 
 function PathSkeleton() {
@@ -60,7 +60,7 @@ export default function City() {
               </div>
             </div>
           ) : data ? (
-            <LearningPath
+            <CityChart
               worlds={data.worlds}
               continueTarget={data.continue}
               basePath="/city"
